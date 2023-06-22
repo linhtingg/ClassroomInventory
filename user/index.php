@@ -4,13 +4,18 @@ error_reporting(0);
 include('includes/dbconnection.php');
 
 if (isset($_POST['login'])) {
-    $email = $_POST['email'];
+    $email = $_POST['username'];
     $password = $_POST['password'];
-    $sql = "SELECT * FROM tbluser WHERE email=:email and ps=PASSWORD(:ps)";
+    $sql = "SELECT * FROM tbluser where email=:email and password=PASSWORD(:ps);";
     $query = $dbh->prepare($sql);
     $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->bindParam(':ps', $password, PDO::PARAM_STR);
-    $query->execute();
+    $run_result =  $query->execute();
+    // if ($run_result == true) {
+    //     echo "<script>alert('PASS');</script>";
+    // } else {
+    //     echo "<script>alert('FAIL');</script>";
+    // }
     $results = $query->fetchAll(PDO::FETCH_OBJ);
     if ($query->rowCount() > 0) {
         foreach ($results as $result) {
@@ -19,7 +24,7 @@ if (isset($_POST['login'])) {
         $_SESSION['login'] = $_POST['email'];
         echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
     } else {
-        echo "<script>alert('" . $query->rowCount() . "');</script>";
+        echo "<script>alert('FAIL');</script>";
     }
 }
 
