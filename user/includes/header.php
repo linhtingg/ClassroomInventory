@@ -38,7 +38,7 @@
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
                             <!-- item--> <?php
                                             $aid = $_SESSION['sscmsaid'];
-                                            $sql = "SELECT fullname from tbladmin where ID=:aid";
+                                            $sql = "SELECT fullname from tbladmin where schoolID=:aid";
                                             $query = $dbh->prepare($sql);
                                             $query->bindParam(':aid', $aid, PDO::PARAM_STR);
                                             $query->execute();

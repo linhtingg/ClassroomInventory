@@ -60,15 +60,15 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql1 = "SELECT * from  tbldesk";
+                            $sql1 = "SELECT * from  room";
                             $query1 = $dbh->prepare($sql1);
                             $query1->execute();
                             $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
-                            $totaldesks = $query1->rowCount();
+                            $totalroom = $query1->rowCount();
                             ?><i class="fa fa-desktop float-right"></i>
 
-                            <h6 class="text-muted text-uppercase m-b-20">Total Desks</h6>
-                            <h2 class="m-b-20" data-plugin="counterup"><?php echo htmlentities($totaldesks); ?></h2>
+                            <h6 class="text-muted text-uppercase m-b-20">Total Rooms</h6>
+                            <h2 class="m-b-20" data-plugin="counterup"><?php echo htmlentities($totalrooms); ?></h2>
                             <a href="manage-desks.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
                     </div>
@@ -76,30 +76,30 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql1 = "SELECT * from  tbldesk where isOccupied='' || isOccupied is null";
+                            $sql1 = "SELECT * from  room where usability = 1";
                             $query1 = $dbh->prepare($sql1);
                             $query1->execute();
                             $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
-                            $totaldesksavail = $query1->rowCount();
+                            $totalroomsavail = $query1->rowCount();
                             ?>
-                            <i class="fa fa-desktop float-right"></i>
-                            <h6 class="text-muted text-uppercase m-b-20">Total Desk Available</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totaldesksavail); ?></span></h2>
-                            <a href="manage-desks.php"><span class="badge badge-success"> View Detail </span></a>
+                            <i class="fa fa-roomtop float-right"></i>
+                            <h6 class="text-muted text-uppercase m-b-20">Total room Available</h6>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totalroomsavail); ?></span></h2>
+                            <a href="manage-rooms.php"><span class="badge badge-success"> View Detail </span></a>
                         </div>
                     </div>
 
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql1 = "SELECT * from  tbldesk where isOccupied='1'";
+                            $sql1 = "SELECT * from  room where capacity > 80";
                             $query1 = $dbh->prepare($sql1);
                             $query1->execute();
                             $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
                             $isoccupied = $query1->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
-                            <h6 class="text-muted text-uppercase m-b-20">Desk Occupied</h6>
+                            <h6 class="text-muted text-uppercase m-b-20">Total Lecture Hall</h6>
                             <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($isoccupied); ?></span></h2>
                             <a href="manage-desks.php"><span class="badge badge-danger"> View Detail </span></a>
                         </div>
@@ -109,14 +109,14 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql11 = "SELECT * from  tblstudents ";
+                            $sql11 = "SELECT * from  equipment ";
                             $query11 = $dbh->prepare($sql11);
                             $query11->execute();
                             $results11 = $query11->fetchAll(PDO::FETCH_OBJ);
                             $totalregstd = $query11->rowCount();
                             ?>
                             <i class="fa fa-users float-right"></i>
-                            <h6 class="text-muted text-uppercase m-b-20">Total Registered Students</h6>
+                            <h6 class="text-muted text-uppercase m-b-20">Total Registered Equipments</h6>
                             <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totalregstd); ?></span></h2>
                             <a href="manage-students.php"><span class="badge badge-danger"> View Detail </span></a>
                         </div>
