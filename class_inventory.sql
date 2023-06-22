@@ -1,6 +1,6 @@
 CREATE TABLE tbluser (
     email varchar(200),
-    password varchar(50),
+    pass varchar(50),
     isType set("Lecturer","Student"),
     fullName varchar(200),
     schoolID varchar(8),
@@ -9,7 +9,7 @@ CREATE TABLE tbluser (
 
 CREATE TABLE tbladmin (
     email varchar(200),
-    password varchar(10),
+    pass varchar(10),
     schoolID varchar(8),
     fullName varchar(200),
     PRIMARY KEY (schoolID)
