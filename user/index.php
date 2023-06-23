@@ -4,27 +4,22 @@ error_reporting(0);
 include('includes/dbconnection.php');
 
 if (isset($_POST['login'])) {
-    $email = $_POST['username'];
-    $password = $_POST['password'];
-    $sql = "SELECT * FROM tbluser where email=:email and password=PASSWORD(:ps);";
+    $email = $_POST['email'];
+    $pass = $_POST['pass'];
+    $sql = "SELECT schoolID FROM tbluser WHERE email=:email and pass=password(:pass)";
     $query = $dbh->prepare($sql);
     $query->bindParam(':email', $email, PDO::PARAM_STR);
-    $query->bindParam(':ps', $password, PDO::PARAM_STR);
-    $run_result =  $query->execute();
-    // if ($run_result == true) {
-    //     echo "<script>alert('PASS');</script>";
-    // } else {
-    //     echo "<script>alert('FAIL');</script>";
-    // }
+    $query->bindParam(':pass', $pass, PDO::PARAM_STR);
+    $query->execute();
     $results = $query->fetchAll(PDO::FETCH_OBJ);
     if ($query->rowCount() > 0) {
         foreach ($results as $result) {
-            $_SESSION['sscmsaid'] = $result->ID;
+            $_SESSION['sscmsaid'] = $result->schoolID;
         }
         $_SESSION['login'] = $_POST['email'];
         echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
     } else {
-        echo "<script>alert('FAIL');</script>";
+        echo "<script>alert('Invalid Details');</script>";
     }
 }
 
@@ -69,16 +64,15 @@ if (isset($_POST['login'])) {
                         </div>
                     </div>
                     <form class="m-t-20" action="" method="post">
-
                         <div class="form-group row">
                             <div class="col-12">
-                                <input type="text" class="form-control" placeholder="enter your username" required="true" name="username">
+                                <input type="text" class="form-control" placeholder="enter your email" required="true" name="email">
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <div class="col-12">
-                                <input type="password" class="form-control" placeholder="enter your password" name="password" required="true">
+                                <input type="text" class="form-control" placeholder="enter your password" name="pass" required="true">
                             </div>
                         </div>
 
