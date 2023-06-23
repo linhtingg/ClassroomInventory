@@ -6,7 +6,7 @@ include('includes/dbconnection.php');
 if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $pass = $_POST['pass'];
-    $sql = "SELECT schoolID FROM tbluser WHERE email=:email and pass=:pass";
+    $sql = "SELECT schoolID FROM tbluser WHERE email=:email and pass=password(:pass)";
     $query = $dbh->prepare($sql);
     $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->bindParam(':pass', $pass, PDO::PARAM_STR);
@@ -16,7 +16,6 @@ if (isset($_POST['login'])) {
         foreach ($results as $result) {
             $_SESSION['sscmsaid'] = $result->schoolID;
         }
-        
         $_SESSION['login'] = $_POST['email'];
         echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
     } else {

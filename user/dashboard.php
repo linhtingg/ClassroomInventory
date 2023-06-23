@@ -60,17 +60,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-<<<<<<< Updated upstream
-                            $sql1 = "SELECT * from  room";
-                            $query1 = $dbh->prepare($sql1);
-                            $query1->execute();
-                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
-                            $totalroom = $query1->rowCount();
-                            ?><i class="fa fa-desktop float-right"></i>
-
-                            <h6 class="text-muted text-uppercase m-b-20">Total Rooms</h6>
-                            <h2 class="m-b-20" data-plugin="counterup"><?php echo htmlentities($totalrooms); ?></h2>
-=======
                             $sql0 = "SELECT * from  room";
                             $query0 = $dbh->prepare($sql0);
                             $query0->execute();
@@ -80,7 +69,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
                             <h6 class="text-muted text-uppercase m-b-20">Total Rooms</h6>
                             <h2 class="m-b-20" data-plugin="counterup"><?php echo htmlentities($totalroom); ?></h2>
->>>>>>> Stashed changes
                             <a href="manage-desks.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
                     </div>
@@ -97,11 +85,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <i class="fa fa-roomtop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total room Available</h6>
                             <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totalroomsavail); ?></span></h2>
-<<<<<<< Updated upstream
-                            <a href="manage-rooms.php"><span class="badge badge-success"> View Detail </span></a>
-=======
                             <a href="view-rooms.php"><span class="badge badge-success"> View List of Rooms </span></a>
->>>>>>> Stashed changes
                         </div>
                     </div>
 

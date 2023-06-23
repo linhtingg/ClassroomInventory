@@ -31,18 +31,6 @@
                             <img src="assets/images/users/avatar-1.jpg" alt="user" class="rounded-circle">
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
-<<<<<<< Updated upstream
-                            <!-- item--> <?php
-                                            $aid = $_SESSION['sscmsaid'];
-                                            $sql = "SELECT fullname from tbladmin where schoolID=:aid";
-                                            $query = $dbh->prepare($sql);
-                                            $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-                                            $query->execute();
-                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                            $cnt = 1;
-                                            if ($query->rowCount() > 0) {
-                                                foreach ($results as $row) {               ?>
-=======
                             <!-- item-->
                             <?php
                             $aid = $_SESSION['sscmsaid'];
@@ -55,7 +43,6 @@
                             if ($query->rowCount() > 0) {
                                 foreach ($results as $row) {
                             ?>
->>>>>>> Stashed changes
                                     <div class="dropdown-item noti-title">
                                         <h5 class="text-overflow"> <small>Welcome! <?php echo $row->fullName; ?> </small> </h5>
                                 <?php $cnt = $cnt + 1;
