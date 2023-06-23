@@ -67,7 +67,7 @@ CREATE TABLE ReportForm (
     roomID varchar(7) NOT NULL,
     userReportID varchar(8),
     desribeCondition varchar(200) NOT NULL,
-    FOREIGN KEY (userReportID) REFERENCES User(SchoolID),
+    FOREIGN KEY (userReportID) REFERENCES tbluser(SchoolID),
     FOREIGN KEY (roomID) REFERENCES room(ID)
 );
 
