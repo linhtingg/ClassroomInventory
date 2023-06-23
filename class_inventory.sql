@@ -48,7 +48,7 @@ CREATE TABLE RoomRegisterForm (
     numberOfPeople int NOT NULL,
     borrowTime SET("1", "2", "3","4","5","6","7","8","9","10","11","12","13","14") NOT NULL,
     borrowDay DATE NOT NULL,
-    FOREIGN KEY (userID) REFERENCES User(SchoolID)
+    FOREIGN KEY (userID) REFERENCES tbluser(SchoolID)
 );
 
 CREATE TABLE EquipmentRegisterForm (
@@ -59,7 +59,7 @@ CREATE TABLE EquipmentRegisterForm (
     numberOfEach int NOT NULL,
     borrowTime SET("1", "2", "3","4","5","6","7","8","9","10","11","12","13","14") NOT NULL,
     borrowDay DATE NOT NULL,
-    FOREIGN KEY (userID) REFERENCES User(SchoolID)
+    FOREIGN KEY (userID) REFERENCES tbluser(SchoolID)
 );
 
 CREATE TABLE ReportForm (
@@ -68,7 +68,7 @@ CREATE TABLE ReportForm (
     userReportID varchar(8),
     desribeCondition varchar(200) NOT NULL,
     FOREIGN KEY (userReportID) REFERENCES User(SchoolID),
-    FOREIGN KEY (roomID) REFERENCES Room(ID)
+    FOREIGN KEY (roomID) REFERENCES room(ID)
 );
 
 CREATE TABLE Notification (
@@ -79,4 +79,8 @@ ALTER TABLE equipment
 ADD FOREIGN KEY (currentroom) REFERENCES room(id);
 
 ALTER TABLE equipment
-ADD FOREIGN KEY (lastUserUsed) REFERENCES User(schoolID);
+ADD FOREIGN KEY (lastUserUsed) REFERENCES tbluser(schoolID);
+
+ALTER TABLE `equipmentregisterform` ADD `approved` BOOLEAN NOT NULL;
+
+ALTER TABLE `roomregisterform` ADD `approved` BOOLEAN NOT NULL ;
