@@ -10,21 +10,21 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     if (isset($_GET['delid'])) {
         $deskid = intval($_GET['delid']);
 
-        $query = $dbh->prepare("SELECT id FROM tbldesk WHERE id=:deskid and isOccupied is not null");
+        $query = $dbh->prepare("SELECT id FROM room WHERE id=:deskid and isOccupied is not null");
         $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
         if ($query->rowCount() > 0) {
-            echo '<script>alert("Desk occupied cannot  deleted")</script>';
+            echo '<script>alert("Room occupied cannot  deleted")</script>';
         } else {
 
-            $sql = "delete from tbldesk where id=:deskid";
+            $sql = "delete from room where id=:deskid";
             $query = $dbh->prepare($sql);
             $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
             $query->execute();
             echo "<script>alert('Data deleted');</script>";
-            echo "<script>window.location.href = 'manage-desks.php'</script>";
+            echo "<script>window.location.href = 'manage-rooms.php'</script>";
         }
     }
 
@@ -34,7 +34,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
 
-        <title>Student Study Center Mananagement System | Manage Desks</title>
+        <title>Student Study Center Mananagement System | Manage Rooms</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -73,7 +73,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-                            <h4 class="m-t-0 header-title">Manage Desks</h4>
+                            <h4 class="m-t-0 header-title">Manage Rooms</h4>
 
 
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -92,7 +92,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <tbody>
                                     <?php
 
-                                    $sql = "SELECT * from tbldesk ";
+                                    $sql = "SELECT * from room ";
                                     $query = $dbh->prepare($sql);
                                     $query->execute();
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -113,7 +113,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                     else : echo "Occupied";
                                                     endif; ?></td>
                                                 <td><?php echo htmlentities($row->postingDate); ?></td>
-                                                <td><a href="edit-desk.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-desks.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a></td>
+                                                <td><a href="edit-room.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-rooms.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a></td>
 
                                             </tr>
                                     <?php $cnt = $cnt + 1;
