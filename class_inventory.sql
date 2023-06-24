@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 24, 2023 at 05:10 AM
+-- Generation Time: Jun 24, 2023 at 12:40 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -54,23 +54,23 @@ INSERT INTO `equipment` (`type`, `id`, `totalUsedTime`, `producedYear`, `descrip
 
 CREATE TABLE `equipmentregisterform` (
   `userID` varchar(8) NOT NULL,
-  `phoneNumber` varchar(12) NOT NULL,
   `purpose` varchar(200) NOT NULL,
   `equipType` varchar(50) NOT NULL,
   `numberOfEach` int(11) NOT NULL,
   `borrowTime` set('1','2','3','4','5','6','7','8','9','10','11','12','13','14') NOT NULL,
   `borrowDay` date NOT NULL,
   `approved` tinyint(1) NOT NULL,
-  `formid` int(11) NOT NULL
+  `formid` int(11) NOT NULL,
+  `reply` varchar(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `equipmentregisterform`
 --
 
-INSERT INTO `equipmentregisterform` (`userID`, `phoneNumber`, `purpose`, `equipType`, `numberOfEach`, `borrowTime`, `borrowDay`, `approved`, `formid`) VALUES
-('20201234', '0987654321', 'Mượn mic cho lớp học ngày mai', 'MIC', 1, '2,3,4', '2023-07-21', 0, 1),
-('20201234', '0987654321', 'Mượn loa cầm tay ', 'SPEAKER', 1, '5,6,7', '2023-07-04', 0, 2);
+INSERT INTO `equipmentregisterform` (`userID`, `purpose`, `equipType`, `numberOfEach`, `borrowTime`, `borrowDay`, `approved`, `formid`, `reply`) VALUES
+('20201234', 'Mượn mic cho lớp học ngày mai', 'MIC', 1, '2,3,4', '2023-07-21', 0, 1, ''),
+('20201234', 'Mượn loa cầm tay ', 'SPEAKER', 1, '5,6,7', '2023-07-04', 0, 2, '');
 
 -- --------------------------------------------------------
 
@@ -79,15 +79,17 @@ INSERT INTO `equipmentregisterform` (`userID`, `phoneNumber`, `purpose`, `equipT
 --
 
 CREATE TABLE `notification` (
-  `notiContent` varchar(200) NOT NULL
+  `notiContent` varchar(200) NOT NULL,
+  `valid_til` date DEFAULT (current_timestamp() + interval 7 day),
+  `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `notification`
 --
 
-INSERT INTO `notification` (`notiContent`) VALUES
-('Thông báo, từ ngày 7/8 nhà trường ngừng cho mượn các phòng học tại D7, D9 phục vụ kỳ thi UHYU 2023. Trân trọng!');
+INSERT INTO `notification` (`notiContent`, `valid_til`, `id`) VALUES
+('Thông báo, từ ngày 7/8 nhà trường ngừng cho mượn các phòng học tại D7, D9 phục vụ kỳ thi UHYU 2023. Trân trọng!', '2023-07-01', 1);
 
 -- --------------------------------------------------------
 
@@ -140,23 +142,23 @@ INSERT INTO `room` (`id`, `capacity`, `usability`, `description`, `avaiableTime`
 
 CREATE TABLE `roomregisterform` (
   `userID` varchar(8) NOT NULL,
-  `phoneNumber` varchar(12) NOT NULL,
   `purpose` varchar(200) NOT NULL,
   `numberOfRoom` int(11) NOT NULL,
   `numberOfPeople` int(11) NOT NULL,
   `borrowTime` set('1','2','3','4','5','6','7','8','9','10','11','12','13','14') NOT NULL,
   `borrowDay` date NOT NULL,
   `approved` tinyint(1) NOT NULL,
-  `formid` int(11) NOT NULL
+  `formid` int(11) NOT NULL,
+  `reply` varchar(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `roomregisterform`
 --
 
-INSERT INTO `roomregisterform` (`userID`, `phoneNumber`, `purpose`, `numberOfRoom`, `numberOfPeople`, `borrowTime`, `borrowDay`, `approved`, `formid`) VALUES
-('20201234', '0987654321', 'Mượn phòng cho CLB sinh hoạt', 1, 26, '13,14', '2023-07-12', 0, 1),
-('20201234', '0987654321', 'Mượn phòng học.', 1, 80, '3,4,5,6,7,8,9', '2023-07-04', 0, 2);
+INSERT INTO `roomregisterform` (`userID`, `purpose`, `numberOfRoom`, `numberOfPeople`, `borrowTime`, `borrowDay`, `approved`, `formid`, `reply`) VALUES
+('20201234', 'Mượn phòng cho CLB sinh hoạt', 1, 26, '13,14', '2023-07-12', 0, 1, ''),
+('20201234', 'Mượn phòng học.', 1, 80, '3,4,5,6,7,8,9', '2023-07-04', 0, 2, '');
 
 -- --------------------------------------------------------
 
@@ -189,16 +191,17 @@ CREATE TABLE `tbluser` (
   `pass` varchar(200) DEFAULT NULL,
   `isType` set('Lecturer','Student') DEFAULT NULL,
   `fullName` varchar(200) DEFAULT NULL,
-  `schoolID` varchar(8) NOT NULL
+  `schoolID` varchar(8) NOT NULL,
+  `phonenumber` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbluser`
 --
 
-INSERT INTO `tbluser` (`email`, `pass`, `isType`, `fullName`, `schoolID`) VALUES
-('anh.hm201234@sis.hust.edu.vn', '123456', 'Student', 'Hoàng Minh Anh', '20201234'),
-('linh.hmt205093@sis.hust.edu.vn', '123456', 'Student', 'Hoàng Mai Thùy Linh', '20205093');
+INSERT INTO `tbluser` (`email`, `pass`, `isType`, `fullName`, `schoolID`, `phonenumber`) VALUES
+('anh.hm201234@sis.hust.edu.vn', '123456', 'Student', 'Hoàng Minh Anh', '20201234', '0987654321'),
+('linh.hmt205093@sis.hust.edu.vn', '123456', 'Student', 'Hoàng Mai Thùy Linh', '20205093', '032456789');
 
 --
 -- Indexes for dumped tables
@@ -217,7 +220,14 @@ ALTER TABLE `equipment`
 --
 ALTER TABLE `equipmentregisterform`
   ADD PRIMARY KEY (`formid`),
-  ADD KEY `userID` (`userID`);
+  ADD KEY `userID` (`userID`),
+  ADD KEY `reply` (`reply`);
+
+--
+-- Indexes for table `notification`
+--
+ALTER TABLE `notification`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `reportform`
@@ -237,7 +247,8 @@ ALTER TABLE `room`
 --
 ALTER TABLE `roomregisterform`
   ADD PRIMARY KEY (`formid`),
-  ADD KEY `userID` (`userID`);
+  ADD KEY `userID` (`userID`),
+  ADD KEY `reply` (`reply`);
 
 --
 -- Indexes for table `tbladmin`
@@ -262,6 +273,12 @@ ALTER TABLE `equipmentregisterform`
   MODIFY `formid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `notification`
+--
+ALTER TABLE `notification`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `roomregisterform`
 --
 ALTER TABLE `roomregisterform`
@@ -282,7 +299,8 @@ ALTER TABLE `equipment`
 -- Constraints for table `equipmentregisterform`
 --
 ALTER TABLE `equipmentregisterform`
-  ADD CONSTRAINT `equipmentregisterform_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `tbluser` (`schoolID`);
+  ADD CONSTRAINT `equipmentregisterform_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `tbluser` (`schoolID`),
+  ADD CONSTRAINT `equipmentregisterform_ibfk_2` FOREIGN KEY (`reply`) REFERENCES `equipment` (`id`);
 
 --
 -- Constraints for table `reportform`
@@ -295,7 +313,8 @@ ALTER TABLE `reportform`
 -- Constraints for table `roomregisterform`
 --
 ALTER TABLE `roomregisterform`
-  ADD CONSTRAINT `roomregisterform_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `tbluser` (`schoolID`);
+  ADD CONSTRAINT `roomregisterform_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `tbluser` (`schoolID`),
+  ADD CONSTRAINT `roomregisterform_ibfk_2` FOREIGN KEY (`reply`) REFERENCES `room` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
