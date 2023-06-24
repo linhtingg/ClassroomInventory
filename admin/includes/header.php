@@ -11,12 +11,8 @@
                 </a>
             </div>
             <!-- End Logo container-->
-
-
             <div class="menu-extras navbar-topbar">
-
                 <ul class="list-inline float-right mb-0">
-
                     <li class="list-inline-item">
                         <!-- Mobile menu toggle-->
                         <a class="navbar-toggle">
@@ -28,9 +24,6 @@
                         </a>
                         <!-- End mobile menu toggle-->
                     </li>
-
-
-
                     <li class="list-inline-item dropdown notification-list">
                         <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <img src="assets/images/users/avatar-1.jpg" alt="user" class="rounded-circle">
@@ -38,10 +31,11 @@
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
                             <!-- item--> <?php
                                             $aid = $_SESSION['sscmsaid'];
-                                            $sql = "SELECT fullname from tbladmin where ID=:aid";
+                                            $sql = "SELECT fullname from tbladmin where schoolID=:aid";
                                             $query = $dbh->prepare($sql);
                                             $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-                                            $query->execute();
+                                            $queryResult =   $query->execute();
+                                            // PASS
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                                             $cnt = 1;
                                             if ($query->rowCount() > 0) {
@@ -88,9 +82,9 @@
                         <a href="dashboard.php"><i class="zmdi zmdi-view-dashboard"></i> <span> Dashboard </span> </a>
                     </li>
 
-                    <!---Desks---->
+                    <!---Rooms---->
                     <li class="has-submenu">
-                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Desks </span> </a>
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Rooms </span> </a>
                         <ul class="submenu megamenu">
                             <li>
                                 <ul>
@@ -101,7 +95,19 @@
 
                         </ul>
                     </li>
+                    <!---Equipments---->
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Equipments </span> </a>
+                        <ul class="submenu megamenu">
+                            <li>
+                                <ul>
+                                    <li><a href="add-desk.php">Add </a></li>
+                                    <li><a href="manage-equipments.php">Manage </a></li>
+                                </ul>
+                            </li>
 
+                        </ul>
+                    </li>
                     <!---Students---->
                     <li class="has-submenu">
                         <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Students </span> </a>
@@ -116,13 +122,7 @@
                         </ul>
                     </li>
                     <li> <a href="student-list.php"><i class="zmdi zmdi-collection-text"></i> Assigned / Unassigned Desk </a></li>
-
                     <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report </a></li>
-
-
-
-
-
                 </ul>
                 <!-- End navigation menu  -->
             </div>
