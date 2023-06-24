@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2023 at 06:40 PM
+-- Generation Time: Jun 24, 2023 at 05:10 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -60,15 +60,17 @@ CREATE TABLE `equipmentregisterform` (
   `numberOfEach` int(11) NOT NULL,
   `borrowTime` set('1','2','3','4','5','6','7','8','9','10','11','12','13','14') NOT NULL,
   `borrowDay` date NOT NULL,
-  `approved` tinyint(1) NOT NULL
+  `approved` tinyint(1) NOT NULL,
+  `formid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `equipmentregisterform`
 --
 
-INSERT INTO `equipmentregisterform` (`userID`, `phoneNumber`, `purpose`, `equipType`, `numberOfEach`, `borrowTime`, `borrowDay`, `approved`) VALUES
-('20201234', '0987654321', 'Mượn mic cho lớp học ngày mai', 'MIC', 1, '2,3,4', '2023-07-21', 0);
+INSERT INTO `equipmentregisterform` (`userID`, `phoneNumber`, `purpose`, `equipType`, `numberOfEach`, `borrowTime`, `borrowDay`, `approved`, `formid`) VALUES
+('20201234', '0987654321', 'Mượn mic cho lớp học ngày mai', 'MIC', 1, '2,3,4', '2023-07-21', 0, 1),
+('20201234', '0987654321', 'Mượn loa cầm tay ', 'SPEAKER', 1, '5,6,7', '2023-07-04', 0, 2);
 
 -- --------------------------------------------------------
 
@@ -144,16 +146,17 @@ CREATE TABLE `roomregisterform` (
   `numberOfPeople` int(11) NOT NULL,
   `borrowTime` set('1','2','3','4','5','6','7','8','9','10','11','12','13','14') NOT NULL,
   `borrowDay` date NOT NULL,
-  `approved` tinyint(1) NOT NULL
+  `approved` tinyint(1) NOT NULL,
+  `formid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `roomregisterform`
 --
 
-INSERT INTO `roomregisterform` (`userID`, `phoneNumber`, `purpose`, `numberOfRoom`, `numberOfPeople`, `borrowTime`, `borrowDay`, `approved`) VALUES
-('20201234', '0987654321', 'Mượn phòng cho CLB sinh hoạt', 1, 26, '13,14', '2023-07-12', 0),
-('20201234', '0987654321', 'Mượn phòng học.', 1, 80, '3,4,5,6,7,8,9', '2023-07-04', 0);
+INSERT INTO `roomregisterform` (`userID`, `phoneNumber`, `purpose`, `numberOfRoom`, `numberOfPeople`, `borrowTime`, `borrowDay`, `approved`, `formid`) VALUES
+('20201234', '0987654321', 'Mượn phòng cho CLB sinh hoạt', 1, 26, '13,14', '2023-07-12', 0, 1),
+('20201234', '0987654321', 'Mượn phòng học.', 1, 80, '3,4,5,6,7,8,9', '2023-07-04', 0, 2);
 
 -- --------------------------------------------------------
 
@@ -213,6 +216,7 @@ ALTER TABLE `equipment`
 -- Indexes for table `equipmentregisterform`
 --
 ALTER TABLE `equipmentregisterform`
+  ADD PRIMARY KEY (`formid`),
   ADD KEY `userID` (`userID`);
 
 --
@@ -232,6 +236,7 @@ ALTER TABLE `room`
 -- Indexes for table `roomregisterform`
 --
 ALTER TABLE `roomregisterform`
+  ADD PRIMARY KEY (`formid`),
   ADD KEY `userID` (`userID`);
 
 --
@@ -245,6 +250,22 @@ ALTER TABLE `tbladmin`
 --
 ALTER TABLE `tbluser`
   ADD PRIMARY KEY (`schoolID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `equipmentregisterform`
+--
+ALTER TABLE `equipmentregisterform`
+  MODIFY `formid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `roomregisterform`
+--
+ALTER TABLE `roomregisterform`
+  MODIFY `formid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
