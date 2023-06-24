@@ -121,7 +121,8 @@
 
                         </ul>
                     </li>
-                    <li> <a href="student-list.php"><i class="zmdi zmdi-collection-text"></i> Assigned / Unassigned Desk </a></li>
+                    <li> <a href="manage-room-register-students.php"><i class="zmdi zmdi-collection-text"></i> Assigned / Unassigned Room </a></li>
+                    <li> <a href="manage-equipment-register-students.php"><i class="zmdi zmdi-collection-text"></i> Assigned / Unassigned Equipment </a></li>
                     <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report </a></li>
                 </ul>
                 <!-- End navigation menu  -->
