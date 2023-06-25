@@ -55,12 +55,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <?php include_once('includes/header.php'); ?>
         <div class="wrapper">
             <div class="container">
-
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="page-title-box">
-
                             <h4 class="page-title">Add Student Detail</h4>
                         </div>
                     </div>
@@ -74,9 +72,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
                             <div class="row">
                                 <div class="col-lg-6">
-
                                     <h4 class="header-title m-t-0">Add Student Detail</h4>
-
                                     <div class="p-20">
                                         <form action="#" method="post">
 
