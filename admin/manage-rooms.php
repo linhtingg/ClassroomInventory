@@ -8,10 +8,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     // Code for deleting product from cart
     if (isset($_GET['delid'])) {
-        $deskid = intval($_GET['delid']);
+        $roomID = intval($_GET['delid']);
 
-        $query = $dbh->prepare("SELECT id FROM room WHERE id=:deskid and isOccupied is not null");
-        $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
+        $query = $dbh->prepare("SELECT id FROM room WHERE id=:roomID and isOccupied is not null");
+        $query->bindParam(':roomID', $roomID, PDO::PARAM_STR);
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
@@ -19,9 +19,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
             echo '<script>alert("Room occupied cannot  deleted")</script>';
         } else {
 
-            $sql = "delete from room where id=:deskid";
+            $sql = "delete from room where id=:roomID";
             $query = $dbh->prepare($sql);
-            $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
+            $query->bindParam(':roomID', $roomID, PDO::PARAM_STR);
             $query->execute();
             echo "<script>alert('Data deleted');</script>";
             echo "<script>window.location.href = 'manage-rooms.php'</script>";
@@ -80,7 +80,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Desk Number</th>
+                                        <th>Room ID</th>
                                         <th>Laptop / Charger Socket</th>
                                         <th>Satus</th>
                                         <th>Creation Date</th>
@@ -102,7 +102,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         foreach ($results as $row) {               ?>
                                             <tr>
                                                 <td><?php echo htmlentities($cnt); ?></td>
-                                                <td><?php echo htmlentities($row->deskNumber); ?></td>
+                                                <td><?php echo htmlentities($row->roomID); ?></td>
                                                 <td><?php $lapchargerscoket = $row->laptopChargerScoket;
                                                     if ($lapchargerscoket == '') : echo "Not Available";
                                                     else : echo "Available";
