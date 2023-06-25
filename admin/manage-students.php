@@ -5,7 +5,6 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
     // Code for deleting student details
     if (isset($_GET['stdid'])) {
         $studentid = intval($_GET['stdid']);
@@ -16,13 +15,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         echo "<script>alert('Student record deleted');</script>";
         echo "<script>window.location.href = 'manage-students.php'</script>";
     }
-
 ?>
     <!doctype html>
     <html lang="en">
 
     <head>
-
         <title>Student Study Center Mananagement System | Manage Students</title>
 
         <!-- DataTables -->
@@ -47,25 +44,17 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     </head>
 
-
     <body>
-
         <?php include_once('includes/header.php'); ?>
-
-
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
         <div class="wrapper">
             <div class="container">
-
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
                             <h4 class="m-t-0 header-title">Manage Student Details</h4>
-
-
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
@@ -80,7 +69,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     </tr>
                                 </thead>
 
-
                                 <tbody>
                                     <?php
                                     $sql = "SELECT * from tblstudents";
@@ -89,8 +77,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
-                                        foreach ($results as $row) {          ?>
-
+                                        foreach ($results as $row) {  ?>
                                             <tr>
                                                 <td><?php echo htmlentities($cnt); ?></td>
                                                 <td><?php echo htmlentities($row->registrationNumber); ?></td>
@@ -115,11 +102,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div> <!-- end row -->
 
-
-
             </div> <!-- container -->
             <?php include_once('includes/footer.php'); ?>
-
         </div> <!-- End wrapper -->
 
 
@@ -147,7 +131,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 });
 
                 // Key Tables
-
                 $('#key-table').DataTable({
                     keys: true
                 });
