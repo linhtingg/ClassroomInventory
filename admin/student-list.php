@@ -5,9 +5,6 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
-
-
 ?>
     <!doctype html>
     <html lang="en">
@@ -38,25 +35,17 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     </head>
 
-
     <body>
-
         <?php include_once('includes/header.php'); ?>
-
-
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
         <div class="wrapper">
             <div class="container">
-
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
                             <h4 class="m-t-0 header-title"> Student Details</h4>
-
-
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
@@ -71,18 +60,15 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-
-
                                 <tbody>
                                     <?php
-                                    $sql = "SELECT * from tblstudents";
+                                    $sql = "SELECT * from tbluser";
                                     $query = $dbh->prepare($sql);
                                     $query->execute();
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
-                                        foreach ($results as $row) {          ?>
-
+                                        foreach ($results as $row) { ?>
                                             <tr>
                                                 <td><?php echo htmlentities($cnt); ?></td>
                                                 <td><?php echo htmlentities($row->registrationNumber); ?></td>

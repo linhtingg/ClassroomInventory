@@ -5,16 +5,15 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
    header('location:logout.php');
 } else {
-
    // Code for deleting student details
-   if (isset($_GET['stdid'])) {
-      $studentid = intval($_GET['stdid']);
-      $sql = "delete from tblstudents where id=:sid";
+   if (isset($_GET['rejectForm'])) {
+      $formID = intval($_GET['rejectForm']);
+      $sql = "UPDATE equipmentregisterform SET reply='1' where formid=:id;";
       $query = $dbh->prepare($sql);
-      $query->bindParam(':sid', $studentid, PDO::PARAM_STR);
-      $query->execute();
-      echo "<script>alert('Student record deleted');</script>";
-      echo "<script>window.location.href = 'manage-students.php'</script>";
+      $query->bindParam(':id', $formID, PDO::PARAM_STR);
+      $runResult = $query->execute();
+      echo "<script>alert('Form rejected');</script>";
+      echo "<script>window.location.href = 'manage-equipment-register-students.php'</script>";
    }
 ?>
    <!doctype html>
@@ -57,7 +56,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                            <tr>
                               <th>#</th>
                               <th>User ID</th>
-                              <th>Phone Number</th>
                               <th>Purpose</th>
                               <th>Equip Type</th>
                               <th>Number Of Each</th>
@@ -68,30 +66,24 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </thead>
                         <tbody>
                            <?php
-                           $sql = "SELECT * from equipmentregisterform";
+                           $sql = "SELECT * from equipmentregisterform where reply is null";
                            $query = $dbh->prepare($sql);
                            $query->execute();
                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-                           $cnt = 1;
                            if ($query->rowCount() > 0) {
                               foreach ($results as $row) { ?>
                                  <tr>
-                                    <td><?php echo htmlentities($cnt); ?></td>
+                                    <td><?php echo htmlentities($row->formid); ?></td>
                                     <td><?php echo htmlentities($row->userID); ?></td>
-                                    <td><?php echo htmlentities($row->phoneNumber); ?></td>
                                     <td><?php echo htmlentities($row->purpose); ?></td>
                                     <td><?php echo htmlentities($row->equipType); ?></td>
                                     <td><?php echo htmlentities($row->numberOfEach); ?></td>
                                     <td><?php echo htmlentities($row->borrowTime); ?></td>
                                     <td><?php echo htmlentities($row->borrowDay); ?></td>
-                                    <td><a href="edit-student.php?stdid=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit</a> <a href="manage-students.php?stdid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger" />Delete</a>
-                                       <a href="student-details.php?stdid=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">View Details</a>
-                                    </td>
+                                    <td><a href="equipment-register-student-details.php?formID=<?php echo htmlentities($row->formid); ?>" class="btn btn-primary">Assign / Unassign Equipment</a></td>
                                  </tr>
-                           <?php $cnt = $cnt + 1;
-                              }
+                           <?php }
                            } ?>
-
                         </tbody>
                      </table>
 

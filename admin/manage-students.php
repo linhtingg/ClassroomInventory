@@ -5,7 +5,6 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
     // Code for deleting student details
     if (isset($_GET['stdid'])) {
         $studentid = intval($_GET['stdid']);
@@ -16,13 +15,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         echo "<script>alert('Student record deleted');</script>";
         echo "<script>window.location.href = 'manage-students.php'</script>";
     }
-
 ?>
     <!doctype html>
     <html lang="en">
 
     <head>
-
         <title>Student Study Center Mananagement System | Manage Students</title>
 
         <!-- DataTables -->
@@ -47,12 +44,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     </head>
 
-
     <body>
-
         <?php include_once('includes/header.php'); ?>
-
-
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
@@ -68,6 +61,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <th>#</th>
                                         <th>Email</th>
                                         <th>Name</th>
+                                        <th>Phone Number</th>
                                         <th>School ID</th>
                                         <th>Action</th>
                                     </tr>
@@ -85,6 +79,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <td><?php echo htmlentities($cnt); ?></td>
                                                 <td><?php echo htmlentities($row->email); ?></td>
                                                 <td><?php echo htmlentities($row->fullName); ?></td>
+                                                <td><?php echo htmlentities($row->phonenumber); ?></td>
                                                 <td><?php echo htmlentities($row->schoolID); ?></td>
                                                 <td><a href="edit-student.php?stdid=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit</a> <a href="manage-students.php?stdid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger" />Delete</a>
                                                     <a href="student-details.php?stdid=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">View Details</a>

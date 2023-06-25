@@ -54,7 +54,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql1 = "SELECT * from  room";
+                            $sql1 = "SELECT * from  room where capacity !=0";
                             $query1 = $dbh->prepare($sql1);
                             $runResult = $query1->execute();
                             $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
@@ -70,7 +70,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql1 = "SELECT * from  room where usability=1";
+                            $sql1 = "SELECT * from  room where capacity !=0 and usability=1";
                             $query1 = $dbh->prepare($sql1);
                             $query1->execute();
                             $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
@@ -86,7 +86,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql1 = "SELECT * from  room where usability=0";
+                            $sql1 = "SELECT * from  room where capacity !=0 and usability=0";
                             $query1 = $dbh->prepare($sql1);
                             $query1->execute();
                             $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
@@ -116,11 +116,43 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </div>
                     </div>
 
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card-box tilebox-one">
+                            <?php
+                            $sql1 = "SELECT * from equipment where lastUserUsed is NULL";
+                            $query1 = $dbh->prepare($sql1);
+                            $runResult = $query1->execute();
+                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
+                            $totalequipments = $query1->rowCount();
+                            ?>
+                            <i class="fa fa-desktop float-right"></i>
+                            <h6 class="text-muted text-uppercase m-b-20">Total Equipments Available</h6>
+                            <h2 class="m-b-20" data-plugin="counterup"><?php echo htmlentities($totalequipments); ?></h2>
+                            <a href="manage-equipments.php"><span class="badge badge-success"> View Detail </span></a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card-box tilebox-one">
+                            <?php
+                            $sql1 = "SELECT * from equipment where lastUserUsed is not NULL";
+                            $query1 = $dbh->prepare($sql1);
+                            $query1->execute();
+                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
+                            $isoccupied = $query1->rowCount();
+                            ?>
+                            <i class="fa fa-desktop float-right"></i>
+                            <h6 class="text-muted text-uppercase m-b-20">Equipment Occupied</h6>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($isoccupied); ?></span></h2>
+                            <a href="manage-desks.php"><span class="badge badge-danger"> View Detail </span></a>
+                        </div>
+                    </div>
+
                     <!-- Room Registered -->
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql1 = "SELECT * from  roomregisterform";
+                            $sql1 = "SELECT * from roomregisterform where reply is null";
                             $query1 = $dbh->prepare($sql1);
                             $query1->execute();
                             $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
@@ -129,7 +161,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Room Registered Students</h6>
                             <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totalequipmentsavail); ?></span></h2>
-                            <a href="manage-room-register-students.php"><span class="badge badge-success"> View Detail </span></a>
+                            <a href="manage-room-register-students.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
                     </div>
 
@@ -137,7 +169,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql1 = "SELECT * from  equipmentregisterform";
+                            $sql1 = "SELECT * from  equipmentregisterform where reply is null";
                             $query1 = $dbh->prepare($sql1);
                             $query1->execute();
                             $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
@@ -146,12 +178,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Equipment Registered Students</h6>
                             <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($isoccupied); ?></span></h2>
-                            <a href="manage-equipment-register-students.php"><span class="badge badge-danger"> View Detail </span></a>
+                            <a href="manage-equipment-register-students.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
                     </div>
-
-
-
                 </div>
                 <!-- end row -->
             </div> <!-- container -->
