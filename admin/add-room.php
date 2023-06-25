@@ -7,18 +7,18 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
 
     if (isset($_POST['submit'])) {
-        $dno = $_POST['desknumber'];
+        $dno = $_POST['roomID'];
         $lcsocket = $_POST['laptopchargersocket'];
-        $query = $dbh->prepare("SELECT id FROM room WHERE deskNumber=:dno");
+        $query = $dbh->prepare("SELECT id FROM room WHERE roomID=:dno");
         $query->bindParam(':dno', $dno, PDO::PARAM_STR);
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
         if ($query->rowCount() > 0) {
-            echo '<script>alert("Room Number already Created try with another desk number.")</script>';
+            echo '<script>alert("Room ID already Created try with another room.")</script>';
         } else {
 
-            $sql = "insert into room(deskNumber,laptopChargerScoket)values(:dno,:lcsocket)";
+            $sql = "insert into room(roomID,laptopChargerScoket)values(:dno,:lcsocket)";
             $query = $dbh->prepare($sql);
             $query->bindParam(':dno', $dno, PDO::PARAM_STR);
             $query->bindParam(':lcsocket', $lcsocket, PDO::PARAM_STR);
@@ -49,7 +49,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 $("#loaderIcon").show();
                 jQuery.ajax({
                     url: "check_availability.php",
-                    data: 'dno=' + $("#desknumber").val(),
+                    data: 'dno=' + $("#roomID").val(),
                     type: "POST",
                     success: function(data) {
                         $("#room-availability-status").html(data);
@@ -95,8 +95,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <form action="#" method="post">
 
                                             <div class="form-group">
-                                                <label for="userName">Desk Number<span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" placeholder="Desk Number" required="true" name="desknumber" id="desknumber" onBlur="checkRoomAvailability()">
+                                                <label for="userName">Room ID<span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Room ID" required="true" name="roomID" id="roomID" onBlur="checkRoomAvailability()">
                                                 <span id="room-availability-status"></span>
 
                                             </div>
