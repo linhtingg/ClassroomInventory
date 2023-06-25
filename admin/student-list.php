@@ -5,15 +5,11 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
-
-
 ?>
     <!doctype html>
     <html lang="en">
 
     <head>
-
         <title>Student Study Center Mananagement System | Manage Students</title>
 
         <!-- DataTables -->
@@ -38,25 +34,18 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     </head>
 
-
     <body>
-
         <?php include_once('includes/header.php'); ?>
-
 
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
         <div class="wrapper">
             <div class="container">
-
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
                             <h4 class="m-t-0 header-title"> Student Details</h4>
-
-
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
@@ -72,7 +61,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     </tr>
                                 </thead>
 
-
                                 <tbody>
                                     <?php
                                     $sql = "SELECT * from tblstudents";
@@ -82,7 +70,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
                                         foreach ($results as $row) {          ?>
-
                                             <tr>
                                                 <td><?php echo htmlentities($cnt); ?></td>
                                                 <td><?php echo htmlentities($row->registrationNumber); ?></td>
@@ -112,20 +99,16 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div> <!-- end row -->
 
-
-
             </div> <!-- container -->
             <?php include_once('includes/footer.php'); ?>
 
         </div> <!-- End wrapper -->
-
 
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
-
 
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
@@ -144,7 +127,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 });
 
                 // Key Tables
-
                 $('#key-table').DataTable({
                     keys: true
                 });
