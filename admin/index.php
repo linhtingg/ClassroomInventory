@@ -5,8 +5,9 @@ include('includes/dbconnection.php');
 
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
-    $password = md5($_POST['password']);
-    $sql = "SELECT ID FROM tbladmin WHERE UserName=:username and Password=:password";
+    $password = $_POST['password'];
+    // $sql = "SELECT ID FROM tbladmin WHERE email=:username and password=:password";
+    $sql = "SELECT * FROM tbladmin WHERE email=:username AND password=:password";
     $query = $dbh->prepare($sql);
     $query->bindParam(':username', $username, PDO::PARAM_STR);
     $query->bindParam(':password', $password, PDO::PARAM_STR);
@@ -14,7 +15,7 @@ if (isset($_POST['login'])) {
     $results = $query->fetchAll(PDO::FETCH_OBJ);
     if ($query->rowCount() > 0) {
         foreach ($results as $result) {
-            $_SESSION['sscmsaid'] = $result->ID;
+            $_SESSION['sscmsaid'] = $result->schoolID;
         }
         $_SESSION['login'] = $_POST['username'];
         echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
