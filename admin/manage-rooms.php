@@ -10,16 +10,16 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     if (isset($_GET['delid'])) {
         $roomID = intval($_GET['delid']);
 
-        $query = $dbh->prepare("SELECT id FROM room WHERE id=:roomID and isOccupied is not null");
+        $query = $dbh->prepare("SELECT id FROM room WHERE id=:roomID and isOccupied IS NOT NULL");
         $query->bindParam(':roomID', $roomID, PDO::PARAM_STR);
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
         if ($query->rowCount() > 0) {
-            echo '<script>alert("Room occupied cannot  deleted")</script>';
+            echo '<script>alert("Room occupied cannot be deleted")</script>';
         } else {
 
-            $sql = "delete from room where id=:roomID";
+            $sql = "DELETE FROM room WHERE id=:roomID";
             $query = $dbh->prepare($sql);
             $query->bindParam(':roomID', $roomID, PDO::PARAM_STR);
             $query->execute();
@@ -34,7 +34,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
 
-        <title>Student Study Center Mananagement System | Manage Rooms</title>
+        <title>Student Study Center Management System | Manage Rooms</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -82,7 +82,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <th>#</th>
                                         <th>Room ID</th>
                                         <th>Laptop / Charger Socket</th>
-                                        <th>Satus</th>
+                                        <th>Status</th>
                                         <th>Creation Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -92,7 +92,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <tbody>
                                     <?php
 
-                                    $sql = "SELECT * from room ";
+                                    $sql = "SELECT * FROM room";
                                     $query = $dbh->prepare($sql);
                                     $query->execute();
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -113,7 +113,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                     else : echo "Occupied";
                                                     endif; ?></td>
                                                 <td><?php echo htmlentities($row->postingDate); ?></td>
-                                                <td><a href="edit-room.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-rooms.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a></td>
+                                                <td><a href="edit-room.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-rooms.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</a></td>
 
                                             </tr>
                                     <?php $cnt = $cnt + 1;
@@ -203,4 +203,5 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     </body>
 
-    </html><?php }  ?>
+    </html>
+<?php } ?>
