@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
+include('./QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
    header('location:logout.php');
 } else {
@@ -31,7 +32,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
    <html lang="en">
 
    <head>
-      <title>Student Study Center Mananagement System | Manage Equipments</title>
+      <title>CIMS | Manage Equipments</title>
 
       <!-- DataTables -->
       <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -83,8 +84,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <tbody>
                            <?php
                            $sql = "SELECT * from equipment where id!='1'";
-                           $query = $dbh->prepare($sql);
-                           $query->execute();
+                           $query = Query::executeQuery($dbh, $sql);
                            $results = $query->fetchAll(PDO::FETCH_OBJ);
                            $cnt = 1;
                            if ($query->rowCount() > 0) {

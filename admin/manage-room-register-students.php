@@ -2,16 +2,14 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
+include('./QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-    // Code for deleting student details
     if (isset($_GET['rejectForm'])) {
         $formID = intval($_GET['rejectForm']);
         $sql = "UPDATE roomregisterform SET reply='1' where formid=:id;";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':id', $formID, PDO::PARAM_STR);
-        $runResult = $query->execute();
+        $query = Query::executeQuery($dbh, $sql, [':id', $formID]);
         echo "<script>alert('Form rejected');</script>";
         echo "<script>window.location.href = 'manage-room-register-students.php'</script>";
     }
@@ -20,7 +18,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     <html lang="en">
 
     <head>
-        <title>Student Study Center Mananagement System | Manage Rooms Registered Student Details</title>
+        <title>CIMS | Manage Rooms Registered Student Details</title>
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link href="../plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -55,8 +53,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <tbody>
                                     <?php
                                     $sql = "SELECT * from roomregisterform where reply is NULL";
-                                    $query = $dbh->prepare($sql);
-                                    $query->execute();
+                                    $query = Query::executeQuery($dbh, $sql);
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     if ($query->rowCount() > 0) {
                                         foreach ($results as $row) { ?>

@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
+include('./QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -20,7 +21,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     <html lang="en">
 
     <head>
-        <title>Student Study Center Mananagement System | Manage Students</title>
+        <title>CIMS | Manage Students</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -69,8 +70,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <tbody>
                                     <?php
                                     $sql = "SELECT * from tbluser";
-                                    $query = $dbh->prepare($sql);
-                                    $query->execute();
+                                    $query = Query::executeQuery($dbh, $sql);
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
@@ -84,27 +84,19 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <td><a href="edit-student.php?stdid=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit</a> <a href="manage-students.php?stdid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger" />Delete</a>
                                                     <a href="student-details.php?stdid=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">View Details</a>
                                                 </td>
-
                                             </tr>
                                     <?php $cnt = $cnt + 1;
                                         }
                                     } ?>
-
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div> <!-- end row -->
-
-
-
             </div> <!-- container -->
             <?php include_once('includes/footer.php'); ?>
 
         </div> <!-- End wrapper -->
-
-
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

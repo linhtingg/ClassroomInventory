@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
+include('./QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
    header('location:logout.php');
 } else {
@@ -9,9 +10,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
    if (isset($_GET['rejectForm'])) {
       $formID = intval($_GET['rejectForm']);
       $sql = "UPDATE equipmentregisterform SET reply='1' where formid=:id;";
-      $query = $dbh->prepare($sql);
-      $query->bindParam(':id', $formID, PDO::PARAM_STR);
-      $runResult = $query->execute();
+      $query = Query::executeQuery($dbh, $sql, [':id', $formID]);
       echo "<script>alert('Form rejected');</script>";
       echo "<script>window.location.href = 'manage-equipment-register-students.php'</script>";
    }
@@ -20,7 +19,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
    <html lang="en">
 
    <head>
-      <title>Student Study Center Mananagement System | Manage Equipments Registered Student Details</title>
+      <title>CIMS | Manage Equipments Registered Student Details</title>
       <!-- DataTables -->
       <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
       <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -67,8 +66,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <tbody>
                            <?php
                            $sql = "SELECT * from equipmentregisterform where reply is null";
-                           $query = $dbh->prepare($sql);
-                           $query->execute();
+                           $query = Query::executeQuery($dbh, $sql);
                            $results = $query->fetchAll(PDO::FETCH_OBJ);
                            if ($query->rowCount() > 0) {
                               foreach ($results as $row) { ?>
@@ -86,7 +84,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                            } ?>
                         </tbody>
                      </table>
-
                   </div>
                </div>
             </div> <!-- end row -->

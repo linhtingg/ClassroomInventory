@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
+include('./QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -29,8 +30,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 ?>
     <!doctype html>
     <html lang="en">
+
     <head>
-        <title>Student Study Center Mananagement System | Manage Rooms</title>
+        <title>CIMS | Manage Rooms</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -52,6 +54,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <script src="assets/js/modernizr.min.js"></script>
 
     </head>
+
     <body>
         <?php include_once('includes/header.php'); ?>
         <!-- ============================================================== -->
@@ -78,20 +81,18 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <tbody>
                                     <?php
                                     $sql = "SELECT * from room where id!='1'";
-                                    $query = $dbh->prepare($sql);
-                                    $query->execute();
+                                    $query = Query::executeQuery($dbh, $sql);
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
-                                        foreach ($results as $row) {?>
+                                        foreach ($results as $row) { ?>
                                             <tr>
                                                 <td><?php echo htmlentities($cnt); ?></td>
                                                 <td><?php echo htmlentities($row->id); ?></td>
                                                 <td><?php echo htmlentities($row->capacity); ?></td>
                                                 <td><?php $roomUsability = $row->usability;
-                                                    if ($roomUsability == 0) : echo "Not Available";
-                                                    else : echo "Available";
-                                                    endif; ?></td>
+                                                    if ($roomUsability == 0) echo "Not Available";
+                                                    else echo "Available"; ?></td>
                                                 <td><?php echo htmlentities($row->description); ?></td>
                                                 <td><?php echo htmlentities($row->avaiableTime); ?></td>
                                                 <td>

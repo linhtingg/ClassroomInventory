@@ -2,18 +2,13 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
+include('./QueryHandler.php');
 
 if (isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    // $sql = "SELECT ID FROM tbladmin WHERE email=:username and password=:password";
     $sql = "SELECT * FROM tbladmin WHERE email=:username AND password=:password";
-    $query = $dbh->prepare($sql);
-    $query->bindParam(':username', $username, PDO::PARAM_STR);
-    $query->bindParam(':password', $password, PDO::PARAM_STR);
-    $query->execute();
+    $query = Query::executeQuery($dbh, $sql, [':username', $_POST['username']], [':password',  $_POST['password']]);
     $results = $query->fetchAll(PDO::FETCH_OBJ);
-    if ($query->rowCount() > 0) {
+    if ($query->rowCount() != 0) {
         foreach ($results as $result) {
             $_SESSION['sscmsaid'] = $result->schoolID;
         }
@@ -30,7 +25,7 @@ if (isset($_POST['login'])) {
 
 <head>
 
-    <title>Student Study Center Mananagement System || Login</title>
+    <title>Login</title>
 
     <!-- Bootstrap CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -90,10 +85,6 @@ if (isset($_POST['login'])) {
                                 <a href="forgot-password.php" class="text-muted"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
                             </div>
                         </div>
-
-
-
-
                     </form>
 
                 </div>

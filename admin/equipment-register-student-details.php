@@ -2,30 +2,22 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
+include('./QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-    // Assign Room Code   
     if (isset($_POST['submit'])) {
-        $formID = intval($_GET['stdid']);
-        $roomID = $_POST['roomID'];
-        // echo "<script>alert('$sid')</script>";
-        // echo "<script>alert('$roomID')</script>";
-        $sql = "UPDATE roomregisterform SET  reply = :roomID where formid=:id;";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':id', $formID, PDO::PARAM_STR);
-        $query->bindParam(':roomID', $roomID, PDO::PARAM_STR);
-        $query->execute();
-        $LastInsertId = $dbh->lastInsertId();
-        echo '<script>alert("Room has been assigned.")</script>';
-        echo "<script>window.location.href ='manage-room-register-students.php'</script>";
+        $sql = "UPDATE equipmentregisterform SET reply = :equipmentID where formid=:id;";
+        $query = Query::executeQuery($dbh, $sql, [':equipmentID', $_POST['equipmentID']], [':id', intval($_GET['formID'])]);
+        echo '<script>alert("Equipment has been assigned.")</script>';
+        echo "<script>window.location.href ='manage-equipment-register-students.php'</script>";
     }
 ?>
     <!doctype html>
     <html lang="en">
 
     <head>
-        <title>Student Study Center Mananagement System | Room Registered Form Details</title>
+        <title>Equipment Registered Form Details</title>
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -50,22 +42,13 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-                            <?php $sid = intval($_GET['formID']);
-                            $sql = "SELECT * FROM equipmentregisterform INNER JOIN tbluser ON equipmentregisterform.userID=tbluser.schoolID WHERE formid='$sid';";
-                            $query = $dbh->prepare($sql);
-                            $runResult = $query->execute();
-                            // if($runResult){
-                            //     echo "<script>alert('".$query->rowCount()."')</script>";
-                            // }else{
-                            //     echo "<script>alert('FAIL')</script>";
-                            // }
-                            // PASS
+                            <?php
+                            $sql = "SELECT * FROM equipmentregisterform INNER JOIN tbluser ON equipmentregisterform.userID=tbluser.schoolID WHERE formid=:formID;";
+                            $query = Query::executeQuery($dbh, $sql, [':formID', intval($_GET['formID'])]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
-                            // echo "<script>alert('".$query->rowCount()."')</script>";
                             if ($query->rowCount() > 0) {
-                                foreach ($results as $row) {
-                            ?>
-                                    <h3 class="m-t-0 header-title"> Room Registered Form Details of #<?php echo htmlentities($row->formid); ?></h3>
+                                foreach ($results as $row) { ?>
+                                    <h3 class="m-t-0 header-title"> Equipment Registered Form Details of #<?php echo htmlentities($row->formid); ?></h3>
                                     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <tr>
                                             <th>School ID</th>
@@ -116,12 +99,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </div>
                         <div class="modal-body">
                             <h5 class="font-16">Equipment</h5>
-                            <p><select class="form-control" name="roomID" required>
+                            <p><select class="form-control" name="equipmentID" required>
                                     <option value="">Select</option>
                                     <?php
                                     $sql = "SELECT * from equipment where lastUserUsed is NULL and id!='1'";
-                                    $query = $dbh->prepare($sql);
-                                    $runResult = $query->execute();
+                                    $query = Query::executeQuery($dbh, $sql);
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     foreach ($results as $row) { ?>
                                         <option value="<?php echo htmlentities($row->id); ?>"><?php echo htmlentities($row->id); ?></option>

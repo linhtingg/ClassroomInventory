@@ -33,8 +33,6 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                             <li class="nav-item active" style="font-size:30px;">CLASSROOM INVENTORY MANAGEMENT SYSTEM</li>
-
-
                         </ul>
                     </div>
                 </div>
@@ -58,7 +56,7 @@
                     <tbody>
                         <?php
 
-                        $sql = "SELECT * from room ";
+                        $sql = "SELECT * from room where id!='1'";
                         $query = $dbh->prepare($sql);
                         $query->execute();
                         $results = $query->fetchAll(PDO::FETCH_OBJ);
