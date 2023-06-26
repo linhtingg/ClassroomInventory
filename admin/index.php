@@ -24,7 +24,6 @@ if (isset($_POST['login'])) {
 <html lang="en">
 
 <head>
-
     <title>Login</title>
 
     <!-- Bootstrap CSS -->
@@ -38,20 +37,17 @@ if (isset($_POST['login'])) {
 
 </head>
 
-
 <body>
 
     <div class="account-pages"></div>
     <div class="clearfix"></div>
     <div class="wrapper-page">
-
         <div class="account-bg">
             <div class="card-box mb-0">
                 <strong style="padding-top: 30px;"><a href="../index.php" class="text-muted"><i class="fa fa-home m-r-5"></i> Back Home!!</a> </strong>
                 <div class="text-center m-t-20">
                     <h6>Classroom Mananagement System </h6>
-                    <h6> Admin Login</h6>
-
+                    <h6>Admin Login</h6>
                 </div>
                 <div class="m-t-10 p-20">
                     <div class="row">
@@ -60,7 +56,6 @@ if (isset($_POST['login'])) {
                         </div>
                     </div>
                     <form class="m-t-20" action="" method="post">
-
                         <div class="form-group row">
                             <div class="col-12">
                                 <input type="text" class="form-control" placeholder="enter your username" required="true" name="username">
@@ -72,7 +67,6 @@ if (isset($_POST['login'])) {
                                 <input type="password" class="form-control" placeholder="enter your password" name="password" required="true">
                             </div>
                         </div>
-
 
                         <div class="form-group text-center row m-t-10">
                             <div class="col-12">
@@ -89,14 +83,9 @@ if (isset($_POST['login'])) {
 
                 </div>
 
-                <div class="clearfix"></div>
             </div>
         </div>
-        <!-- end card-box-->
-
-
     </div>
-    <!-- end wrapper page -->
     <!-- jQuery  -->
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>

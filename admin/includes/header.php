@@ -31,9 +31,7 @@
                             <?php
                             $aid = $_SESSION['sscmsaid'];
                             $sql = "SELECT * from tbladmin where schoolID =:aid";
-                            $query = $dbh->prepare($sql);
-                            $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-                            $queryResult = $query->execute();
+                            $query = Query::executeQuery($dbh, $sql, [':aid', $aid]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             if ($query->rowCount() > 0) {
                                 foreach ($results as $row) { ?>
@@ -43,7 +41,7 @@
                             } ?>
                                     </div>
                                     <!-- item-->
-                                    <a href="profile.php?adminID=<?php echo htmlentities($aid) ?>" class="dropdown-item notify-item">
+                                    <a href="profile.php" class="dropdown-item notify-item">
                                         <i class="zmdi zmdi-account-circle"></i> <span>Profile</span>
                                     </a>
 

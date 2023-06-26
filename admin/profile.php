@@ -7,20 +7,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $adminid = $_SESSION['sscmsaid'];
-        $AName = $_POST['adminname'];
-        $mobno = $_POST['mobilenumber'];
-        $address = $_POST['address'];
-        $email = $_POST['email'];
-        $sql = "update tbladmin set AdminName=:adminname,MobileNumber=:mobilenumber,Email=:email,Address=:address where ID=:aid";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':adminname', $AName, PDO::PARAM_STR);
-        $query->bindParam(':email', $email, PDO::PARAM_STR);
-        $query->bindParam(':mobilenumber', $mobno, PDO::PARAM_STR);
-        $query->bindParam(':address', $address, PDO::PARAM_STR);
-        $query->bindParam(':aid', $adminid, PDO::PARAM_STR);
-        $query->execute();
-
+        $sql = "update tbladmin set fullName=:adminname,email=:email where schoolID=:adminID";
+        Query::executeQuery($dbh, $sql, [':adminname', $_POST['adminname']], [':email', $_POST['email']], [':adminID', $_SESSION['sscmsaid']]);
         echo '<script>alert("Your profile has been updated")</script>';
         echo "<script>window.location.href ='profile.php'</script>";
     }
@@ -62,8 +50,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <div class="p-20">
                                         <form action="#" method="post">
                                             <?php
-                                            // echo "<script>alert(".$_GET['adminID'].")</script>";
-                                            $adminID = $_GET['adminID'];
+                                            $adminID = $_SESSION['sscmsaid'];
                                             $sql = "SELECT * from tbladmin where schoolID = :adminID";
                                             $query = Query::executeQuery($dbh, $sql, [':adminID', $adminID]);
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -79,7 +66,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="pass1">Email<span class="text-danger">*</span></label>
-                                                        <input type="text" name="mobilenumber" value="<?php echo $row->email; ?>" class="form-control" maxlength='10' required='true' pattern="[0-9]+">
+                                                        <input type="email" name="email" value="<?php echo $row->email; ?>" class="form-control" required='true'>
                                                     </div>
                                             <?php
                                                 }
@@ -88,29 +75,19 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <button class="btn btn-primary waves-effect waves-light" type="submit" name="submit">
                                                     Submit
                                                 </button>
-
                                             </div>
-
                                         </form>
                                     </div>
 
                                 </div>
 
                             </div>
-                            <!-- end row -->
-
-
                         </div>
-                    </div><!-- end col-->
-
+                    </div>
                 </div>
-                <!-- end row -->
-
-            </div> <!-- container -->
-
+            </div>
             <?php include_once('includes/footer.php'); ?>
-
-        </div> <!-- End wrapper -->
+        </div>
 
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

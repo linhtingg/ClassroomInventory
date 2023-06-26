@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
+include('./QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -9,19 +10,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $adminID = $_SESSION['sscmsaid'];
         $oldPass = $_POST['currentpassword'];
         $sql = "SELECT * FROM tbladmin WHERE schoolID=:adminID and password=:oldPass";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':adminID', $adminID, PDO::PARAM_STR);
-        $query->bindParam(':oldPass', $oldPass, PDO::PARAM_STR);
-        $query->execute();
-        $results = $query->fetchAll(PDO::FETCH_OBJ);
-
+        $query = Query::executeQuery($dbh, $sql, [':adminID', $adminID], [':oldPass', $oldPass]);
         if ($query->rowCount() > 0) {
             $newPass = ($_POST['newPass']);
             $con = "UPDATE tbladmin set password=:newPass where schoolID=:adminID";
-            $chngpwd1 = $dbh->prepare($con);
-            $chngpwd1->bindParam(':adminID', $adminID, PDO::PARAM_STR);
-            $chngpwd1->bindParam(':newPass', $newPass, PDO::PARAM_STR);
-            $chngpwd1->execute();
+            Query::executeQuery($dbh, $con, [':newPass', $newPass], [':adminID', $adminID]);
             echo '<script>alert("Your password successully changed")</script>';
         } else {
             echo '<script>alert("Your current password is wrong")</script>';
