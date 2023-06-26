@@ -34,7 +34,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
 
-        <title>View list of rooms</title>
+        <title>View list of equipments</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -70,14 +70,16 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-                            <h4 class="m-t-0 header-title">List of Room</h4>
+                            <h4 class="m-t-0 header-title">List of Equipments</h4>
 
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Room number</th>
-                                        <th>Capacity</th>
+                                        <th>Equipment ID</th>
+                                        <th>Type</th>
+                                        <th>Total Used Time (hour)</th>
+                                        <th>Produced Year</th>
                                         <th>Usability</th>
                                         <th>Description</th>
                                     </tr>
@@ -87,7 +89,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <tbody>
                                     <?php
 
-                                    $sql = "SELECT * from room where id != 1";
+                                    $sql = "SELECT * from equipment where id!=1";
                                     $query = $dbh->prepare($sql);
                                     $query->execute();
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -98,8 +100,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                             <tr>
                                                 <td><?php echo htmlentities($cnt); ?></td>
                                                 <td><?php echo htmlentities($row->id); ?></td>
-                                                <td><?php echo htmlentities($row->capacity); ?></td>
-                                                <td><?php $usability = $row->usability;
+                                                <td><?php echo htmlentities($row->type); ?></td>
+                                                <td><?php echo htmlentities($row->totalUsedTime); ?></td>
+                                                <td><?php echo htmlentities($row->producedYear); ?></td>                                                <td><?php $usability = $row->usability;
                                                     if ($usability == 0) : echo "<span style='color:red'>Unavailable</span>";
                                                     else : echo "<span style='color:green'>Available</span>";
                                                     endif; ?></td>
