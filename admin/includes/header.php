@@ -2,11 +2,9 @@
 <header id="topnav">
     <div class="topbar-main">
         <div class="container">
-
             <!-- LOGO -->
             <div class="topbar-left">
                 <a href="dashboard.php" class="logo">
-
                     <span>Classroom Inventory Management System</span>
                 </a>
             </div>
@@ -29,23 +27,19 @@
                             <img src="assets/images/users/avatar-1.jpg" alt="user" class="rounded-circle">
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
-                            <!-- item--> <?php
-                                            $aid = $_SESSION['sscmsaid'];
-                                            $sql = "SELECT fullname from tbladmin where schoolID=:aid";
-                                            $query = $dbh->prepare($sql);
-                                            $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-                                            $queryResult =   $query->execute();
-                                            // PASS
-                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                            $cnt = 1;
-                                            if ($query->rowCount() > 0) {
-                                                foreach ($results as $row) {               ?>
+                            <!-- item-->
+                            <?php
+                            $aid = $_SESSION['sscmsaid'];
+                            $sql = "SELECT * from tbladmin where schoolID =:aid";
+                            $query = Query::executeQuery($dbh, $sql, [':aid', $aid]);
+                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+                            if ($query->rowCount() > 0) {
+                                foreach ($results as $row) { ?>
                                     <div class="dropdown-item noti-title">
-                                        <h5 class="text-overflow"><small>Welcome ! <?php echo $row->AdminName; ?></small> </h5><?php $cnt = $cnt + 1;
-                                                                                                                            }
-                                                                                                                        } ?>
+                                        <h5 class="text-overflow"><small>Welcome !<?php echo htmlentities($row->fullName); ?></small> </h5>
+                                <?php }
+                            } ?>
                                     </div>
-
                                     <!-- item-->
                                     <a href="profile.php" class="dropdown-item notify-item">
                                         <i class="zmdi zmdi-account-circle"></i> <span>Profile</span>
@@ -59,19 +53,15 @@
                                     <a href="logout.php" class="dropdown-item notify-item">
                                         <i class="zmdi zmdi-power"></i> <span>Logout</span>
                                     </a>
-
                         </div>
                     </li>
-
                 </ul>
-
             </div> <!-- end menu-extras -->
             <div class="clearfix"></div>
 
         </div> <!-- end container -->
     </div>
     <!-- end topbar-main -->
-
 
     <div class="navbar-custom">
         <div class="container">
@@ -81,15 +71,15 @@
                     <li>
                         <a href="dashboard.php"><i class="zmdi zmdi-view-dashboard"></i> <span> Dashboard </span> </a>
                     </li>
-
                     <!---Rooms---->
                     <li class="has-submenu">
-                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Rooms </span> </a>
-                        <ul class="submenu megamenu">
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Classrooms </span> </a>
+                        <ul class="submenu megamenus">
                             <li>
                                 <ul>
-                                    <li><a href="add-desk.php">Add </a></li>
-                                    <li><a href="manage-desks.php">Manage </a></li>
+                                    <li><a href="add-room.php">Add </a></li>
+                                    <li><a href="manage-rooms.php">Manage </a></li>
+                                    <li><a href="manage-room-register-students.php">Assigned / Unassigned Classrooms </a></li>
                                 </ul>
                             </li>
 
@@ -98,11 +88,12 @@
                     <!---Equipments---->
                     <li class="has-submenu">
                         <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Equipments </span> </a>
-                        <ul class="submenu megamenu">
+                        <ul class="submenu megamenus">
                             <li>
                                 <ul>
-                                    <li><a href="add-desk.php">Add </a></li>
+                                    <li><a href="add-equipment.php">Add </a></li>
                                     <li><a href="manage-equipments.php">Manage </a></li>
+                                    <li><a href="manage-equipment-register-students.php">Assigned / Unassigned Equipments </a></li>
                                 </ul>
                             </li>
 
@@ -121,9 +112,7 @@
 
                         </ul>
                     </li>
-                    <li> <a href="manage-room-register-students.php"><i class="zmdi zmdi-collection-text"></i> Assigned / Unassigned Room </a></li>
-                    <li> <a href="manage-equipment-register-students.php"><i class="zmdi zmdi-collection-text"></i> Assigned / Unassigned Equipment </a></li>
-                    <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report </a></li>
+                    <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report forms </a></li>
                 </ul>
                 <!-- End navigation menu  -->
             </div>
