@@ -1,122 +1,94 @@
-<?php
-session_start();
-error_reporting(0);
-include('includes/dbconnection.php');
-
-if (isset($_POST['login'])) {
-    $email = $_POST['email'];
-    $pass = md5($_POST['pass']);
-    $sql = "SELECT ID FROM tbladmin WHERE email=:email and pass=password(:pass)";
-    $query = $dbh->prepare($sql);
-    $query->bindParam(':email', $email, PDO::PARAM_STR);
-    $query->bindParam(':pass', $pass, PDO::PARAM_STR);
-    $query->execute();
-    $results = $query->fetchAll(PDO::FETCH_OBJ);
-    if ($query->rowCount() > 0) {
-        foreach ($results as $result) {
-            $_SESSION['sscmsaid'] = $result->ID;
-        }
-        $_SESSION['login'] = $_POST['email'];
-        echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
-    } else {
-        echo "<script>alert('Invalid Details');</script>";
-    }
-}
-
+<?php include('admin/includes/dbconnection.php');
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-
-    <title>Student Study Center Mananagement System || Login</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-
-    <!-- App CSS -->
-    <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-
-    <!-- Modernizr js -->
-    <script src="assets/js/modernizr.min.js"></script>
-
+    <meta charset="utf-8" />
+    <title>CLASSROOM INVENTORY MANAGEMENT SYSTEM</title>
+    <!-- Favicon-->
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
 </head>
 
-
 <body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="border-end bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading border-bottom bg-light" style="font-size:30px;">SSCMS</div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="index.php">Home</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="admin/">Admin Login</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="user/">User Login</a>
 
-    <div class="account-pages"></div>
-    <div class="clearfix"></div>
-    <div class="wrapper-page">
-
-        <div class="account-bg">
-            <div class="card-box mb-0">
-                <strong style="padding-top: 30px;"><a href="../index.php" class="text-muted"><i class="fa fa-home m-r-5"></i> Back Home!!</a> </strong>
-                <div class="text-center m-t-20">
-                    <h6>Classroom Mananagement System </h6>
-                    <h6> Admin Login</h6>
-
-                </div>
-                <div class="m-t-10 p-20">
-                    <div class="row">
-                        <div class="col-12 text-center">
-                            <h6 class="text-muted text-uppercase m-b-0 m-t-0">Sign In</h6>
-                        </div>
-                    </div>
-                    <form class="m-t-20" action="" method="post">
-
-                        <div class="form-group row">
-                            <div class="col-12">
-                                <input type="text" class="form-control" placeholder="enter your email" required="true" name="email">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-12">
-                                <input type="pass" class="form-control" placeholder="enter your pass" name="pass" required="true">
-                            </div>
-                        </div>
-
-
-                        <div class="form-group text-center row m-t-10">
-                            <div class="col-12">
-                                <button class="btn btn-success btn-block waves-effect waves-light" type="submit" name="login">Log In</button>
-                            </div>
-                        </div>
-
-                        <div class="form-group row m-t-30 mb-0">
-                            <div class="col-12">
-                                <a href="forgot-pass.php" class="text-muted"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
-                            </div>
-                        </div>
-
-
-
-
-                    </form>
-
-                </div>
-
-                <div class="clearfix"></div>
             </div>
         </div>
-        <!-- end card-box-->
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+            <!-- Top navigation-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <div class="container-fluid">
+                    <button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                            <li class="nav-item active" style="font-size:30px;">CLASSROOM INVENTORY MANAGEMENT SYSTEM</li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Page content-->
+            <div class="container-fluid" style="padding-top:2%;">
+                <p>This is a web-based application developed using PHP and MySQL. </p>
+                <p>
+                <h5> Classroom Status</h5>
+                <hr />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Room </th>
+                            <th>Capacity</th>
+                            <th>Tình trạng phòng</th>
+                            <th>Avaiable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
 
+                        $sql = "SELECT * from room where id!='1'";
+                        $query = $dbh->prepare($sql);
+                        $query->execute();
+                        $results = $query->fetchAll(PDO::FETCH_OBJ);
 
+                        $cnt = 1;
+                        if ($query->rowCount() > 0) {
+                            foreach ($results as $row) {       ?>
+                                <tr>
+                                    <td><?php echo htmlentities($cnt); ?></td>
+                                    <td><?php echo htmlentities($row->id); ?></td>
+                                    <td><?php echo htmlentities($row->capacity); ?></td>
+                                    <td><?php echo htmlentities($row->description); ?></td>
+                                    <td><?php $room_usability = $row->usability;
+                                        if ($room_usability == 0) : echo "<span style='color:red'>Not Available</span>";
+                                        else : echo "<span style='color:green'>Available</span>";
+                                        endif; ?></td>
+
+                                </tr>
+                        <?php $cnt++;
+                            }
+                        } ?>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
     </div>
-    <!-- end wrapper page -->
-    <!-- jQuery  -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/detect.js"></script>
-    <script src="assets/js/waves.js"></script>
-    <script src="assets/js/jquery.nicescroll.js"></script>
-    <script src="../plugins/switchery/switchery.min.js"></script>
-
-    <!-- App js -->
-    <script src="assets/js/jquery.core.js"></script>
-    <script src="assets/js/jquery.app.js"></script>
-
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
 </body>
 
 </html>
