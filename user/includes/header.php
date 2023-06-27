@@ -113,8 +113,21 @@
                     </li>
 
                     <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report malfunctions </a></li>
-                    <li> <a href="student-list.php"><i class="zmdi zmdi-collection-text"></i> Assigned / Unassigned Desk </a></li>
+                    <li> <a href="noti-list.php"><i class="zmdi zmdi-collection-text"></i> Notification </a></li>
+                    
+                    <!---Students---->
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> View your requests </span> </a>
+                        <ul class="submenu megamenu">
+                            <li>
+                                <ul>
+                                    <li><a href="view-rooms-form.php">Room requests</a></li>
+                                    <li><a href="view-equipments-form.php">Equipment requests</a></li>
+                                </ul>
+                            </li>
 
+                        </ul>
+                    </li>
                 </ul>
                 <!-- End navigation menu  -->
             </div>

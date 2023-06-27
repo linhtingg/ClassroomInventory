@@ -27,7 +27,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $LastInsertId = $dbh->lastInsertId();
         if ($LastInsertId > 0) {
             echo '<script>alert("Form submitted successfully")</script>';
-            echo "<script>window.location.href ='dashboard.php'</script>";
+            echo "<script>window.location.href ='view-rooms-form.php'</script>";
         } else {
             echo '<script>alert("Something Went Wrong. Please try again")</script>';
         }
