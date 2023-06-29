@@ -9,22 +9,16 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 ?>
     <!doctype html>
     <html lang="en">
-
     <!-- App title -->
     <title> Dashboard</title>
-
     <!--Morris Chart CSS -->
     <link rel="stylesheet" href="../plugins/morris/morris.css">
-
     <!-- Switchery css -->
     <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
-
     <!-- Bootstrap CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-
     <!-- App CSS -->
     <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-
     <!-- Modernizr js -->
     <script src="assets/js/modernizr.min.js"></script>
     </head>
@@ -47,10 +41,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $sql1 = "SELECT * from  room where capacity !=0";
-                            $query0 = $dbh->prepare($sql1);
-                            $query0->execute();
-                            $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
-                            $totalrooms = $query0->rowCount();
+                            $query1 = Query::executeQuery($dbh, $sql1);
+                            $totalrooms = $query1->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Rooms</h6>
@@ -63,14 +55,13 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $sql1 = "SELECT * from  room where capacity !=0 and usability=1";
-                            $query1 = $dbh->prepare($sql1);
-                            $query1->execute();
-                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
-                            $totalroomsavail = $query1->rowCount();
+
+                            $query1 = Query::executeQuery($dbh, $sql1);
+                            $totalroomssavail = $query1->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Rooms Available</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totalroomsavail); ?></span></h2>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totalroomssavail); ?></span></h2>
                             <a href="manage-rooms.php"><span class="badge badge-success"> View Detail </span></a>
                         </div>
                     </div>
@@ -93,11 +84,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql11 = "SELECT * from  equipment ";
-                            $query11 = $dbh->prepare($sql11);
-                            $query11->execute();
-                            $results11 = $query11->fetchAll(PDO::FETCH_OBJ);
-                            $totalequipments = $query11->rowCount();
+
+                            $sql1 = "SELECT * from equipment";
+                            $query1 = Query::executeQuery($dbh, $sql1);
+                            $totalequipments = $query1->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Equipments</h6>

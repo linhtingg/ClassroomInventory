@@ -34,7 +34,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
 
-        <title>Student Study Center Mananagement System | Manage Desks</title>
+        <title>View list of rooms</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -62,29 +62,24 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
         <?php include_once('includes/header.php'); ?>
 
-
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
         <div class="wrapper">
             <div class="container">
-
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-                            <h4 class="m-t-0 header-title">Manage Desks</h4>
-
+                            <h4 class="m-t-0 header-title">List of Room</h4>
 
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Desk Number</th>
-                                        <th>Laptop / Charger Socket</th>
-                                        <th>Satus</th>
-                                        <th>Creation Date</th>
-                                        <th>Action</th>
+                                        <th>Room number</th>
+                                        <th>Capacity</th>
+                                        <th>Usability</th>
+                                        <th>Description</th>
                                     </tr>
                                 </thead>
 
@@ -92,7 +87,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <tbody>
                                     <?php
 
-                                    $sql = "SELECT * from tbldesk ";
+                                    $sql = "SELECT * from room where id != 1";
                                     $query = $dbh->prepare($sql);
                                     $query->execute();
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -102,19 +97,13 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         foreach ($results as $row) {               ?>
                                             <tr>
                                                 <td><?php echo htmlentities($cnt); ?></td>
-                                                <td><?php echo htmlentities($row->deskNumber); ?></td>
-                                                <td><?php $lapchargerscoket = $row->laptopChargerScoket;
-                                                    if ($lapchargerscoket == '') : echo "Not Available";
-                                                    else : echo "Available";
+                                                <td><?php echo htmlentities($row->id); ?></td>
+                                                <td><?php echo htmlentities($row->capacity); ?></td>
+                                                <td><?php $usability = $row->usability;
+                                                    if ($usability == 0) : echo "<span style='color:red'>Unavailable</span>";
+                                                    else : echo "<span style='color:green'>Available</span>";
                                                     endif; ?></td>
-
-                                                <td><?php $occupiedstatus = $row->isOccupied;
-                                                    if ($occupiedstatus == '') : echo "Available";
-                                                    else : echo "Occupied";
-                                                    endif; ?></td>
-                                                <td><?php echo htmlentities($row->postingDate); ?></td>
-                                                <td><a href="edit-desk.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-desks.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a></td>
-
+                                                <td><?php echo htmlentities($row->description); ?></td>
                                             </tr>
                                     <?php $cnt = $cnt + 1;
                                         }

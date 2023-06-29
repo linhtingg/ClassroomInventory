@@ -6,7 +6,6 @@
             <!-- LOGO -->
             <div class="topbar-left">
                 <a href="dashboard.php" class="logo">
-
                     <span>Classroom Inventory Management System</span>
                 </a>
             </div>
@@ -14,9 +13,7 @@
 
 
             <div class="menu-extras navbar-topbar">
-
                 <ul class="list-inline float-right mb-0">
-
                     <li class="list-inline-item">
                         <!-- Mobile menu toggle-->
                         <a class="navbar-toggle">
@@ -29,29 +26,29 @@
                         <!-- End mobile menu toggle-->
                     </li>
 
-
-
                     <li class="list-inline-item dropdown notification-list">
                         <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <img src="assets/images/users/avatar-1.jpg" alt="user" class="rounded-circle">
                         </a>
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
-                            <!-- item--> <?php
-                                            $aid = $_SESSION['sscmsaid'];
-                                            $sql = "SELECT fullname from tbladmin where ID=:aid";
-                                            $query = $dbh->prepare($sql);
-                                            $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-                                            $query->execute();
-                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                            $cnt = 1;
-                                            if ($query->rowCount() > 0) {
-                                                foreach ($results as $row) {               ?>
+                            <!-- item-->
+                            <?php
+                            $aid = $_SESSION['sscmsaid'];
+                            $sql = "SELECT fullname from tbluser where schoolID=:aid";
+                            $query = $dbh->prepare($sql);
+                            $query->bindParam(':aid', $aid, PDO::PARAM_STR);
+                            $query->execute();
+                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+                            $cnt = 1;
+                            if ($query->rowCount() > 0) {
+                                foreach ($results as $row) {
+                            ?>
                                     <div class="dropdown-item noti-title">
-                                        <h5 class="text-overflow"><small>Welcome ! <?php echo $row->AdminName; ?></small> </h5><?php $cnt = $cnt + 1;
-                                                                                                                            }
-                                                                                                                        } ?>
+                                        <h5 class="text-overflow"> <small>Welcome! <?php echo $row->fullName; ?> </small> </h5>
+                                <?php $cnt = $cnt + 1;
+                                }
+                            } ?>
                                     </div>
-
                                     <!-- item-->
                                     <a href="profile.php" class="dropdown-item notify-item">
                                         <i class="zmdi zmdi-account-circle"></i> <span>Profile</span>
@@ -65,7 +62,6 @@
                                     <a href="logout.php" class="dropdown-item notify-item">
                                         <i class="zmdi zmdi-power"></i> <span>Logout</span>
                                     </a>
-
                         </div>
                     </li>
 
@@ -88,14 +84,14 @@
                         <a href="dashboard.php"><i class="zmdi zmdi-view-dashboard"></i> <span> Dashboard </span> </a>
                     </li>
 
-                    <!---Desks---->
+                    <!---Rooms---->
                     <li class="has-submenu">
-                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Desks </span> </a>
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Classrooms </span> </a>
                         <ul class="submenu megamenu">
                             <li>
                                 <ul>
-                                    <li><a href="add-desk.php">Add </a></li>
-                                    <li><a href="manage-desks.php">Manage </a></li>
+                                    <li><a href="view-rooms.php">View list of rooms</a></li>
+                                    <li><a href="add-room-form.php">Request a room</a></li>
                                 </ul>
                             </li>
 
@@ -104,25 +100,34 @@
 
                     <!---Students---->
                     <li class="has-submenu">
-                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Students </span> </a>
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Equipments </span> </a>
                         <ul class="submenu megamenu">
                             <li>
                                 <ul>
-                                    <li><a href="add-student.php">Add </a></li>
-                                    <li><a href="manage-students.php">Manage </a></li>
+                                    <li><a href="view-equipments.php">View list of equipments</a></li>
+                                    <li><a href="add-equipment-form.php">Request an equipment</a></li>
                                 </ul>
                             </li>
 
                         </ul>
                     </li>
-                    <li> <a href="student-list.php"><i class="zmdi zmdi-collection-text"></i> Assigned / Unassigned Desk </a></li>
 
-                    <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report </a></li>
+                    <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report malfunctions </a></li>
+                    <li> <a href="noti-list.php"><i class="zmdi zmdi-collection-text"></i> Notification </a></li>
+                    
+                    <!---Students---->
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> View your requests </span> </a>
+                        <ul class="submenu megamenu">
+                            <li>
+                                <ul>
+                                    <li><a href="view-rooms-form.php">Room requests</a></li>
+                                    <li><a href="view-equipments-form.php">Equipment requests</a></li>
+                                </ul>
+                            </li>
 
-
-
-
-
+                        </ul>
+                    </li>
                 </ul>
                 <!-- End navigation menu  -->
             </div>

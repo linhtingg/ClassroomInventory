@@ -2,28 +2,28 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
-include('./QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-    if (isset($_GET['delid'])) {
-        $deskid = intval($_GET['delid']);
 
-        $query = $dbh->prepare("SELECT id FROM tbldesk WHERE id=:deskid and isOccupied is not null");
-        $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
+    // Code for deleting request from list
+    if (isset($_GET['delid'])) {
+        $formid = intval($_GET['delid']);
+
+        $query = $dbh->prepare("SELECT formid FROM equipmentregisterform WHERE formid=:formid and approved != 1");
+        $query->bindParam(':formid', $formid, PDO::PARAM_STR);
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
         if ($query->rowCount() > 0) {
-            echo '<script>alert("Room occupied cannot deleted")</script>';
+            echo '<script>alert("Can not delete! The request has already been approve!")</script>';
         } else {
-            $sql = "delete from tbldesk where id=:deskid";
+            $sql = "delete from equipmentregisterform where formid=:formid";
             $query = $dbh->prepare($sql);
-            $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
+            $query->bindParam(':formid', $formid, PDO::PARAM_STR);
             $query->execute();
-            echo "<script>alert('Data deleted');</script>";
-            echo "<script>window.location.href = 'manage-rooms.php'</script>";
-
+            echo "<script>alert('Request deleted');</script>";
+            echo "<script>window.location.href = 'view-equipments-form.php'</script>";
         }
     }
 
@@ -33,7 +33,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
 
-        <title>CIMS | Manage Rooms</title>
+        <title>View list of equipments</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -56,8 +56,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     </head>
 
+
     <body>
+
         <?php include_once('includes/header.php'); ?>
+
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
@@ -66,51 +69,73 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-                            <h4 class="m-t-0 header-title">Manage Rooms</h4>
+                            <h4 class="m-t-0 header-title">List of Equipments</h4>
+
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Room</th>
-                                        <th>Capacity</th>
-                                        <th>Status</th>
-                                        <th>Description</th>
-                                        <th>Avaiable Time </th>
-                                        <th>Action</th>
+                                        <th>User ID</th>
+                                        <th>Purpose</th>
+                                        <th>Equipment Type</th>
+                                        <th>Number of Each</th>
+                                        <th>Borrow Day</th>
+                                        <th>Borrow Time</th>
+                                        <th>Approved</th>
+                                        <th>Reply</th>
                                     </tr>
                                 </thead>
+
+
                                 <tbody>
                                     <?php
-                                    $sql = "SELECT * from room where id!='1'";
-                                    $query = Query::executeQuery($dbh, $sql);
+                                    $aid = $_SESSION['sscmsaid'];
+                                    $sql = "SELECT * from `equipmentregisterform` where `userID` = :aid";
+                                    $query = $dbh->prepare($sql);
+                                    $query->bindParam(':aid', $aid, PDO::PARAM_STR);
+                                    $query->execute();
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
+
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
-                                        foreach ($results as $row) { ?>
+                                        foreach ($results as $row) {               ?>
                                             <tr>
                                                 <td><?php echo htmlentities($cnt); ?></td>
-                                                <td><?php echo htmlentities($row->id); ?></td>
-                                                <td><?php echo htmlentities($row->capacity); ?></td>
-                                                <td><?php $roomUsability = $row->usability;
-                                                    if ($roomUsability == 0) echo "Not Avaiable";
-                                                    else echo "Avaiable"; ?></td>
-                                                <td><?php echo htmlentities($row->description); ?></td>
-                                                <td><?php echo htmlentities($row->avaiableTime); ?></td>
-                                                <td>
-                                                    <a href="edit-room.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-rooms.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a>
-
+                                                <td><?php echo htmlentities($row->userID); ?></td>
+                                                <td><?php echo htmlentities($row->purpose); ?></td>
+                                                <td><?php echo htmlentities($row->equipType); ?></td>
+                                                <td><?php echo htmlentities($row->numberOfEach); ?></td>
+                                                <td><?php echo htmlentities($row->borrowDay); ?></td>
+                                                <td><?php echo htmlentities($row->borrowTime); ?></td>
+                                                <td><?php $approved = $row->approved;
+                                                    if ($approved === false) { echo "<span style='color:red'>Decline</span>";}
+                                                    elseif ($approved === true ) { echo "<span style='color: green'>Approve</span>";}
+                                                    else { echo "<span style='color:gray'>In process</span>";}
+                                                    ?></td>
+                                                <td><?php $reply = $row->reply;
+                                                    if ($reply == 1) { echo "<span style='color:red'>Decline</span>";}
+                                                    elseif ($reply === null) { echo "<span style='color: gray'>In process</span>";}
+                                                    else { echo htmlentities($row->reply);}
+                                                    ?></td>
+                                                <td> <a href="view-equipments-form.php? delid= <?php echo ($row->formid);?>" onclick="return confirm('Do you really want to delete ?');" class="btn btn-danger"/>Delete</a>
                                                 </td>
                                             </tr>
                                     <?php $cnt = $cnt + 1;
                                         }
                                     } ?>
+
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div> <!-- end row -->
+
+
+
             </div> <!-- container -->
             <?php include_once('includes/footer.php'); ?>
+
         </div> <!-- End wrapper -->
 
 

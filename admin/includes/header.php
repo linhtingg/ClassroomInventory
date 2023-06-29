@@ -80,6 +80,7 @@
                                     <li><a href="add-room.php">Add </a></li>
                                     <li><a href="manage-rooms.php">Manage </a></li>
                                     <li><a href="manage-equipment-register-students.php">Assigned / Unassigned Classrooms </a></li>
+
                                 </ul>
                             </li>
 
