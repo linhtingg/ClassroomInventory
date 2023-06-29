@@ -23,9 +23,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
             'availableTime' => $availableTime
         ]);
 
-        if ($query->rowCount() > 0) {
+        $LastInsertId = $dbh->lastInsertId();
+        if ($LastInsertId > 0) {            
             echo "<script>alert('Room added successfully');</script>";
             echo "<script>window.location.href = 'manage-rooms.php'</script>";
+            exit();
         } else {
             echo "<script>alert('Failed to add room');</script>";
         }
@@ -76,7 +78,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <div class="form-group row">
                                 <label class="col-2 col-form-label">Capacity</label>
                                 <div class="col-10">
-                                    <input type="number" class="form-control" name="capacity" placeholder="Enter Room Capacity" required>
+                                    <select class="form-control" name="type" required>
+                                        <option>50</option>
+                                        <option>150</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -97,12 +102,16 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <div class="form-group row">
                                 <label class="col-2 col-form-label">Available Time</label>
                                 <div class="col-10">
-                                    <input type="text" class="form-control" name="availableTime" placeholder="Enter Room Available Time" required>
+                                    <select class="form-control" name="availableTime[]" multiple required>
+                                        <option value="Morning">Morning</option>
+                                        <option value="Afternoon">Afternoon</option>
+                                        <option value="Evening">Evening</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-12 text-right">
-                                    <button type="submit" class="btn btn-primary waves-effect waves-light" name="submit">Add Room</button>
+                                    <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" name="submit">Add Room</button>
                                 </div>
                             </div>
                         </form>
