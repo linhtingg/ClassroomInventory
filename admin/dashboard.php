@@ -24,7 +24,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <!-- App CSS -->
     <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-    
+
     <!-- Modernizr js -->
     <script src="assets/js/modernizr.min.js"></script>
     </head>
@@ -70,7 +70,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             ?>
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Rooms Available</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totalroomssavail); ?></span></h2>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totalroomsavail); ?></span></h2>
                             <a href="manage-rooms.php"><span class="badge badge-success"> View Detail </span></a>
                         </div>
                     </div>
@@ -97,7 +97,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             $query11 = $dbh->prepare($sql11);
                             $query11->execute();
                             $results11 = $query11->fetchAll(PDO::FETCH_OBJ);
-                            $totalregstd = $query11->rowCount();
+                            $totalequipments = $query11->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Equipments</h6>
