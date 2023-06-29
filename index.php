@@ -58,7 +58,7 @@
                     <tbody>
                         <?php
 
-                        $sql = "SELECT * from room ";
+                        $sql = "SELECT * from room where id!='1'";
                         $query = $dbh->prepare($sql);
                         $query->execute();
                         $results = $query->fetchAll(PDO::FETCH_OBJ);
