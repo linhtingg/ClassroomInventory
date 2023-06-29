@@ -82,8 +82,14 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <div class="form-group row">
                             <label class="col-2 col-form-label">Equipment</label>
                             <div class="col-10">
-                                <input type="text" class="form-control" name="equipment" value="<?php echo htmlentities($result->id); ?>" required="true">
-                            </div>
+                                    <select class="form-control" name="type" required>
+                                        <option>Microphone</option>
+                                        <option>Oscilloscope</option>
+                                        <option>Biến áp</option>
+                                        <option>Bảng mạch</option>
+                                        <option>Đầu chuyển đổi</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-group row">
                             <label class="col-2 col-form-label">Total Used Time</label>
@@ -118,8 +124,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <div class="form-group row">
                             <label class="col-2 col-form-label">Available Time</label>
                             <div class="col-10">
-                                <input type="text" class="form-control" name="availableTime" value="<?php echo htmlentities($result->avaiableTime); ?>" required="true">
-                            </div>
+                                    <select class="form-control" name="type" required>
+                                        <option>Morning</option>
+                                        <option>Afternoon</option>
+                                        <option>Evening</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-group row">
                             <div class="col-8 offset-2">

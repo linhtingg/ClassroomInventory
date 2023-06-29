@@ -15,9 +15,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $description = $_POST['description'];
         $lastUserUsed = $_POST['lastUserUsed'];
         $currentRoom = $_POST['currentRoom'];
-        $availableTime = $_POST['availableTime'];
+        $avaiableTime = $_POST['avaiableTime'];
 
-        $sql = "INSERT INTO equipment (equipment, type, totalUsedTime, producedYear, description, lastUserUsed, currentRoom, availableTime) VALUES (:equipment, :type, :totalUsedTime, :producedYear, :description, :lastUserUsed, :currentRoom, :availableTime)";
+        $sql = "INSERT INTO equipment (equipment, type, totalUsedTime, producedYear, description, lastUserUsed, currentRoom, avaiableTime) VALUES (:equipment, :type, :totalUsedTime, :producedYear, :description, :lastUserUsed, :currentRoom, :availableTime)";
         $query = Query::executeQuery($dbh, $sql, [
             'equipment' => $equipment,
             'type' => $type,
@@ -26,7 +26,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
             'description' => $description,
             'lastUserUsed' => $lastUserUsed,
             'currentRoom' => $currentRoom,
-            'availableTime' => $availableTime
+            'avaiableTime' => $avaiableTime
         ]);
 
         if ($query->rowCount() > 0) {
@@ -47,7 +47,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
     <script>
-        function checkEquipmentAvailability() {
+        function checkEquipmentAvaiability() {
             $("#loaderIcon").show();
             jQuery.ajax({
                 url: "check_availability.php",
@@ -122,9 +122,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-2 col-form-label">Available Time</label>
+                                <label class="col-2 col-form-label">Avaiable Time</label>
                                 <div class="col-10">
-                                    <select class="form-control" name="availableTime[]" multiple required>
+                                    <select class="form-control" name="avaiableTime[]" multiple required>
                                         <option value="Morning">Morning</option>
                                         <option value="Afternoon">Afternoon</option>
                                         <option value="Evening">Evening</option>
