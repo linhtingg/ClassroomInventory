@@ -10,21 +10,19 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     if (isset($_POST['submit'])) {
         $roomname = $_POST['roomname'];
         $capacity = $_POST['capacity'];
-        $usability = $_POST['usability'];
+        $usability = 0;
+        if ($_POST['usability'] == "Available") {
+            $usability = 1;
+        } else {
+            $usability = 0;
+        }
         $description = $_POST['description'];
-        $availableTime = $_POST['availableTime'];
+        $availableTime = $_POST['availableTimes'];
+        $sql = "INSERT INTO room (id, capacity, usability, description, avaiableTime) VALUES (:roomname, :capacity, :usability, :description, :availableTime)";
+        $query = Query::executeQuery($dbh, $sql, [':roomname', $roomname], [':capacity', $capacity], [':usability', $usability], [':description', $description], [':availableTime', $availableTime]);
 
-        $sql = "INSERT INTO room (roomname, capacity, usability, description, availableTime) VALUES (:roomname, :capacity, :usability, :description, :availableTime)";
-        $query = Query::executeQuery($dbh, $sql, [
-            'roomname' => $roomname,
-            'capacity' => $capacity,
-            'usability' => $usability,
-            'description' => $description,
-            'availableTime' => $availableTime
-        ]);
-
-        $LastInsertId = $dbh->lastInsertId();
-        if ($LastInsertId > 0) {            
+        $LastInsertId = $query->rowCount();
+        if ($LastInsertId > 0) {
             echo "<script>alert('Room added successfully');</script>";
             echo "<script>window.location.href = 'manage-rooms.php'</script>";
             exit();
@@ -34,114 +32,114 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     }
 ?>
 
-<!doctype html>
-<html lang="en">
+    <!doctype html>
+    <html lang="en">
 
-<head>
-    <title>Student Study Center Mananagement System | Add Room</title>
-    <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-    <script>
-        function checkRoomAvailability() {
-            $("#loaderIcon").show();
-            jQuery.ajax({
-                url: "check_availability.php",
-                data: 'roomname=' + $("#roomname").val(),
-                type: "POST",
-                success: function(data) {
-                    $("#room-availability-status").html(data);
-                    $("#loaderIcon").hide();
-                },
-                error: function() {}
-            });
-        }
-    </script>
-</head>
+    <head>
+        <title>Student Study Center Mananagement System | Add Room</title>
+        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+        <script>
+            function checkRoomAvailability() {
+                $("#loaderIcon").show();
+                jQuery.ajax({
+                    url: "check_availability.php",
+                    data: 'roomname=' + $("#roomname").val(),
+                    type: "POST",
+                    success: function(data) {
+                        $("#room-availability-status").html(data);
+                        $("#loaderIcon").hide();
+                    },
+                    error: function() {}
+                });
+            }
+        </script>
+    </head>
 
-<body>
-    <?php include_once('includes/header.php'); ?>
-    <div class="wrapper">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card-box">
-                        <h4 class="m-t-0 header-title">Add Room</h4>
-                        <form method="post" enctype="multipart/form-data">
-                            <div class="form-group row">
-                                <label class="col-2 col-form-label">Room Name</label>
-                                <div class="col-10">
-                                    <input type="text" class="form-control" name="roomname" placeholder="Enter Room Name" required>
-                                    <span id="room-availability-status"></span>
+    <body>
+        <?php include_once('includes/header.php'); ?>
+        <div class="wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card-box">
+                            <h4 class="m-t-0 header-title">Add Room</h4>
+                            <form method="post" enctype="multipart/form-data">
+                                <div class="form-group row">
+                                    <label class="col-2 col-form-label">Room Name</label>
+                                    <div class="col-10">
+                                        <input type="text" class="form-control" name="roomname" placeholder="Enter Room Name" required>
+                                        <span id="room-availability-status"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-2 col-form-label">Capacity</label>
-                                <div class="col-10">
-                                    <select class="form-control" name="type" required>
-                                        <option>50</option>
-                                        <option>150</option>
-                                    </select>
+                                <div class="form-group row">
+                                    <label class="col-2 col-form-label">Capacity</label>
+                                    <div class="col-10">
+                                        <select class="form-control" name="capacity" required>
+                                            <option>50</option>
+                                            <option>150</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-2 col-form-label">Usability</label>
-                                <div class="col-10">
-                                    <select class="form-control" name="usability" required>
-                                        <option value="1">Available</option>
-                                        <option value="0">Not Available</option>
-                                    </select>
+                                <div class="form-group row">
+                                    <label class="col-2 col-form-label">Usability</label>
+                                    <div class="col-10">
+                                        <select class="form-control" name="usability" required>
+                                            <option value="1">Available</option>
+                                            <option value="0">Not Available</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-2 col-form-label">Description</label>
-                                <div class="col-10">
-                                    <textarea class="form-control" name="description" placeholder="Enter Room Description" required></textarea>
+                                <div class="form-group row">
+                                    <label class="col-2 col-form-label">Description</label>
+                                    <div class="col-10">
+                                        <textarea class="form-control" name="description" placeholder="Enter Room Description" required></textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-2 col-form-label">Available Time</label>
-                                <div class="col-10">
-                                    <select class="form-control" name="availableTime[]" multiple required>
-                                        <option value="Morning">Morning</option>
-                                        <option value="Afternoon">Afternoon</option>
-                                        <option value="Evening">Evening</option>
-                                    </select>
+                                <div class="form-group row">
+                                    <label class="col-2 col-form-label">Available Time</label>
+                                    <div class="col-10">
+                                        <select class="form-control" name="availableTimes" multiple required>
+                                            <option value="Morning">Morning</option>
+                                            <option value="Afternoon">Afternoon</option>
+                                            <option value="Evening">Evening</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-12 text-right">
-                                    <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" name="submit">Add Room</button>
+                                <div class="form-group row">
+                                    <div class="col-12 text-right">
+                                        <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" name="submit">Add Room</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            </div> <!-- end row -->
-        </div> <!-- container -->
-        <?php include_once('includes/footer.php'); ?>
-    </div> <!-- End wrapper -->
+                </div> <!-- end row -->
+            </div> <!-- container -->
+            <?php include_once('includes/footer.php'); ?>
+        </div> <!-- End wrapper -->
 
-    <!-- jQuery  -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/waves.js"></script>
-    <script src="assets/js/jquery.nicescroll.js"></script>
-    <script src="../plugins/switchery/switchery.min.js"></script>
+        <!-- jQuery  -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/js/waves.js"></script>
+        <script src="assets/js/jquery.nicescroll.js"></script>
+        <script src="../plugins/switchery/switchery.min.js"></script>
 
-    <!-- Validation js (Parsleyjs) -->
-    <script src="../plugins/parsleyjs/parsley.min.js"></script>
+        <!-- Validation js (Parsleyjs) -->
+        <script src="../plugins/parsleyjs/parsley.min.js"></script>
 
-    <!-- App js -->
-    <script src="assets/js/jquery.core.js"></script>
-    <script src="assets/js/jquery.app.js"></script>
+        <!-- App js -->
+        <script src="assets/js/jquery.core.js"></script>
+        <script src="assets/js/jquery.app.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            $('form').parsley();
-        });
-    </script>
-</body>
+        <script>
+            $(document).ready(function() {
+                $('form').parsley();
+            });
+        </script>
+    </body>
 
-</html>
+    </html>
 <?php } ?>
