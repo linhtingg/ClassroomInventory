@@ -5,7 +5,26 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
+    if (isset($_POST['submit'])) {
+        $aid = $_POST['userID'];
+        $roomID = $_POST['roomID'];
+        $desribeCondition = $_POST['desribeCondition'];
 
+        $sql = "INSERT INTO `reportform` ( `roomID`, `userReportID`, `desribeCondition`) VALUES ( :roomID, :aid, :desribeCondition)";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':aid', $aid, PDO::PARAM_STR);
+        $query->bindParam(':roomID', $roomID, PDO::PARAM_STR);
+        $query->bindParam(':desribeCondition', $desribeCondition, PDO::PARAM_STR);
+        $query->execute();
+
+        $LastInsertId = $dbh->lastInsertId();
+        if ($LastInsertId > 0) {
+            echo '<script>alert("Report successfully")</script>';
+            echo "<script>window.location.href ='dashboard.php'</script>";
+        } else {
+            echo '<script>alert("Something Went Wrong. Please try again")</script>';
+        }
+    }
 
 
 ?>
@@ -14,7 +33,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
 
-        <title>Student Study Center Mananagement System | Manage Students</title>
+        <title>Report a problem </title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -49,119 +68,72 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <!-- ============================================================== -->
         <div class="wrapper">
             <div class="container">
-
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-                            <h3> B/w Dates Report Assign Desk</h3>
+                            <h3> Report a problem</h3>
+                            <span> What have you encountered? Please elaborate, we will try to fix them as soon as possible! </span>
                             <hr />
 
                             <div class="card-body card-block">
                                 <form method="post" enctype="multipart/form-data" class="form-horizontal">
                                     <div class="row form-group">
                                         <div class="col col-md-3">
-                                            <label for="text-input" class=" form-control-label">From Date</label>
+                                            <label for="text-input" class=" form-control-label">User ID <small>(Auto Generated)</small><span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-12 col-md-9">
-                                            <input type="date" id="fromdate" name="fromdate" value="" class="form-control" required="">
-
+                                            <input readonly type="text" class="form-control" required="true" name="userID" value="<?php echo $_SESSION['sscmsaid']; ?>">
                                         </div>
                                     </div>
+
                                     <div class="row form-group">
                                         <div class="col col-md-3">
-                                            <label for="email-input" class=" form-control-label">To Date</label>
+                                            <label for="text-input" class=" form-control-label">Report date <small>(Auto Generated)</small><span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-12 col-md-9">
-                                            <input type="date" id="todate" name="todate" value="" class="form-control" required="">
-
+                                            <input readonly type="text" class="form-control" required="true" name="reportDate" value="<?php date_default_timezone_set('Asia/Ho_Chi_Minh');
+                                                                                                                                        echo date('d-m-Y h:i:s'); ?>">
                                         </div>
                                     </div>
 
+                                    <div class="row form-group">
+                                        <div class="col col-md-3">
+                                            <label for="text-input" class=" form-control-label">Room <span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-12 col-md-9">
+                                            <input type="text" class="form-control" list="room_id" required="true" name="roomID" placeholder="In which room did the problem occur?">
+                                            <datalist id="room_id">
+                                                <?php
+                                                $sql0 = "SELECT id FROM room where id != 1";
+                                                $query0 = $dbh->prepare($sql0);
+                                                $query0->execute();
+                                                $results = $query0->fetchAll(PDO::FETCH_OBJ);
+                                            
+                                                foreach ($results as $result) {
+                                                    echo "<option value= $result->id </option>";
+                                                }
+                                                ?>
+                                            </datalist>
+                                        </div>
+                                    </div>
 
+                                    <div class="row form-group">
+                                        <div class="col col-md-3">
+                                            <label for="text-input" class=" form-control-label">Descibe the problem<span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-12 col-md-9">
+                                            <input type="text" class="form-control" required="true" name="desribeCondition">
+                                        </div>
+                                    </div>
 
                                     <div class="card-footer">
                                         <p style="text-align: center;"><button type="submit" name="submit" id="submit" class="btn btn-primary btn-sm">Submit
                                             </button></p>
-
                                     </div>
                                 </form>
                             </div>
-
-                            <?php if (isset($_POST['submit'])) {
-                                $fdate = $_POST['fromdate'];
-                                $tdate = $_POST['todate'];
-
-                            ?>
-                                <h5 align="center">Assign Desk Report from <?php echo $fdate ?> to <?php echo $tdate; ?></h5>
-                                <hr />
-
-
-                                <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Reg No</th>
-                                            <th>Name</th>
-                                            <th>Contact No</th>
-                                            <th>Email Id</th>
-                                            <th>Qualification</th>
-                                            <th>Current Desk Status</th>
-                                            <th>Reg Date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-
-
-                                    <tbody>
-                                        <?php
-                                        $sql = "SELECT * from tblstudents
-left join tbldeskhistory on tbldeskhistory.stduentId=tblstudents.id
-where date(assignDate) between '$fdate' and '$tdate'";
-                                        $query = $dbh->prepare($sql);
-                                        $query->execute();
-                                        $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                        $cnt = 1;
-                                        if ($query->rowCount() > 0) {
-                                            foreach ($results as $row) {          ?>
-
-                                                <tr>
-                                                    <td><?php echo htmlentities($cnt); ?></td>
-                                                    <td><?php echo htmlentities($row->registrationNumber); ?></td>
-                                                    <td><?php echo htmlentities($row->studentName); ?></td>
-                                                    <td><?php echo htmlentities($row->studentContactNo); ?></td>
-                                                    <td><?php echo htmlentities($row->studentEmailId); ?></td>
-                                                    <td><?php echo htmlentities($row->studentQualification); ?></td>
-                                                    <td><?php $deskstatus = $row->isDeskAssign;
-                                                        if ($deskstatus == '1') :
-                                                            echo "Assigned";
-                                                        else :
-                                                            echo "Not Assigned";
-                                                        endif;
-                                                        ?></td>
-                                                    <td><?php echo htmlentities($row->regDate); ?></td>
-                                                    <td><a href="student-details.php?stdid=<?php echo htmlentities($row->id); ?>" class="btn btn-primary" target="_blank">Assign/UnAssign Desk</a></td>
-
-                                                </tr>
-                                        <?php $cnt = $cnt + 1;
-                                            }
-                                        } ?>
-
-                                    </tbody>
-                                </table>
-                            <?php } ?>
-
-                        </div>
-                    </div>
-                </div> <!-- end row -->
-
-
-
-            </div> <!-- container -->
             <?php include_once('includes/footer.php'); ?>
-
         </div> <!-- End wrapper -->
-
 
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

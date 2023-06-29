@@ -5,13 +5,36 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
+
+    // Code for deleting product from cart
+    if (isset($_GET['delid'])) {
+        $deskid = intval($_GET['delid']);
+
+        $query = $dbh->prepare("SELECT id FROM tbldesk WHERE id=:deskid and isOccupied is not null");
+        $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+        if ($query->rowCount() > 0) {
+            echo '<script>alert("Desk occupied cannot  deleted")</script>';
+        } else {
+
+            $sql = "delete from tbldesk where id=:deskid";
+            $query = $dbh->prepare($sql);
+            $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
+            $query->execute();
+            echo "<script>alert('Data deleted');</script>";
+            echo "<script>window.location.href = 'manage-desks.php'</script>";
+        }
+    }
+
 ?>
     <!doctype html>
     <html lang="en">
 
     <head>
 
-        <title>Student Study Center Mananagement System | Manage Students</title>
+        <title>View list of equipments</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -21,7 +44,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <!-- Multi Item Selection examples -->
         <link href="../plugins/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
-        <!-- Switchery css -->
         <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
 
         <!-- Bootstrap CSS -->
@@ -35,8 +57,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     </head>
 
+
     <body>
+
         <?php include_once('includes/header.php'); ?>
+
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
@@ -45,47 +70,43 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-                            <h4 class="m-t-0 header-title"> Student Details</h4>
+                            <h4 class="m-t-0 header-title">List of Equipments</h4>
+
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Reg No</th>
-                                        <th>Name</th>
-                                        <th>Contact No</th>
-                                        <th>Email Id</th>
-                                        <th>Qualification</th>
-                                        <th>Current Desk Status</th>
-                                        <th>Reg Date</th>
-                                        <th>Action</th>
+                                        <th>Equipment ID</th>
+                                        <th>Type</th>
+                                        <th>Total Used Time (hour)</th>
+                                        <th>Produced Year</th>
+                                        <th>Usability</th>
+                                        <th>Description</th>
                                     </tr>
                                 </thead>
+
+
                                 <tbody>
                                     <?php
-                                    $sql = "SELECT * from tbluser";
+
+                                    $sql = "SELECT * from equipment where id!=1";
                                     $query = $dbh->prepare($sql);
                                     $query->execute();
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
+
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
-                                        foreach ($results as $row) { ?>
+                                        foreach ($results as $row) {               ?>
                                             <tr>
                                                 <td><?php echo htmlentities($cnt); ?></td>
-                                                <td><?php echo htmlentities($row->registrationNumber); ?></td>
-                                                <td><?php echo htmlentities($row->studentName); ?></td>
-                                                <td><?php echo htmlentities($row->studentContactNo); ?></td>
-                                                <td><?php echo htmlentities($row->studentEmailId); ?></td>
-                                                <td><?php echo htmlentities($row->studentQualification); ?></td>
-                                                <td><?php $deskstatus = $row->isDeskAssign;
-                                                    if ($deskstatus == '1') :
-                                                        echo "Assigned";
-                                                    else :
-                                                        echo "Not Assigned";
-                                                    endif;
-                                                    ?></td>
-                                                <td><?php echo htmlentities($row->regDate); ?></td>
-                                                <td><a href="student-details.php?stdid=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Assign/UnAssign Desk</a></td>
-
+                                                <td><?php echo htmlentities($row->id); ?></td>
+                                                <td><?php echo htmlentities($row->type); ?></td>
+                                                <td><?php echo htmlentities($row->totalUsedTime); ?></td>
+                                                <td><?php echo htmlentities($row->producedYear); ?></td>                                                <td><?php $usability = $row->usability;
+                                                    if ($usability == 0) : echo "<span style='color:red'>Unavailable</span>";
+                                                    else : echo "<span style='color:green'>Available</span>";
+                                                    endif; ?></td>
+                                                <td><?php echo htmlentities($row->description); ?></td>
                                             </tr>
                                     <?php $cnt = $cnt + 1;
                                         }
@@ -111,7 +132,29 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
+        <script src="../plugins/switchery/switchery.min.js"></script>
 
+        <!-- Required datatable js -->
+        <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="../plugins/datatables/dataTables.bootstrap4.min.js"></script>
+        <!-- Buttons examples -->
+        <script src="../plugins/datatables/dataTables.buttons.min.js"></script>
+        <script src="../plugins/datatables/buttons.bootstrap4.min.js"></script>
+        <script src="../plugins/datatables/jszip.min.js"></script>
+        <script src="../plugins/datatables/pdfmake.min.js"></script>
+        <script src="../plugins/datatables/vfs_fonts.js"></script>
+        <script src="../plugins/datatables/buttons.html5.min.js"></script>
+        <script src="../plugins/datatables/buttons.print.min.js"></script>
+
+        <!-- Key Tables -->
+        <script src="../plugins/datatables/dataTables.keyTable.min.js"></script>
+
+        <!-- Responsive examples -->
+        <script src="../plugins/datatables/dataTables.responsive.min.js"></script>
+        <script src="../plugins/datatables/responsive.bootstrap4.min.js"></script>
+
+        <!-- Selection table -->
+        <script src="../plugins/datatables/dataTables.select.min.js"></script>
 
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>

@@ -77,9 +77,10 @@
                         <ul class="submenu megamenus">
                             <li>
                                 <ul>
-                                    <li><a href="add-desk.php">Add </a></li>
+                                    <li><a href="add-room.php">Add </a></li>
                                     <li><a href="manage-rooms.php">Manage </a></li>
                                     <li><a href="manage-room-register-students.php">Assigned / Unassigned Classrooms </a></li>
+
                                 </ul>
                             </li>
 
@@ -91,7 +92,7 @@
                         <ul class="submenu megamenus">
                             <li>
                                 <ul>
-                                    <li><a href="add-desk.php">Add </a></li>
+                                    <li><a href="add-equipment.php">Add </a></li>
                                     <li><a href="manage-equipments.php">Manage </a></li>
                                     <li><a href="manage-equipment-register-students.php">Assigned / Unassigned Equipments </a></li>
                                 </ul>
@@ -105,7 +106,6 @@
                         <ul class="submenu megamenu">
                             <li>
                                 <ul>
-                                    <li><a href="add-student.php">Add </a></li>
                                     <li><a href="manage-students.php">Manage </a></li>
                                 </ul>
                             </li>

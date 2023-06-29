@@ -55,6 +55,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $sql1 = "SELECT * from  room where capacity !=0 and usability=1";
+
                             $query1 = Query::executeQuery($dbh, $sql1);
                             $totalroomssavail = $query1->rowCount();
                             ?>
@@ -83,6 +84,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
+
                             $sql1 = "SELECT * from equipment";
                             $query1 = Query::executeQuery($dbh, $sql1);
                             $totalequipments = $query1->rowCount();

@@ -16,6 +16,7 @@ if (isset($_POST['login'])) {
         foreach ($results as $result) {
             $_SESSION['sscmsaid'] = $result->schoolID;
         }
+        
         $_SESSION['login'] = $_POST['email'];
         echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
     } else {

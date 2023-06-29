@@ -6,15 +6,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
 
-
-
 ?>
     <!doctype html>
     <html lang="en">
 
     <head>
-
-        <title>Student Study Center Mananagement System | Manage Students</title>
+        <title>Notification</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -38,11 +35,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     </head>
 
-
     <body>
 
         <?php include_once('includes/header.php'); ?>
-
 
         <!-- ============================================================== -->
         <!-- Start right Content here -->
@@ -50,61 +45,37 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <div class="wrapper">
             <div class="container">
 
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-                            <h4 class="m-t-0 header-title"> Student Details</h4>
-
+                            <h4 class="m-t-0 header-title">Notification Details</h4>
 
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Reg No</th>
-                                        <th>Name</th>
-                                        <th>Contact No</th>
-                                        <th>Email Id</th>
-                                        <th>Qualification</th>
-                                        <th>Current Desk Status</th>
-                                        <th>Reg Date</th>
-                                        <th>Action</th>
+                                        <th>Content</th>
+                                        <th>Valid Until</th>
                                     </tr>
                                 </thead>
 
-
                                 <tbody>
                                     <?php
-                                    $sql = "SELECT * from tblstudents";
+                                    $sql = "SELECT * FROM `notification` WHERE `valid_til` >= CURDATE();";
                                     $query = $dbh->prepare($sql);
                                     $query->execute();
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
                                         foreach ($results as $row) {          ?>
-
                                             <tr>
                                                 <td><?php echo htmlentities($cnt); ?></td>
-                                                <td><?php echo htmlentities($row->registrationNumber); ?></td>
-                                                <td><?php echo htmlentities($row->studentName); ?></td>
-                                                <td><?php echo htmlentities($row->studentContactNo); ?></td>
-                                                <td><?php echo htmlentities($row->studentEmailId); ?></td>
-                                                <td><?php echo htmlentities($row->studentQualification); ?></td>
-                                                <td><?php $deskstatus = $row->isDeskAssign;
-                                                    if ($deskstatus == '1') :
-                                                        echo "Assigned";
-                                                    else :
-                                                        echo "Not Assigned";
-                                                    endif;
-                                                    ?></td>
-                                                <td><?php echo htmlentities($row->regDate); ?></td>
-                                                <td><a href="student-details.php?stdid=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Assign/UnAssign Desk</a></td>
-
+                                                <td><?php echo htmlentities($row->notiContent); ?></td>
+                                                <td><?php echo htmlentities($row->valid_til); ?></td>
                                             </tr>
                                     <?php $cnt = $cnt + 1;
                                         }
                                     } ?>
-
                                 </tbody>
                             </table>
 
