@@ -82,7 +82,13 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <div class="form-group row">
                                 <label class="col-2 col-form-label">Type</label>
                                 <div class="col-10">
-                                    <input type="text" class="form-control" name="type" placeholder="Enter Equipment Type" required>
+                                    <select class="form-control" name="type" required>
+                                        <option>Microphone</option>
+                                        <option>Oscilloscope</option>
+                                        <option>Biến áp</option>
+                                        <option>Bảng mạch</option>
+                                        <option>Đầu chuyển đổi</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -118,7 +124,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <div class="form-group row">
                                 <label class="col-2 col-form-label">Available Time</label>
                                 <div class="col-10">
-                                    <input type="text" class="form-control" name="availableTime" placeholder="Enter Equipment Available Time" required>
+                                    <select class="form-control" name="type" required>
+                                        <option>Morning</option>
+                                        <option>Afternoon</option>
+                                        <option>Evening</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row">
