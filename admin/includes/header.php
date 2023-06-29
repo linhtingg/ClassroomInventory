@@ -79,7 +79,7 @@
                                 <ul>
                                     <li><a href="add-room.php">Add </a></li>
                                     <li><a href="manage-rooms.php">Manage </a></li>
-                                    <li><a href="manage-equipment-register-students.php">Assigned / Unassigned Classrooms </a></li>
+                                    <li><a href="manage-room-register-students.php">Assigned / Unassigned Classrooms </a></li>
 
                                 </ul>
                             </li>
@@ -106,7 +106,6 @@
                         <ul class="submenu megamenu">
                             <li>
                                 <ul>
-                                    <li><a href="add-student.php">Add </a></li>
                                     <li><a href="manage-students.php">Manage </a></li>
                                 </ul>
                             </li>
