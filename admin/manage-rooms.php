@@ -12,18 +12,19 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
         $query = $dbh->prepare("SELECT id FROM tbldesk WHERE id=:deskid and isOccupied is not null");
         $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
+        echo "<script>alert('TEST')</script>";
         $query->execute();
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
         if ($query->rowCount() > 0) {
-            echo '<script>alert("Desk occupied cannot  deleted")</script>';
+            echo '<script>alert("Room occupied cannot  deleted")</script>';
         } else {
             $sql = "delete from tbldesk where id=:deskid";
             $query = $dbh->prepare($sql);
             $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
             $query->execute();
             echo "<script>alert('Data deleted');</script>";
-            echo "<script>window.location.href = 'manage-desks.php'</script>";
+            echo "<script>window.location.href = 'manage-rooms.php'</script>";
         }
     }
 
@@ -82,6 +83,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <?php
                                     $sql = "SELECT * from room where id!='1'";
                                     $query = Query::executeQuery($dbh, $sql);
+                                    echo "<script>alert('TEST')</script>";
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
@@ -96,7 +98,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <td><?php echo htmlentities($row->description); ?></td>
                                                 <td><?php echo htmlentities($row->avaiableTime); ?></td>
                                                 <td>
-                                                    <a href="edit-desk.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-desks.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a>
+                                                    <a href="edit-room.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-rooms.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a>
                                                 </td>
                                             </tr>
                                     <?php $cnt = $cnt + 1;
