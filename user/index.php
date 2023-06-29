@@ -15,7 +15,6 @@ if (isset($_POST['login'])) {
     if ($query->rowCount() > 0) {
         foreach ($results as $result) {
             $_SESSION['sscmsaid'] = $result->schoolID;
-            $_SESSION['sscmsphone'] = $result->phonenumber;
         }
         
         $_SESSION['login'] = $_POST['email'];
