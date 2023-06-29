@@ -17,7 +17,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
         if ($query->rowCount() > 0) {
-            echo '<script>alert("Room occupied cannot  deleted")</script>';
+            echo '<script>alert("Room occupied cannot deleted")</script>';
         } else {
             $sql = "delete from tbldesk where id=:deskid";
             $query = $dbh->prepare($sql);
@@ -83,7 +83,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <?php
                                     $sql = "SELECT * from room where id!='1'";
                                     $query = Query::executeQuery($dbh, $sql);
-                                    echo "<script>alert('TEST')</script>";
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
@@ -93,8 +92,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <td><?php echo htmlentities($row->id); ?></td>
                                                 <td><?php echo htmlentities($row->capacity); ?></td>
                                                 <td><?php $roomUsability = $row->usability;
-                                                    if ($roomUsability == 0) echo "Not Available";
-                                                    else echo "Available"; ?></td>
+                                                    if ($roomUsability == 0) echo "Not Avaiable";
+                                                    else echo "Avaiable"; ?></td>
                                                 <td><?php echo htmlentities($row->description); ?></td>
                                                 <td><?php echo htmlentities($row->avaiableTime); ?></td>
                                                 <td>

@@ -77,8 +77,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <div class="form-group row">
                                     <label class="col-2 col-form-label">Capacity</label>
                                     <div class="col-10">
-                                        <input type="number" class="form-control" name="capacity" value="<?php echo htmlentities($result->capacity); ?>" required="true">
-                                    </div>
+                                    <select class="form-control" name="type" required>
+                                        <option>50</option>
+                                        <option>150</option>
+                                    </select>
+                                </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-2 col-form-label">Usability</label>
@@ -98,7 +101,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <div class="form-group row">
                                     <label class="col-2 col-form-label">Available Time</label>
                                     <div class="col-10">
-                                        <input type="text" class="form-control" name="availableTime" value="<?php echo htmlentities($result->availableTime); ?>" required="true">
+                                        <select class="form-control" name="type" required>
+                                            <option>Morning</option>
+                                            <option>Afternoon</option>
+                                            <option>Evening</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
