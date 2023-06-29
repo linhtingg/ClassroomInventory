@@ -2,19 +2,16 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
+include('./QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
-
-
 ?>
     <!doctype html>
     <html lang="en">
 
     <head>
-
-        <title>Student Study Center Mananagement System | Manage Students</title>
+        <title>CIMS | Manage Students</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -35,122 +32,48 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
         <!-- Modernizr js -->
         <script src="assets/js/modernizr.min.js"></script>
-
     </head>
 
-
     <body>
-
         <?php include_once('includes/header.php'); ?>
-
-
-        <!-- ============================================================== -->
-        <!-- Start right Content here -->
-        <!-- ============================================================== -->
         <div class="wrapper">
             <div class="container">
-
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-                            <h3> B/w Dates Report Assign Desk</h3>
+                            <h3> Report forms </h3>
                             <hr />
-
                             <div class="card-body card-block">
-                                <form method="post" enctype="multipart/form-data" class="form-horizontal">
-                                    <div class="row form-group">
-                                        <div class="col col-md-3">
-                                            <label for="text-input" class=" form-control-label">From Date</label>
-                                        </div>
-                                        <div class="col-12 col-md-9">
-                                            <input type="date" id="fromdate" name="fromdate" value="" class="form-control" required="">
-
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col col-md-3">
-                                            <label for="email-input" class=" form-control-label">To Date</label>
-                                        </div>
-                                        <div class="col-12 col-md-9">
-                                            <input type="date" id="todate" name="todate" value="" class="form-control" required="">
-
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="card-footer">
-                                        <p style="text-align: center;"><button type="submit" name="submit" id="submit" class="btn btn-primary btn-sm">Submit
-                                            </button></p>
-
-                                    </div>
-                                </form>
-                            </div>
-
-                            <?php if (isset($_POST['submit'])) {
-                                $fdate = $_POST['fromdate'];
-                                $tdate = $_POST['todate'];
-
-                            ?>
-                                <h5 align="center">Assign Desk Report from <?php echo $fdate ?> to <?php echo $tdate; ?></h5>
-                                <hr />
-
-
                                 <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Reg No</th>
-                                            <th>Name</th>
-                                            <th>Contact No</th>
-                                            <th>Email Id</th>
-                                            <th>Qualification</th>
-                                            <th>Current Desk Status</th>
-                                            <th>Reg Date</th>
-                                            <th>Action</th>
+                                            <th>Report Date</th>
+                                            <th>Room</th>
+                                            <th>User</th>
+                                            <th>Description</th>
                                         </tr>
                                     </thead>
-
-
                                     <tbody>
                                         <?php
-                                        $sql = "SELECT * from tblstudents
-left join tbldeskhistory on tbldeskhistory.stduentId=tblstudents.id
-where date(assignDate) between '$fdate' and '$tdate'";
-                                        $query = $dbh->prepare($sql);
-                                        $query->execute();
+                                        $sql = "SELECT * from reportform";
+                                        $query = Query::executeQuery($dbh, $sql);
                                         $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                        $cnt = 1;
                                         if ($query->rowCount() > 0) {
-                                            foreach ($results as $row) {          ?>
-
+                                            $cnt = 1;
+                                            foreach ($results as $row) { ?>
                                                 <tr>
                                                     <td><?php echo htmlentities($cnt); ?></td>
-                                                    <td><?php echo htmlentities($row->registrationNumber); ?></td>
-                                                    <td><?php echo htmlentities($row->studentName); ?></td>
-                                                    <td><?php echo htmlentities($row->studentContactNo); ?></td>
-                                                    <td><?php echo htmlentities($row->studentEmailId); ?></td>
-                                                    <td><?php echo htmlentities($row->studentQualification); ?></td>
-                                                    <td><?php $deskstatus = $row->isDeskAssign;
-                                                        if ($deskstatus == '1') :
-                                                            echo "Assigned";
-                                                        else :
-                                                            echo "Not Assigned";
-                                                        endif;
-                                                        ?></td>
-                                                    <td><?php echo htmlentities($row->regDate); ?></td>
-                                                    <td><a href="student-details.php?stdid=<?php echo htmlentities($row->id); ?>" class="btn btn-primary" target="_blank">Assign/UnAssign Desk</a></td>
-
-                                                </tr>
-                                        <?php $cnt = $cnt + 1;
-                                            }
-                                        } ?>
-
+                                                    <td><?php echo htmlentities($row->reportDate); ?></td>
+                                                    <td><?php echo htmlentities($row->roomID); ?></td>
+                                                    <td><?php echo htmlentities($row->userReportID); ?></td>
+                                                    <td><?php echo htmlentities($row->desribeCondition); ?></td>
+                                                </tr><?php $cnt++;
+                                                    }
+                                                } ?>
                                     </tbody>
                                 </table>
-                            <?php } ?>
-
+                            </div>
                         </div>
                     </div>
                 </div> <!-- end row -->
