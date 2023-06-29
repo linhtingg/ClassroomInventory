@@ -124,10 +124,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <div class="form-group row">
                                 <label class="col-2 col-form-label">Available Time</label>
                                 <div class="col-10">
-                                    <select class="form-control" name="type" required>
-                                        <option>Morning</option>
-                                        <option>Afternoon</option>
-                                        <option>Evening</option>
+                                    <select class="form-control" name="availableTime[]" multiple required>
+                                        <option value="Morning">Morning</option>
+                                        <option value="Afternoon">Afternoon</option>
+                                        <option value="Evening">Evening</option>
                                     </select>
                                 </div>
                             </div>
