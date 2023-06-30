@@ -79,8 +79,7 @@
                                 <ul>
                                     <li><a href="add-room.php">Add </a></li>
                                     <li><a href="manage-rooms.php">Manage </a></li>
-                                    <li><a href="manage-room-register-students.php">Assigned / Unassigned Classrooms </a></li>
-
+                                    <li><a href="manage-room-register-students.php">Browse Classroom Requests </a></li>
                                 </ul>
                             </li>
 
@@ -94,15 +93,18 @@
                                 <ul>
                                     <li><a href="add-equipment.php">Add </a></li>
                                     <li><a href="manage-equipments.php">Manage </a></li>
-                                    <li><a href="manage-equipment-register-students.php">Assigned / Unassigned Equipments </a></li>
+                                    <li><a href="manage-equipment-register-students.php">Browse Equipment Requests </a></li>
                                 </ul>
                             </li>
 
                         </ul>
                     </li>
-                    <!---Students---->
+
+                    <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report forms </a></li>
+
+                    <!---Noti---->
                     <li class="has-submenu">
-                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Students </span> </a>
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Create Notification </span> </a>
                         <ul class="submenu megamenu">
                             <li>
                                 <ul>
@@ -112,7 +114,6 @@
 
                         </ul>
                     </li>
-                    <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report forms </a></li>
                 </ul>
                 <!-- End navigation menu  -->
             </div>
