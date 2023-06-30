@@ -49,7 +49,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
             <div class="row">
                <div class="col-12">
                   <div class="card-box">
-                     <h4 class="m-t-0 header-title">Manage Equipments Registered Student Details</h4>
+                     <h4 class="m-t-0 header-title">Manage Equipment Borrow Requests</h4>
                      <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                            <tr>
@@ -78,7 +78,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <td><?php echo htmlentities($row->numberOfEach); ?></td>
                                     <td><?php echo htmlentities($row->borrowTime); ?></td>
                                     <td><?php echo htmlentities($row->borrowDay); ?></td>
-                                    <td><a href="equipment-register-student-details.php?formID=<?php echo htmlentities($row->formid); ?>" class="btn btn-primary">Assign / Unassign Equipment</a></td>
+                                    <td><a href="equipment-register-student-details.php?formID=<?php echo htmlentities($row->formid); ?>" class="btn btn-primary">Approve / Decline</a></td>
                                  </tr>
                            <?php }
                            } ?>
