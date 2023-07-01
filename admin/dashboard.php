@@ -74,7 +74,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             $isoccupied = $query1->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
-                            <h6 class="text-muted text-uppercase m-b-20">Room Occupied</h6>
+                            <h6 class="text-muted text-uppercase m-b-20">Occupied Rooms</h6>
                             <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($isoccupied); ?></span></h2>
                             <a href="manage-rooms.php"><span class="badge badge-danger"> View Detail </span></a>
                         </div>
@@ -118,7 +118,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             $isoccupied = $query1->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
-                            <h6 class="text-muted text-uppercase m-b-20">Equipment Occupied</h6>
+                            <h6 class="text-muted text-uppercase m-b-20">Occupied Equipments</h6>
                             <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($isoccupied); ?></span></h2>
                             <a href="manage-equipments.php"><span class="badge badge-danger"> View Detail </span></a>
                         </div>
@@ -133,7 +133,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             $totalequipmentsavail = $query1->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
-                            <h6 class="text-muted text-uppercase m-b-20">Total Room Registered Students</h6>
+                            <h6 class="text-muted text-uppercase m-b-20">Total Room Requests</h6>
                             <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totalequipmentsavail); ?></span></h2>
                             <a href="manage-room-register-students.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
@@ -148,9 +148,24 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             $isoccupied = $query1->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
-                            <h6 class="text-muted text-uppercase m-b-20">Total Equipment Registered Students</h6>
+                            <h6 class="text-muted text-uppercase m-b-20">Total Equipment Requests</h6>
                             <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($isoccupied); ?></span></h2>
                             <a href="manage-equipment-register-students.php"><span class="badge badge-primary"> View Detail </span></a>
+                        </div>
+                    </div>
+
+                    <!-- Total report -->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card-box tilebox-one">
+                            <?php
+                            $sql1 = "SELECT * from reportform";
+                            $query1 = Query::executeQuery($dbh, $sql1);
+                            $isoccupied = $query1->rowCount();
+                            ?>
+                            <i class="fa fa-desktop float-right"></i>
+                            <h6 class="text-muted text-uppercase m-b-20">Recieved Reports</h6>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($isoccupied); ?></span></h2>
+                            <a href="report.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
                     </div>
                 </div>

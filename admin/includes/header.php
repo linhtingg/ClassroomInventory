@@ -101,14 +101,26 @@
                     </li>
 
                     <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report forms </a></li>
-
-                    <!---Noti---->
+                    <!-- Students -->
                     <li class="has-submenu">
-                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Create Notification </span> </a>
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Students </span> </a>
                         <ul class="submenu megamenu">
                             <li>
                                 <ul>
                                     <li><a href="manage-students.php">Manage </a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!---Noti---->
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Notification </span> </a>
+                        <ul class="submenu">
+                            <li>
+                                <ul>
+                                    <li><a href="add-notification.php">Add Notification </a></li>
+                                    <li><a href="manage-notifications.php">Manage Notification </a></li>
                                 </ul>
                             </li>
 
