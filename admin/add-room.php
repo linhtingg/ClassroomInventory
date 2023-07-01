@@ -12,15 +12,21 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $usability = $_POST['usability'];
         $description = $_POST['description'];
         $availableTime = $_POST['availableTimes'];
-        $sql = "INSERT INTO room (id, capacity, usability, description, avaiableTime) VALUES (:roomname, :capacity, :usability, :description, :availableTime)";
-        $query = Query::executeQuery($dbh, $sql, [':roomname', $roomname], [':capacity', $capacity], [':usability', $usability], [':description', $description], [':availableTime', $availableTime]);
-        if ($query->rowCount() > 0) {
-            echo "<script>alert('Room added successfully');</script>";
-            echo "<script>window.location.href = 'manage-rooms.php'</script>";
-            exit();
+        $sql = "SELECT * FROM `room` WHERE id=:roomname";
+        $query = Query::executeQuery($dbh, $sql, [':roomname', $roomname]);
+        $rowCount = $query->rowCount();
+        if ($rowCount == 0) {
+            $sql = "INSERT INTO room (id, capacity, usability, description, avaiableTime) VALUES (:roomname, :capacity, :usability, :description, :availableTime)";
+            $query = Query::executeQuery($dbh, $sql, [':roomname', $roomname], [':capacity', $capacity], [':usability', $usability], [':description', $description], [':availableTime', $availableTime]);
+            if ($query->rowCount() > 0) {
+                echo "<script>alert('Room added successfully');</script>";
+            } else {
+                echo "<script>alert('Failed to add room');</script>";
+            }
         } else {
-            echo "<script>alert('Failed to add room');</script>";
+            echo "<script>alert('Room " . $roomname . " existed! Cannot add room');</script>";
         }
+        echo "<script>window.location.href = 'manage-rooms.php'</script>";
     }
 ?>
     <!doctype html>
@@ -31,21 +37,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-        <script>
-            function checkRoomAvailability() {
-                $("#loaderIcon").show();
-                jQuery.ajax({
-                    url: "check_availability.php",
-                    data: 'roomname=' + $("#roomname").val(),
-                    type: "POST",
-                    success: function(data) {
-                        $("#room-availability-status").html(data);
-                        $("#loaderIcon").hide();
-                    },
-                    error: function() {}
-                });
-            }
-        </script>
     </head>
 
     <body>

@@ -16,13 +16,21 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $lastUserUsed = $_POST['lastUserUsed'];
         $currentRoom = $_POST['currentRoom'];
         $avaiableTime = $_POST['avaiableTimes'];
-        $sql = "INSERT INTO equipment VALUES (:type, :id, :totalUsedTime,:producedYear , :description, :lastUserUsed, :currentRoom, :avaiableTimes)";
-        $query = Query::executeQuery($dbh, $sql, [':id', $equipment], [':type', $type], [':totalUsedTime', $totalUsedTime], [':producedYear', $producedYear], [':description', $description], [':lastUserUsed', $lastUserUsed], [':currentRoom', $currentRoom], [':avaiableTimes', $avaiableTime]);
-        if ($query->rowCount() > 0) {
-            echo "<script>alert('Equipment added successfully');</script>";
-            echo "<script>window.location.href = 'manage-equipments.php'</script>";
+        $sql = "SELECT * FROM `equipment` WHERE id = :newID";
+        $query = Query::executeQuery($dbh, $sql, [':newID', $equipment]);
+        $rowCount = $query->rowCount();
+        if ($rowCount == 0) {
+            $sql = "INSERT INTO equipment VALUES (:type, :id, :totalUsedTime,:producedYear , :description, :lastUserUsed, :currentRoom, :avaiableTimes)";
+            $query = Query::executeQuery($dbh, $sql, [':id', $equipment], [':type', $type], [':totalUsedTime', $totalUsedTime], [':producedYear', $producedYear], [':description', $description], [':lastUserUsed', $lastUserUsed], [':currentRoom', $currentRoom], [':avaiableTimes', $avaiableTime]);
+            if ($query->rowCount() > 0) {
+                echo "<script>alert('Equipment added successfully');</script>";
+                echo "<script>window.location.href = 'manage-equipments.php'</script>";
+            } else {
+                echo "<script>alert('Failed to add equipment');</script>";
+            }
         } else {
-            echo "<script>alert('Failed to add equipment');</script>";
+            echo "<script>alert('Equipment " . $equipment . " existed! Cannot add equipment!');</script>";
+            echo "<script>window.location.href = 'manage-equipments.php'</script>";
         }
     }
 ?>

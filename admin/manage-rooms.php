@@ -7,32 +7,26 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['delid'])) {
-        $deskid = intval($_GET['delid']);
-
-        $query = $dbh->prepare("SELECT id FROM tbldesk WHERE id=:deskid and isOccupied is not null");
-        $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
+        $roomID = $_GET['delid'];
+        $query = $dbh->prepare("SELECT * FROM room WHERE id= :roomID");
+        $query->bindParam(':roomID', $roomID, PDO::PARAM_STR);
         $query->execute();
-        $results = $query->fetchAll(PDO::FETCH_OBJ);
-
-        if ($query->rowCount() > 0) {
-            echo '<script>alert("Room occupied cannot deleted")</script>';
+        if ($query->rowCount() == 0) {
+            echo '<script>alert("Room ' . $roomID . ' does not existed!")</script>';
         } else {
-            $sql = "delete from tbldesk where id=:deskid";
+            $sql = "DELETE FROM room WHERE id= :roomID";
             $query = $dbh->prepare($sql);
-            $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
+            $query->bindParam(':roomID', $roomID, PDO::PARAM_STR);
             $query->execute();
             echo "<script>alert('Data deleted');</script>";
             echo "<script>window.location.href = 'manage-rooms.php'</script>";
-
         }
     }
-
 ?>
     <!doctype html>
     <html lang="en">
 
     <head>
-
         <title>CIMS | Manage Rooms</title>
 
         <!-- DataTables -->
@@ -58,9 +52,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <body>
         <?php include_once('includes/header.php'); ?>
-        <!-- ============================================================== -->
-        <!-- Start right Content here -->
-        <!-- ============================================================== -->
         <div class="wrapper">
             <div class="container">
                 <div class="row">
@@ -81,8 +72,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $sql = "SELECT * from room where id!='1'";
-                                    $query = Query::executeQuery($dbh, $sql);
+                                    $query = Query::executeQuery($dbh, "SELECT * from room where id!='1'");
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
@@ -98,7 +88,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <td><?php echo htmlentities($row->avaiableTime); ?></td>
                                                 <td>
                                                     <a href="edit-room.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-rooms.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a>
-
                                                 </td>
                                             </tr>
                                     <?php $cnt = $cnt + 1;
@@ -108,8 +97,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             </table>
                         </div>
                     </div>
-                </div> <!-- end row -->
-            </div> <!-- container -->
+                </div>
+            </div>
             <?php include_once('includes/footer.php'); ?>
         </div> <!-- End wrapper -->
 
