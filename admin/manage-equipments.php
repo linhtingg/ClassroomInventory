@@ -100,7 +100,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <td><?php echo htmlentities($row->currentRoom); ?></td>
                                     <td><?php echo htmlentities($row->avaiableTime); ?></td>
                                     <td>
-                                       <a href="edit-desk.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-desks.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a>
+                                       <a href="edit-equipment.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-desks.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a>
                                     </td>
                                  </tr>
                            <?php $cnt = $cnt + 1;
