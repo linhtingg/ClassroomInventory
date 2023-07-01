@@ -6,7 +6,6 @@ include('./QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
     if (isset($_POST['submit'])) {
         $roomname = $_POST['roomname'];
         $capacity = $_POST['capacity'];
@@ -24,12 +23,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         }
     }
 ?>
-
     <!doctype html>
     <html lang="en">
 
     <head>
-        <title>Student Study Center Mananagement System | Add Room</title>
+        <title>CIMS | Add Room</title>
         <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
