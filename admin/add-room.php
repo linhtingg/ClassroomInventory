@@ -10,19 +10,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     if (isset($_POST['submit'])) {
         $roomname = $_POST['roomname'];
         $capacity = $_POST['capacity'];
-        $usability = 0;
-        if ($_POST['usability'] == "Available") {
-            $usability = 1;
-        } else {
-            $usability = 0;
-        }
+        $usability = $_POST['usability'];
         $description = $_POST['description'];
         $availableTime = $_POST['availableTimes'];
         $sql = "INSERT INTO room (id, capacity, usability, description, avaiableTime) VALUES (:roomname, :capacity, :usability, :description, :availableTime)";
         $query = Query::executeQuery($dbh, $sql, [':roomname', $roomname], [':capacity', $capacity], [':usability', $usability], [':description', $description], [':availableTime', $availableTime]);
-
-        $LastInsertId = $query->rowCount();
-        if ($LastInsertId > 0) {
+        if ($query->rowCount() > 0) {
             echo "<script>alert('Room added successfully');</script>";
             echo "<script>window.location.href = 'manage-rooms.php'</script>";
             exit();
