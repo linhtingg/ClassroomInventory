@@ -37,7 +37,7 @@ echo '<script>alert("Your current password is wrong")</script>';
 
     <head>
        
-        <title>Student Study Center Mananagement System | Change Password</title>
+        <title>CIMS | Change Password</title>
 
         <!-- Switchery css -->
         <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />

@@ -5,29 +5,6 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
-    // Code for deleting product from cart
-    if (isset($_GET['delid'])) {
-        $deskid = intval($_GET['delid']);
-
-        $query = $dbh->prepare("SELECT id FROM tbldesk WHERE id=:deskid and isOccupied is not null");
-        $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
-        $query->execute();
-        $results = $query->fetchAll(PDO::FETCH_OBJ);
-
-        if ($query->rowCount() > 0) {
-            echo '<script>alert("Desk occupied cannot  deleted")</script>';
-        } else {
-
-            $sql = "delete from tbldesk where id=:deskid";
-            $query = $dbh->prepare($sql);
-            $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
-            $query->execute();
-            echo "<script>alert('Data deleted');</script>";
-            echo "<script>window.location.href = 'manage-desks.php'</script>";
-        }
-    }
-
 ?>
     <!doctype html>
     <html lang="en">

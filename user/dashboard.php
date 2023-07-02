@@ -62,7 +62,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql1 = "SELECT * from  room where  usability = 1";
+                            $sql1 = "SELECT * from  room where usability = 1";
                             $query1 = $dbh->prepare($sql1);
                             $query1->execute();
                             $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
@@ -113,7 +113,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql11 = "SELECT * from  equipment where id !='1' and lastUserUsed is null";
+                            $sql11 = "SELECT * from  equipment where usability=1";
                             $query11 = $dbh->prepare($sql11);
                             $query11->execute();
                             $results11 = $query11->fetchAll(PDO::FETCH_OBJ);
