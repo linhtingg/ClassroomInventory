@@ -2,8 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
-include('./QueryHandler.php');
-
+include('../helper/QueryHandler.php');
 if (isset($_POST['login'])) {
     $sql = "SELECT * FROM tbladmin WHERE email=:username AND password=:password";
     $query = Query::executeQuery($dbh, $sql, [':username', $_POST['username']], [':password',  $_POST['password']]);

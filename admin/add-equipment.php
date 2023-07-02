@@ -2,7 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
-include('./QueryHandler.php');
+include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -18,9 +18,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $avaiableTime = $_POST['avaiableTimes'];
         $sql = "SELECT * FROM `equipment` WHERE id = :newID";
         $query = Query::executeQuery($dbh, $sql, [':newID', $equipment]);
+        echo "<script>alert('pass');</script>";
         $rowCount = $query->rowCount();
         if ($rowCount == 0) {
-            $sql = "INSERT INTO equipment VALUES (:type, :id, :totalUsedTime,:producedYear , :description, :lastUserUsed, :currentRoom, :avaiableTimes)";
+            $sql = "INSERT INTO equipment VALUES (:type, :id, :totalUsedTime,:producedYear , :description, :lastUserUsed, :currentRoom, :avaiableTimes,1)";
             $query = Query::executeQuery($dbh, $sql, [':id', $equipment], [':type', $type], [':totalUsedTime', $totalUsedTime], [':producedYear', $producedYear], [':description', $description], [':lastUserUsed', $lastUserUsed], [':currentRoom', $currentRoom], [':avaiableTimes', $avaiableTime]);
             if ($query->rowCount() > 0) {
                 echo "<script>alert('Equipment added successfully');</script>";

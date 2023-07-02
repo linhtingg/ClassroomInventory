@@ -2,7 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
-include('./QueryHandler.php');
+include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -12,9 +12,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $sql = "INSERT INTO notification (notiContent, valid_til) VALUES (:content,:lastDay);";
         $query = Query::executeQuery($dbh, $sql, [':content', $usability], [':lastDay', $description]);
         if ($query->rowCount() > 0) {
-            echo "<script>alert('Room added successfully');</script>";
+            echo "<script>alert('Notification added successfully');</script>";
         } else {
-            echo "<script>alert('Failed to add room');</script>";
+            echo "<script>alert('Failed to add notification');</script>";
         }
         echo "<script>window.location.href = 'manage-notifications.php'</script>";
     }
@@ -52,7 +52,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-12 text-right">
-                                        <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" name="submit">Add Room</button>
+                                        <button type="submit" class="btn btn-primary waves-effect waves-light" type="submit" name="submit">Add Notification</button>
                                     </div>
                                 </div>
                             </form>
