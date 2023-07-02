@@ -5,35 +5,22 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
-
-
 ?>
     <!doctype html>
     <html lang="en">
-
     <!-- App title -->
     <title> Dashboard</title>
-
     <!--Morris Chart CSS -->
     <link rel="stylesheet" href="../plugins/morris/morris.css">
-
     <!-- Switchery css -->
     <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
-
     <!-- Bootstrap CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-
     <!-- App CSS -->
     <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-
     <!-- Modernizr js -->
     <script src="assets/js/modernizr.min.js"></script>
-
     </head>
-
-
-
     <body>
         <?php include_once('includes/header.php'); ?>
 
@@ -59,7 +46,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql0 = "SELECT * from  room";
+                            $sql0 = "SELECT * from  room where capacity !=0";
                             $query0 = $dbh->prepare($sql0);
                             $query0->execute();
                             $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
@@ -75,7 +62,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql1 = "SELECT * from  room where usability = 1";
+                            $sql1 = "SELECT * from  room where  usability = 1";
                             $query1 = $dbh->prepare($sql1);
                             $query1->execute();
                             $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
@@ -110,7 +97,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql11 = "SELECT * from  equipment ";
+                            $sql11 = "SELECT * from  equipment where id!='1'";
                             $query11 = $dbh->prepare($sql11);
                             $query11->execute();
                             $results11 = $query11->fetchAll(PDO::FETCH_OBJ);
@@ -126,7 +113,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql11 = "SELECT * from  equipment where usability = 1";
+                            $sql11 = "SELECT * from  equipment where id !='1' and lastUserUsed is null";
                             $query11 = $dbh->prepare($sql11);
                             $query11->execute();
                             $results11 = $query11->fetchAll(PDO::FETCH_OBJ);
@@ -156,24 +143,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <a href="view-equipments-form.php"><span class="badge badge-secondary"> View Detail </span></a>
                         </div>
                     </div>
-
-
                 </div>
-                <!-- end row -->
-
-
-
-
-            </div> <!-- container -->
-
+            </div>
             <?php include_once('includes/footer.php'); ?>
-
-
-
-
         </div> <!-- End wrapper -->
-
-
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
@@ -195,7 +168,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
     </body>
 
-    </html><?php } ?>
+    </html>
+<?php } ?>

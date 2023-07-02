@@ -16,7 +16,6 @@ if (isset($_POST['login'])) {
         foreach ($results as $result) {
             $_SESSION['sscmsaid'] = $result->schoolID;
         }
-        
         $_SESSION['login'] = $_POST['email'];
         echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
     } else {
@@ -73,7 +72,7 @@ if (isset($_POST['login'])) {
 
                         <div class="form-group row">
                             <div class="col-12">
-                                <input type="text" class="form-control" placeholder="enter your password" name="pass" required="true">
+                                <input type="password" class="form-control" placeholder="enter your password" name="pass" required="true">
                             </div>
                         </div>
 
