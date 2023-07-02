@@ -17,7 +17,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $query->bindParam(':desribeCondition', $desribeCondition, PDO::PARAM_STR);
         $query->execute();
 
-        $LastInsertId = $dbh->lastInsertId();
+        $LastInsertId = $query->rowCount();
         if ($LastInsertId > 0) {
             echo '<script>alert("Report successfully")</script>';
             echo "<script>window.location.href ='dashboard.php'</script>";

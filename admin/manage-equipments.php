@@ -6,27 +6,22 @@ include('./QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
    header('location:logout.php');
 } else {
-   // Code for deleting product from cart
    if (isset($_GET['delid'])) {
-      $deskid = intval($_GET['delid']);
-
-      $query = $dbh->prepare("SELECT id FROM tbldesk WHERE id=:deskid and isOccupied is not null");
-      $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
+      $id = $_GET['delid'];
+      $query = $dbh->prepare("SELECT * FROM equipment WHERE id= :id");
+      $query->bindParam(':id', $id, PDO::PARAM_STR);
       $query->execute();
-      $results = $query->fetchAll(PDO::FETCH_OBJ);
-
-      if ($query->rowCount() > 0) {
-         echo '<script>alert("Desk occupied cannot  deleted")</script>';
+      if ($query->rowCount() == 0) {
+         echo '<script>alert("Room ' . $id . ' does not existed!")</script>';
       } else {
-         $sql = "delete from tbldesk where id=:deskid";
+         $sql = "DELETE FROM equipment WHERE id= :id";
          $query = $dbh->prepare($sql);
-         $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
+         $query->bindParam(':id', $id, PDO::PARAM_STR);
          $query->execute();
          echo "<script>alert('Data deleted');</script>";
-         echo "<script>window.location.href = 'manage-desks.php'</script>";
+         echo "<script>window.location.href = 'manage-equipments.php'</script>";
       }
    }
-
 ?>
    <!doctype html>
    <html lang="en">
@@ -100,7 +95,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <td><?php echo htmlentities($row->currentRoom); ?></td>
                                     <td><?php echo htmlentities($row->avaiableTime); ?></td>
                                     <td>
-                                       <a href="edit-desk.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-desks.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a>
+                                       <a href="edit-equipment.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-equipments.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a>
                                     </td>
                                  </tr>
                            <?php $cnt = $cnt + 1;

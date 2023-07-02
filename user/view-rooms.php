@@ -5,29 +5,6 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
-    // Code for deleting product from cart
-    if (isset($_GET['delid'])) {
-        $deskid = intval($_GET['delid']);
-
-        $query = $dbh->prepare("SELECT id FROM tbldesk WHERE id=:deskid and isOccupied is not null");
-        $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
-        $query->execute();
-        $results = $query->fetchAll(PDO::FETCH_OBJ);
-
-        if ($query->rowCount() > 0) {
-            echo '<script>alert("Desk occupied cannot  deleted")</script>';
-        } else {
-
-            $sql = "delete from tbldesk where id=:deskid";
-            $query = $dbh->prepare($sql);
-            $query->bindParam(':deskid', $deskid, PDO::PARAM_STR);
-            $query->execute();
-            echo "<script>alert('Data deleted');</script>";
-            echo "<script>window.location.href = 'manage-desks.php'</script>";
-        }
-    }
-
 ?>
     <!doctype html>
     <html lang="en">
@@ -82,16 +59,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <th>Description</th>
                                     </tr>
                                 </thead>
-
-
                                 <tbody>
                                     <?php
-
                                     $sql = "SELECT * from room where id != 1";
                                     $query = $dbh->prepare($sql);
                                     $query->execute();
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
-
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
                                         foreach ($results as $row) {               ?>
@@ -108,22 +81,16 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <?php $cnt = $cnt + 1;
                                         }
                                     } ?>
-
                                 </tbody>
                             </table>
 
                         </div>
                     </div>
-                </div> <!-- end row -->
-
-
-
-            </div> <!-- container -->
+                </div> 
+            </div> 
             <?php include_once('includes/footer.php'); ?>
 
         </div> <!-- End wrapper -->
-
-
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

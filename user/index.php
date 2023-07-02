@@ -6,7 +6,7 @@ include('includes/dbconnection.php');
 if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $pass = $_POST['pass'];
-    $sql = "SELECT schoolID FROM tbluser WHERE email=:email and pass=:pass";
+    $sql = "SELECT * FROM tbluser WHERE email=:email and pass=:pass";
     $query = $dbh->prepare($sql);
     $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->bindParam(':pass', $pass, PDO::PARAM_STR);
@@ -15,23 +15,20 @@ if (isset($_POST['login'])) {
     if ($query->rowCount() > 0) {
         foreach ($results as $result) {
             $_SESSION['sscmsaid'] = $result->schoolID;
+            $_SESSION['sscmsphone'] = $result->phonenumber;
         }
-        
         $_SESSION['login'] = $_POST['email'];
         echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
     } else {
         echo "<script>alert('Invalid Details');</script>";
     }
 }
-
 ?>
 <!doctype html>
 <html lang="en">
 
 <head>
-
-    <title>Student Study Center Mananagement System || Login</title>
-
+    <title>CIMS | Login</title>
     <!-- Bootstrap CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
@@ -40,23 +37,18 @@ if (isset($_POST['login'])) {
 
     <!-- Modernizr js -->
     <script src="assets/js/modernizr.min.js"></script>
-
 </head>
 
-
 <body>
-
     <div class="account-pages"></div>
     <div class="clearfix"></div>
     <div class="wrapper-page">
-
         <div class="account-bg">
             <div class="card-box mb-0">
                 <strong style="padding-top: 30px;"><a href="../index.php" class="text-muted"><i class="fa fa-home m-r-5"></i> Back Home!!</a> </strong>
                 <div class="text-center m-t-20">
-                    <h6>Student Study Center Mananagement System </h6>
+                    <h6>Classroom Mananagement System</h6>
                     <h6> User Login</h6>
-
                 </div>
                 <div class="m-t-10 p-20">
                     <div class="row">
@@ -70,41 +62,27 @@ if (isset($_POST['login'])) {
                                 <input type="text" class="form-control" placeholder="enter your email" required="true" name="email">
                             </div>
                         </div>
-
                         <div class="form-group row">
                             <div class="col-12">
-                                <input type="text" class="form-control" placeholder="enter your password" name="pass" required="true">
+                                <input type="password" class="form-control" placeholder="enter your password" name="pass" required="true">
                             </div>
                         </div>
-
-
                         <div class="form-group text-center row m-t-10">
                             <div class="col-12">
                                 <button class="btn btn-success btn-block waves-effect waves-light" type="submit" name="login">Log In</button>
                             </div>
                         </div>
-
                         <div class="form-group row m-t-30 mb-0">
                             <div class="col-12">
                                 <a href="forgot-password.php" class="text-muted"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
                             </div>
                         </div>
-
-
-
-
                     </form>
-
                 </div>
-
                 <div class="clearfix"></div>
             </div>
         </div>
-        <!-- end card-box-->
-
-
     </div>
-    <!-- end wrapper page -->
     <!-- jQuery  -->
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
@@ -116,7 +94,6 @@ if (isset($_POST['login'])) {
     <!-- App js -->
     <script src="assets/js/jquery.core.js"></script>
     <script src="assets/js/jquery.app.js"></script>
-
 </body>
 
 </html>
