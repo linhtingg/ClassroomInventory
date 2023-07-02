@@ -2,7 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
-include('./QueryHandler.php');
+include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -20,7 +20,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
             $sql = "SELECT * FROM `equipment` WHERE id=:oldID";
             $query = $dbh->prepare($sql);
-            $query->bindParam(':oldID', $oldID, PDO::PARAM_STR);
+            $query->bindParam(':oldID', $newID, PDO::PARAM_STR);
             $query->execute();
             $rowCount = $query->rowCount();
             if ($rowCount == 0 || $newID == $oldID) {
