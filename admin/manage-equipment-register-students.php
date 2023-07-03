@@ -8,7 +8,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
    // Code for deleting student details
    if (isset($_GET['rejectForm'])) {
-      Query::executeQuery($dbh, "UPDATE equipmentregisterform SET reply='1' where formid=:id", [[':id', intval($_GET['rejectForm'])]]);
+      Query::executeQuery("UPDATE equipmentregisterform SET reply='1' where formid=:id", [[':id', intval($_GET['rejectForm'])]]);
       echo "<script>alert('Form rejected');</script>";
       echo "<script>window.location.href = 'manage-equipment-register-students.php'</script>";
    }
@@ -63,7 +63,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </thead>
                         <tbody>
                            <?php
-                           $query = Query::executeQuery($dbh, "SELECT * from equipmentregisterform where reply is null");
+                           $query = Query::executeQuery("SELECT * from equipmentregisterform where reply is null");
                            $results = $query->fetchAll(PDO::FETCH_OBJ);
                            if ($query->rowCount() > 0) {
                               foreach ($results as $row) { ?>

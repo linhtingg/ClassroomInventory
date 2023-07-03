@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
+include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -78,9 +78,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <?php
                                     $aid = $_SESSION['sscmsaid'];
                                     $sql = "SELECT * from `roomregisterform` where `userID` = :aid";
-                                    $query = $dbh->prepare($sql);
-                                    $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-                                    $query->execute();
+                                    $query = Query::executeQuery($sql, [[':aid', $aid]]);
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {

@@ -1,20 +1,17 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
+include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $userID = $_SESSION['sscmsaid'];
-        $mobno = $_POST['mobilenumber'];
-        $email = $_POST['email'];
         $sql = "update tbluser set phonenumber=:mobilenumber,email=:email where schoolID=:aid";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':email', $email, PDO::PARAM_STR);
-        $query->bindParam(':mobilenumber', $mobno, PDO::PARAM_STR);
-        $query->bindParam(':aid', $userID, PDO::PARAM_STR);
-        $query->execute();
+        Query::executeQuery($sql,[
+            [':email', $_POST['email']],
+            [':mobilenumber', $_POST['mobilenumber']],
+            [':aid', $_SESSION['sscmsaid']]
+        ]);
         echo '<script>alert("Your profile has been updated")</script>';
         echo "<script>window.location.href ='profile.php'</script>";
     }
@@ -57,9 +54,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <form action="#" method="post">
                                             <?php
                                             $sql = "SELECT * from tbluser where schoolID = :id";
-                                            $query = $dbh->prepare($sql);
-                                            $query->bindParam(':id', $_SESSION['sscmsaid']);
-                                            $query->execute();
+                                            $query = Query::executeQuery($sql, [[':id', $_SESSION['sscmsaid']]]);
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                                             if ($query->rowCount() > 0) {
                                                 foreach ($results as $row) { ?>

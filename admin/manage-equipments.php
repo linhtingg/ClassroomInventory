@@ -8,11 +8,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
    if (isset($_GET['delid'])) {
       $id = $_GET['delid'];
-      $query = Query::executeQuery($dbh, "SELECT * FROM equipment WHERE id= :id", [[':id', $id]]);
+      $query = Query::executeQuery("SELECT * FROM equipment WHERE id= :id", [[':id', $id]]);
       if ($query->rowCount() == 0) {
          echo '<script>alert("Room ' . $id . ' does not existed!")</script>';
       } else {
-         Query::executeQuery($dbh, "DELETE FROM equipment WHERE id= :id", [[':id', $id]]);
+         Query::executeQuery("DELETE FROM equipment WHERE id= :id", [[':id', $id]]);
          echo "<script>alert('Data deleted');</script>";
          echo "<script>window.location.href = 'manage-equipments.php'</script>";
       }
@@ -73,7 +73,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </thead>
                         <tbody>
                            <?php
-                           $query = Query::executeQuery($dbh, "SELECT * from equipment where id!='1'");
+                           $query = Query::executeQuery("SELECT * from equipment where id!='1'");
                            $results = $query->fetchAll(PDO::FETCH_OBJ);
                            $cnt = 1;
                            if ($query->rowCount() > 0) {

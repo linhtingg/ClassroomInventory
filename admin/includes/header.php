@@ -31,28 +31,28 @@
                             <?php
                             $aid = $_SESSION['sscmsaid'];
                             $sql = "SELECT * from tbladmin where schoolID =:aid";
-                            $query = Query::executeQuery($dbh, $sql, [[':aid', $aid]]);
+                            $query = Query::executeQuery($sql, [[':aid', $aid]]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             if ($query->rowCount() > 0) {
                                 foreach ($results as $row) { ?>
                                     <div class="dropdown-item noti-title">
                                         <h5 class="text-overflow"><small>Welcome !<?php echo htmlentities($row->fullName); ?></small> </h5>
-                                <?php }
-                            } ?>
                                     </div>
-                                    <!-- item-->
-                                    <a href="profile.php" class="dropdown-item notify-item">
-                                        <i class="zmdi zmdi-account-circle"></i> <span>Profile</span>
-                                    </a>
+                            <?php }
+                            } ?>
+                            <!-- item-->
+                            <a href="profile.php" class="dropdown-item notify-item">
+                                <i class="zmdi zmdi-account-circle"></i> <span>Profile</span>
+                            </a>
 
-                                    <!-- item-->
-                                    <a href="change-password.php" class="dropdown-item notify-item">
-                                        <i class="zmdi zmdi-settings"></i> <span>Settings</span>
-                                    </a>
+                            <!-- item-->
+                            <a href="change-password.php" class="dropdown-item notify-item">
+                                <i class="zmdi zmdi-settings"></i> <span>Settings</span>
+                            </a>
 
-                                    <a href="logout.php" class="dropdown-item notify-item">
-                                        <i class="zmdi zmdi-power"></i> <span>Logout</span>
-                                    </a>
+                            <a href="logout.php" class="dropdown-item notify-item">
+                                <i class="zmdi zmdi-power"></i> <span>Logout</span>
+                            </a>
                         </div>
                     </li>
                 </ul>

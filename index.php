@@ -1,5 +1,5 @@
-<?php 
-include('./helper/dbconnection.php');
+<?php
+include('./helper/QueryHandler.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,7 +43,6 @@ include('./helper/dbconnection.php');
                 <p>This is a web-based application developed using PHP and MySQL. </p>
                 <p>
                 <h5> Classroom Status</h5>
-                <hr />
                 <table class="table">
                     <thead>
                         <tr>
@@ -56,15 +55,11 @@ include('./helper/dbconnection.php');
                     </thead>
                     <tbody>
                         <?php
-
-                        $sql = "SELECT * from room where id!='1'";
-                        $query = $dbh->prepare($sql);
-                        $query->execute();
+                        $query = Query::executeQuery("SELECT * from room where id!='1'");
                         $results = $query->fetchAll(PDO::FETCH_OBJ);
-
                         $cnt = 1;
                         if ($query->rowCount() > 0) {
-                            foreach ($results as $row) {       ?>
+                            foreach ($results as $row) { ?>
                                 <tr>
                                     <td><?php echo htmlentities($cnt); ?></td>
                                     <td><?php echo htmlentities($row->id); ?></td>
@@ -74,15 +69,12 @@ include('./helper/dbconnection.php');
                                         if ($room_usability == 0) : echo "<span style='color:red'>Not Available</span>";
                                         else : echo "<span style='color:green'>Available</span>";
                                         endif; ?></td>
-
                                 </tr>
                         <?php $cnt++;
                             }
                         } ?>
-
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>

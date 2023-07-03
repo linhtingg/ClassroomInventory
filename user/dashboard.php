@@ -1,7 +1,6 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
@@ -40,7 +39,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $sql0 = "SELECT * from  room where capacity !=0";
-                            $query = Query::executeQuery($dbh, $sql0);
+                            $query = Query::executeQuery($sql0);
                             $totalroom = $query->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
@@ -54,7 +53,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $sql1 = "SELECT * from  room where usability = 1";
-                            $query1 = Query::executeQuery($dbh, $sql1);
+                            $query1 = Query::executeQuery($sql1);
                             $totalroomsavail = $query1->rowCount();
                             ?>
                             <i class="fa fa-roomtop float-right"></i>
@@ -68,7 +67,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $sql11 = "SELECT * from  `roomregisterform` where `userID` = :aid ";
-                            $query11 = Query::executeQuery($dbh, $sql11, [':aid', $_SESSION['sscmsaid']]);
+                            $query11 = Query::executeQuery($sql11, [[':aid', $_SESSION['sscmsaid']]]);
                             $totalregstd = $query11->rowCount();
                             ?>
                             <i class="fa fa-users float-right"></i>
@@ -83,7 +82,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $sql11 = "SELECT * from  equipment where id!='1'";
-                            $query11 = Query::executeQuery($dbh, $sql11);
+                            $query11 = Query::executeQuery($sql11);
                             $totalregstd = $query11->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
@@ -97,7 +96,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $sql11 = "SELECT * from  equipment where usability=1";
-                            $query11 = Query::executeQuery($dbh, $sql11);
+                            $query11 = Query::executeQuery($sql11);
                             $totalregstd = $query11->rowCount();
                             ?>
                             <i class="fa fa-roomtop float-right"></i>
@@ -112,7 +111,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <?php
                             $aid = $_SESSION['sscmsaid'];
                             $sql11 = "SELECT * from  `equipmentregisterform` where `userID` = :aid ";
-                            $query11 = Query::executeQuery($dbh, $sql11, [':aid', $aid]);
+                            $query11 = Query::executeQuery($sql11, [[':aid', $aid]]);
                             $totalregstd = $query11->rowCount();
                             ?>
                             <i class="fa fa-users float-right"></i>
