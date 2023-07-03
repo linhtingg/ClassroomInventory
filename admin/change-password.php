@@ -10,11 +10,20 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $query = Query::executeQuery(
             $dbh,
             "SELECT * FROM tbladmin WHERE schoolID=:adminID and password=:oldPass",
-            [':adminID', $_SESSION['sscmsaid']],
-            [':oldPass', $_POST['currentpassword']]
+            [
+                [':adminID', $_SESSION['sscmsaid']],
+                [':oldPass', $_POST['currentpassword']]
+            ]
         );
         if ($query->rowCount() > 0) {
-            Query::executeQuery($dbh, "UPDATE tbladmin set password=:newPass where schoolID=:adminID", [':newPass', $_POST['newPass']], [':adminID', $_SESSION['sscmsaid']]);
+            Query::executeQuery(
+                $dbh,
+                "UPDATE tbladmin set password=:newPass where schoolID=:adminID",
+                [
+                    [':newPass', $_POST['newPass']],
+                    [':adminID', $_SESSION['sscmsaid']]
+                ]
+            );
             echo '<script>alert("Your password successully changed")</script>';
         } else {
             echo '<script>alert("Your current password is wrong")</script>';
@@ -90,9 +99,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
             <?php include_once('../helper/footer.php'); ?>
-        </div> 
+        </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

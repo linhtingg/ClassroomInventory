@@ -8,7 +8,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
    // Code for deleting student details
    if (isset($_GET['rejectForm'])) {
-      Query::executeQuery($dbh, "UPDATE equipmentregisterform SET reply='1' where formid=:id", [':id', intval($_GET['rejectForm'])]);
+      Query::executeQuery($dbh, "UPDATE equipmentregisterform SET reply='1' where formid=:id", [[':id', intval($_GET['rejectForm'])]]);
       echo "<script>alert('Form rejected');</script>";
       echo "<script>window.location.href = 'manage-equipment-register-students.php'</script>";
    }

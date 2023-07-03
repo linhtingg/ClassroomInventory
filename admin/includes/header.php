@@ -31,7 +31,7 @@
                             <?php
                             $aid = $_SESSION['sscmsaid'];
                             $sql = "SELECT * from tbladmin where schoolID =:aid";
-                            $query = Query::executeQuery($dbh, $sql, [':aid', $aid]);
+                            $query = Query::executeQuery($dbh, $sql, [[':aid', $aid]]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             if ($query->rowCount() > 0) {
                                 foreach ($results as $row) { ?>

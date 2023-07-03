@@ -10,8 +10,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         Query::executeQuery(
             $dbh,
             "UPDATE equipmentregisterform SET reply = :equipmentID where formid=:id",
-            [':equipmentID', $_POST['equipmentID']],
-            [':id', intval($_GET['formID'])]
+            [
+                [':equipmentID', $_POST['equipmentID']],
+                [':id', intval($_GET['formID'])]
+            ]
         );
         echo '<script>alert("Equipment has been assigned.")</script>';
         echo "<script>window.location.href ='manage-equipment-register-students.php'</script>";
@@ -48,7 +50,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box">
                             <?php
                             $sql = "SELECT * FROM equipmentregisterform INNER JOIN tbluser ON equipmentregisterform.userID=tbluser.schoolID WHERE formid=:formID;";
-                            $query = Query::executeQuery($dbh, $sql, [':formID', intval($_GET['formID'])]);
+                            $query = Query::executeQuery($dbh, $sql, [[':formID', intval($_GET['formID'])]]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             if ($query->rowCount() > 0) {
                                 foreach ($results as $row) { ?>

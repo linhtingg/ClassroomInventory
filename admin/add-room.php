@@ -8,16 +8,18 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
     if (isset($_POST['submit'])) {
         $roomname = $_POST['roomname'];
-        $query = Query::executeQuery($dbh, "SELECT * FROM `room` WHERE id=:roomname", [':roomname', $roomname]);
+        $query = Query::executeQuery($dbh, "SELECT * FROM `room` WHERE id=:roomname", [[':roomname', $roomname]]);
         if ($query->rowCount() == 0) {
             $query = Query::executeQuery(
                 $dbh,
                 "INSERT INTO room (id, capacity, usability, description, avaiableTime) VALUES (:roomname, :capacity, :usability, :description, :availableTime)",
-                [':roomname', $roomname],
-                [':capacity', $_POST['capacity']],
-                [':usability', $_POST['usability']],
-                [':description', $_POST['description']],
-                [':availableTime', $_POST['availableTimes']]
+                [
+                    [':roomname', $roomname],
+                    [':capacity', $_POST['capacity']],
+                    [':usability', $_POST['usability']],
+                    [':description', $_POST['description']],
+                    [':availableTime', $_POST['availableTimes']]
+                ]
             );
             if ($query->rowCount() > 0) {
                 echo "<script>alert('Room added successfully');</script>";
@@ -99,7 +101,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
             <?php include_once('../helper/footer.php'); ?>
         </div>
 

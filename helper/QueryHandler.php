@@ -1,11 +1,16 @@
 <?php
 class Query
 {
-   public static function executeQuery(PDO $dbh, string $sql, array ...$bindParams)
+   /**
+    * Execute SQL query.
+    */
+   public static function executeQuery(PDO $dbh, string $sql, array $bindParams = []): PDOStatement
    {
       $query = $dbh->prepare($sql);
-      foreach ($bindParams as $index => $arg) {
-         $query->bindParam($arg[0], $arg[1], PDO::PARAM_STR);
+      if ($bindParams != []) {
+         foreach ($bindParams as $arg) {
+            $query->bindParam($arg[0], $arg[1], PDO::PARAM_STR);
+         }
       }
       $query->execute();
       return $query;

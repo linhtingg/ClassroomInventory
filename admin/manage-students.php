@@ -7,7 +7,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['stdid'])) {
-        Query::executeQuery($dbh, $sql, [':sid', $_GET['stdid']]);
+        Query::executeQuery($dbh, $sql, [[':sid', $_GET['stdid']]]);
         echo "<script>alert('Student deleted');</script>";
         echo "<script>window.location.href = 'manage-students.php'</script>";
     }
