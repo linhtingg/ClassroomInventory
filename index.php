@@ -1,4 +1,5 @@
-<?php include('admin/includes/dbconnection.php');
+<?php 
+include('./helper/dbconnection.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">

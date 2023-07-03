@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -25,14 +25,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
             echo '<script>alert("Something Went Wrong. Please try again")</script>';
         }
     }
-
-
 ?>
     <!doctype html>
     <html lang="en">
 
     <head>
-
         <title>Report a problem </title>
 
         <!-- DataTables -->
@@ -54,18 +51,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
         <!-- Modernizr js -->
         <script src="assets/js/modernizr.min.js"></script>
-
     </head>
 
-
     <body>
-
         <?php include_once('includes/header.php'); ?>
-
-
-        <!-- ============================================================== -->
-        <!-- Start right Content here -->
-        <!-- ============================================================== -->
         <div class="wrapper">
             <div class="container">
                 <div class="row">
@@ -73,8 +62,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box">
                             <h3> Report a problem</h3>
                             <span> What have you encountered? Please elaborate, we will try to fix them as soon as possible! </span>
-                            <hr />
-
                             <div class="card-body card-block">
                                 <form method="post" enctype="multipart/form-data" class="form-horizontal">
                                     <div class="row form-group">
@@ -85,7 +72,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                             <input readonly type="text" class="form-control" required="true" name="userID" value="<?php echo $_SESSION['sscmsaid']; ?>">
                                         </div>
                                     </div>
-
                                     <div class="row form-group">
                                         <div class="col col-md-3">
                                             <label for="text-input" class=" form-control-label">Report date <small>(Auto Generated)</small><span class="text-danger">*</span></label>
@@ -95,7 +81,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                                                                                                         echo date('d-m-Y h:i:s'); ?>">
                                         </div>
                                     </div>
-
                                     <div class="row form-group">
                                         <div class="col col-md-3">
                                             <label for="text-input" class=" form-control-label">Room <span class="text-danger">*</span></label>
@@ -108,7 +93,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 $query0 = $dbh->prepare($sql0);
                                                 $query0->execute();
                                                 $results = $query0->fetchAll(PDO::FETCH_OBJ);
-                                            
                                                 foreach ($results as $result) {
                                                     echo "<option value= $result->id </option>";
                                                 }
@@ -116,7 +100,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                             </datalist>
                                         </div>
                                     </div>
-
                                     <div class="row form-group">
                                         <div class="col col-md-3">
                                             <label for="text-input" class=" form-control-label">Descibe the problem<span class="text-danger">*</span></label>
@@ -125,16 +108,18 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                             <input type="text" class="form-control" required="true" name="desribeCondition">
                                         </div>
                                     </div>
-
                                     <div class="card-footer">
                                         <p style="text-align: center;"><button type="submit" name="submit" id="submit" class="btn btn-primary btn-sm">Submit
                                             </button></p>
                                     </div>
                                 </form>
                             </div>
-            <?php include_once('includes/footer.php'); ?>
-        </div> <!-- End wrapper -->
-
+                            <?php include_once('../helper/footer.php'); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

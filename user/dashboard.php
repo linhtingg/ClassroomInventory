@@ -1,14 +1,14 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
+include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
 ?>
     <!doctype html>
     <html lang="en">
-    <!-- App title -->
     <title> Dashboard</title>
     <!--Morris Chart CSS -->
     <link rel="stylesheet" href="../plugins/morris/morris.css">
@@ -21,14 +21,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     <!-- Modernizr js -->
     <script src="assets/js/modernizr.min.js"></script>
     </head>
+
     <body>
         <?php include_once('includes/header.php'); ?>
-
-
-
-        <!-- ============================================================== -->
-        <!-- Start right Content here -->
-        <!-- ============================================================== -->
         <div class="wrapper">
             <div class="container">
 
@@ -40,17 +35,13 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </div>
                     </div>
                 </div>
-
-
                 <div class="row">
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
                             $sql0 = "SELECT * from  room where capacity !=0";
-                            $query0 = $dbh->prepare($sql0);
-                            $query0->execute();
-                            $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
-                            $totalroom = $query0->rowCount();
+                            $query = Query::executeQuery($dbh, $sql0);
+                            $totalroom = $query->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Rooms</h6>
@@ -63,9 +54,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $sql1 = "SELECT * from  room where usability = 1";
-                            $query1 = $dbh->prepare($sql1);
-                            $query1->execute();
-                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
+                            $query1 = Query::executeQuery($dbh, $sql1);
                             $totalroomsavail = $query1->rowCount();
                             ?>
                             <i class="fa fa-roomtop float-right"></i>
@@ -78,12 +67,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $aid = $_SESSION['sscmsaid'];
                             $sql11 = "SELECT * from  `roomregisterform` where `userID` = :aid ";
-                            $query11 = $dbh->prepare($sql11);
-                            $query11->bindParam(':aid', $aid, PDO::PARAM_STR);
-                            $query11->execute();
-                            $results11 = $query11->fetchAll(PDO::FETCH_OBJ);
+                            $query11 = Query::executeQuery($dbh, $sql11, [':aid', $_SESSION['sscmsaid']]);
                             $totalregstd = $query11->rowCount();
                             ?>
                             <i class="fa fa-users float-right"></i>
@@ -98,9 +83,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $sql11 = "SELECT * from  equipment where id!='1'";
-                            $query11 = $dbh->prepare($sql11);
-                            $query11->execute();
-                            $results11 = $query11->fetchAll(PDO::FETCH_OBJ);
+                            $query11 = Query::executeQuery($dbh, $sql11);
                             $totalregstd = $query11->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
@@ -114,9 +97,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $sql11 = "SELECT * from  equipment where usability=1";
-                            $query11 = $dbh->prepare($sql11);
-                            $query11->execute();
-                            $results11 = $query11->fetchAll(PDO::FETCH_OBJ);
+                            $query11 = Query::executeQuery($dbh, $sql11);
                             $totalregstd = $query11->rowCount();
                             ?>
                             <i class="fa fa-roomtop float-right"></i>
@@ -131,10 +112,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <?php
                             $aid = $_SESSION['sscmsaid'];
                             $sql11 = "SELECT * from  `equipmentregisterform` where `userID` = :aid ";
-                            $query11 = $dbh->prepare($sql11);
-                            $query11->bindParam(':aid', $aid, PDO::PARAM_STR);
-                            $query11->execute();
-                            $results11 = $query11->fetchAll(PDO::FETCH_OBJ);
+                            $query11 = Query::executeQuery($dbh, $sql11, [':aid', $aid]);
                             $totalregstd = $query11->rowCount();
                             ?>
                             <i class="fa fa-users float-right"></i>
@@ -145,7 +123,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('includes/footer.php'); ?>
+            <?php include_once('../helper/footer.php'); ?>
         </div> <!-- End wrapper -->
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

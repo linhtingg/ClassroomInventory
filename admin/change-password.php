@@ -1,20 +1,20 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['change'])) {
-        $adminID = $_SESSION['sscmsaid'];
-        $oldPass = $_POST['currentpassword'];
-        $sql = "SELECT * FROM tbladmin WHERE schoolID=:adminID and password=:oldPass";
-        $query = Query::executeQuery($dbh, $sql, [':adminID', $adminID], [':oldPass', $oldPass]);
+        $query = Query::executeQuery(
+            $dbh,
+            "SELECT * FROM tbladmin WHERE schoolID=:adminID and password=:oldPass",
+            [':adminID', $_SESSION['sscmsaid']],
+            [':oldPass', $_POST['currentpassword']]
+        );
         if ($query->rowCount() > 0) {
-            $newPass = ($_POST['newPass']);
-            $con = "UPDATE tbladmin set password=:newPass where schoolID=:adminID";
-            Query::executeQuery($dbh, $con, [':newPass', $newPass], [':adminID', $adminID]);
+            Query::executeQuery($dbh, "UPDATE tbladmin set password=:newPass where schoolID=:adminID", [':newPass', $_POST['newPass']], [':adminID', $_SESSION['sscmsaid']]);
             echo '<script>alert("Your password successully changed")</script>';
         } else {
             echo '<script>alert("Your current password is wrong")</script>';
@@ -87,16 +87,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     </div>
                                 </div>
                             </div>
-                            <!-- end row -->
                         </div>
-                    </div><!-- end col-->
-
+                    </div>
                 </div>
-                <!-- end row -->
-            </div> <!-- container -->
-            <?php include_once('includes/footer.php'); ?>
-
-        </div> <!-- End wrapper -->
+            </div> 
+            <?php include_once('../helper/footer.php'); ?>
+        </div> 
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

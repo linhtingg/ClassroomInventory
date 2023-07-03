@@ -1,14 +1,18 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $sql = "UPDATE equipmentregisterform SET reply = :equipmentID where formid=:id;";
-        $query = Query::executeQuery($dbh, $sql, [':equipmentID', $_POST['equipmentID']], [':id', intval($_GET['formID'])]);
+        Query::executeQuery(
+            $dbh,
+            "UPDATE equipmentregisterform SET reply = :equipmentID where formid=:id",
+            [':equipmentID', $_POST['equipmentID']],
+            [':id', intval($_GET['formID'])]
+        );
         echo '<script>alert("Equipment has been assigned.")</script>';
         echo "<script>window.location.href ='manage-equipment-register-students.php'</script>";
     }
@@ -87,7 +91,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('includes/footer.php'); ?>
+            <?php include_once('../helper/footer.php'); ?>
         </div>
         <form method="post">
             <div id="assignEquipment" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -117,9 +121,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
                             <button type="submit" name="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
                         </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
+                    </div>
+                </div>
+            </div>
         </form>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

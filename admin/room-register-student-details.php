@@ -1,15 +1,19 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     // Assign Room Code   
     if (isset($_POST['submit'])) {
-        $sql = "UPDATE roomregisterform SET  reply = :roomID where formid=:id;";
-        $query = Query::executeQuery($dbh, $sql, ['roomID', $_POST['roomID']], [':id', intval($_GET['stdid'])]);
+        $query = Query::executeQuery(
+            $dbh,
+            "UPDATE roomregisterform SET  reply = :roomID where formid=:id",
+            ['roomID', $_POST['roomID']],
+            [':id', intval($_GET['stdid'])]
+        );
         echo '<script>alert("Room has been assigned.")</script>';
         echo "<script>window.location.href ='manage-room-register-students.php'</script>";
     }
@@ -48,8 +52,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             $query = Query::executeQuery($dbh, $sql, [':formID', intval($_GET['stdid'])]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             if ($query->rowCount() > 0) {
-                                foreach ($results as $row) {
-                            ?>
+                                foreach ($results as $row) { ?>
                                     <h3 class="m-t-0 header-title"> Room Registered Form Details of #<?php echo htmlentities($row->formid); ?></h3>
                                     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <tr>
@@ -80,16 +83,16 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                             <th>Purpose</th>
                                             <td><?php echo htmlentities($row->purpose); ?></td>
                                         </tr>
-                                <?php }
-                            } ?>
                                     </table>
-                                    <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#assignRoom">Assign Room</button>
-                                    <a onclick="return confirm('Do you really want to reject?');" class="btn btn-danger" href="./manage-room-register-students.php?rejectForm=<?php echo ($row->formid); ?>">Reject</a>
+                            <?php }
+                            } ?>
+                            <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#assignRoom">Assign Room</button>
+                            <a onclick="return confirm('Do you really want to reject?');" class="btn btn-danger" href="./manage-room-register-students.php?rejectForm=<?php echo ($row->formid); ?>">Reject</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <?php include_once('includes/footer.php'); ?>
+            <?php include_once('../helper/footer.php'); ?>
         </div>
         <form method="post">
             <div id="assignRoom" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -119,9 +122,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
                             <button type="submit" name="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
                         </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
+                    </div>
+                </div>
+            </div>
         </form>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

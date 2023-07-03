@@ -1,28 +1,28 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
     if (isset($_POST['submit'])) {
         $equipment = $_POST['equipment'];
-        $type = $_POST['type'];
-        $totalUsedTime = $_POST['totalUsedTime'];
-        $producedYear = $_POST['producedYear'];
-        $description = $_POST['description'];
-        $lastUserUsed = $_POST['lastUserUsed'];
-        $currentRoom = $_POST['currentRoom'];
-        $avaiableTime = $_POST['avaiableTimes'];
-        $sql = "SELECT * FROM `equipment` WHERE id = :newID";
-        $query = Query::executeQuery($dbh, $sql, [':newID', $equipment]);
-        echo "<script>alert('pass');</script>";
-        $rowCount = $query->rowCount();
+        $rowCount = Query::executeQuery($dbh, "SELECT * FROM `equipment` WHERE id = :newID", [':newID', $equipment])->rowCount();
         if ($rowCount == 0) {
-            $sql = "INSERT INTO equipment VALUES (:type, :id, :totalUsedTime,:producedYear , :description, :lastUserUsed, :currentRoom, :avaiableTimes,1)";
-            $query = Query::executeQuery($dbh, $sql, [':id', $equipment], [':type', $type], [':totalUsedTime', $totalUsedTime], [':producedYear', $producedYear], [':description', $description], [':lastUserUsed', $lastUserUsed], [':currentRoom', $currentRoom], [':avaiableTimes', $avaiableTime]);
+            $sql = "INSERT INTO equipment VALUES (:type, :id, :totalUsedTime,:producedYear , :description, :lastUserUsed, :currentRoom, :avaiableTimes, 1)";
+            $query = Query::executeQuery(
+                $dbh,
+                $sql,
+                [':id', $equipment],
+                [':type', $_POST['type']],
+                [':totalUsedTime', $_POST['totalUsedTime']],
+                [':producedYear', $_POST['producedYear']],
+                [':description', $_POST['description']],
+                [':lastUserUsed', $_POST['lastUserUsed']],
+                [':currentRoom', $_POST['currentRoom']],
+                [':avaiableTimes', $$_POST['avaiableTimes']]
+            );
             if ($query->rowCount() > 0) {
                 echo "<script>alert('Equipment added successfully');</script>";
                 echo "<script>window.location.href = 'manage-equipments.php'</script>";
@@ -122,10 +122,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             </form>
                         </div>
                     </div>
-                </div> <!-- end row -->
-            </div> <!-- container -->
-            <?php include_once('includes/footer.php'); ?>
-        </div> <!-- End wrapper -->
+                </div> 
+            </div> 
+            <?php include_once('../helper/footer.php'); ?>
+        </div>
 
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

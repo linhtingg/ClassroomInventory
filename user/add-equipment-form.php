@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -39,23 +39,15 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     <html lang="en">
 
     <head>
-
         <title>Write equipment request</title>
         <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-
-
     </head>
-
-
     <body>
-
         <?php include_once('includes/header.php'); ?>
         <div class="wrapper">
             <div class="container">
-
-                <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="page-title-box">
@@ -63,20 +55,14 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </div>
                     </div>
                 </div>
-                <!-- end row -->
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-
                             <div class="row">
                                 <div class="col-lg-6">
-
                                     <h4 class="header-title m-t-0">Equipment register form</h4>
-
                                     <div class="p-20">
                                         <form action="#" method="post">
-
                                             <div class="form-group">
                                                 <label for="userID">User ID <small>(Auto Generated)</small><span class="text-danger">*</span></label>
                                                 <input readonly type="text" class="form-control" required="true" name="userID" value="<?php echo $_SESSION['sscmsaid']; ?>">
@@ -110,33 +96,19 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <label for="userID">Borrow day <span class="text-danger">*</span></label>
                                                 <input type="date" class="form-control" required="true" name="borrow_day">
                                             </div>
-
                                             <div class="form-group text-left m-b-0">
                                                 <button class="btn btn-primary waves-effect waves-light" type="submit" name="submit">Submit</button>
-
                                             </div>
-
                                         </form>
                                     </div>
-
                                 </div>
-
                             </div>
-                            <!-- end row -->
-
-
                         </div>
-                    </div><!-- end col-->
-
+                    </div>
                 </div>
-                <!-- end row -->
-
-            </div> <!-- container -->
-
-            <?php include_once('includes/footer.php'); ?>
-
-        </div> <!-- End wrapper -->
-
+            </div> 
+            <?php include_once('../helper/footer.php'); ?>
+        </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

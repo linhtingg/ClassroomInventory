@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
@@ -56,8 +56,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $sql = "SELECT * from reportform";
-                                        $query = Query::executeQuery($dbh, $sql);
+                                        $query = Query::executeQuery($dbh, "SELECT * from reportform");
                                         $results = $query->fetchAll(PDO::FETCH_OBJ);
                                         if ($query->rowCount() > 0) {
                                             $cnt = 1;
@@ -76,16 +75,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             </div>
                         </div>
                     </div>
-                </div> <!-- end row -->
-
-
-
-            </div> <!-- container -->
-            <?php include_once('includes/footer.php'); ?>
-
-        </div> <!-- End wrapper -->
-
-
+                </div>
+            </div>
+            <?php include_once('../helper/footer.php'); ?>
+        </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
