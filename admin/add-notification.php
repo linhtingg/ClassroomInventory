@@ -1,16 +1,18 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $usability = $_POST['content'];
-        $description = $_POST['date'];
-        $sql = "INSERT INTO notification (notiContent, valid_til) VALUES (:content,:lastDay);";
-        $query = Query::executeQuery($dbh, $sql, [':content', $usability], [':lastDay', $description]);
+        $query = Query::executeQuery(
+            $dbh,
+            "INSERT INTO notification (notiContent, valid_til) VALUES (:content,:lastDay);",
+            [':content', $_POST['content']],
+            [':lastDay', $_POST['date']]
+        );
         if ($query->rowCount() > 0) {
             echo "<script>alert('Notification added successfully');</script>";
         } else {
@@ -58,11 +60,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             </form>
                         </div>
                     </div>
-                </div> <!-- end row -->
-            </div> <!-- container -->
-            <?php include_once('includes/footer.php'); ?>
-        </div> <!-- End wrapper -->
-
+                </div> 
+            </div> 
+            <?php include_once('../helper/footer.php'); ?>
+        </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

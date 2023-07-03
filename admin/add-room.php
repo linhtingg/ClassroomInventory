@@ -1,23 +1,24 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
         $roomname = $_POST['roomname'];
-        $capacity = $_POST['capacity'];
-        $usability = $_POST['usability'];
-        $description = $_POST['description'];
-        $availableTime = $_POST['availableTimes'];
-        $sql = "SELECT * FROM `room` WHERE id=:roomname";
-        $query = Query::executeQuery($dbh, $sql, [':roomname', $roomname]);
-        $rowCount = $query->rowCount();
-        if ($rowCount == 0) {
-            $sql = "INSERT INTO room (id, capacity, usability, description, avaiableTime) VALUES (:roomname, :capacity, :usability, :description, :availableTime)";
-            $query = Query::executeQuery($dbh, $sql, [':roomname', $roomname], [':capacity', $capacity], [':usability', $usability], [':description', $description], [':availableTime', $availableTime]);
+        $query = Query::executeQuery($dbh, "SELECT * FROM `room` WHERE id=:roomname", [':roomname', $roomname]);
+        if ($query->rowCount() == 0) {
+            $query = Query::executeQuery(
+                $dbh,
+                "INSERT INTO room (id, capacity, usability, description, avaiableTime) VALUES (:roomname, :capacity, :usability, :description, :availableTime)",
+                [':roomname', $roomname],
+                [':capacity', $_POST['capacity']],
+                [':usability', $_POST['usability']],
+                [':description', $_POST['description']],
+                [':availableTime', $_POST['availableTimes']]
+            );
             if ($query->rowCount() > 0) {
                 echo "<script>alert('Room added successfully');</script>";
             } else {
@@ -97,10 +98,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             </form>
                         </div>
                     </div>
-                </div> <!-- end row -->
-            </div> <!-- container -->
-            <?php include_once('includes/footer.php'); ?>
-        </div> <!-- End wrapper -->
+                </div>
+            </div> 
+            <?php include_once('../helper/footer.php'); ?>
+        </div>
 
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

@@ -1,14 +1,19 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $sql = "update tbladmin set fullName=:adminname,email=:email where schoolID=:adminID";
-        Query::executeQuery($dbh, $sql, [':adminname', $_POST['adminname']], [':email', $_POST['email']], [':adminID', $_SESSION['sscmsaid']]);
+        Query::executeQuery(
+            $dbh,
+            "update tbladmin set fullName=:adminname,email=:email where schoolID=:adminID",
+            [':adminname', $_POST['adminname']],
+            [':email', $_POST['email']],
+            [':adminID', $_SESSION['sscmsaid']]
+        );
         echo '<script>alert("Your profile has been updated")</script>';
         echo "<script>window.location.href ='profile.php'</script>";
     }
@@ -50,9 +55,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <div class="p-20">
                                         <form action="#" method="post">
                                             <?php
-                                            $adminID = $_SESSION['sscmsaid'];
-                                            $sql = "SELECT * from tbladmin where schoolID = :adminID";
-                                            $query = Query::executeQuery($dbh, $sql, [':adminID', $adminID]);
+                                            $query = Query::executeQuery($dbh, "SELECT * from tbladmin where schoolID = :adminID", [':adminID', $_SESSION['sscmsaid']]);
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                                             if ($query->rowCount() > 0) {
                                                 foreach ($results as $row) { ?>
@@ -86,9 +89,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('includes/footer.php'); ?>
+            <?php include_once('../helper/footer.php'); ?>
         </div>
-
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

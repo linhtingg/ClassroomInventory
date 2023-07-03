@@ -1,11 +1,10 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
 ?>
     <!doctype html>
     <html lang="en">
@@ -36,20 +35,13 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     </head>
 
     <body>
-
         <?php include_once('includes/header.php'); ?>
-
-        <!-- ============================================================== -->
-        <!-- Start right Content here -->
-        <!-- ============================================================== -->
         <div class="wrapper">
             <div class="container">
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
                             <h4 class="m-t-0 header-title">Notification Details</h4>
-
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
@@ -58,7 +50,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <th>Valid Until</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     <?php
                                     $sql = "SELECT * FROM `notification` WHERE `valid_til` >= CURDATE();";
@@ -78,19 +69,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     } ?>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
-                </div> <!-- end row -->
-
-
-
-            </div> <!-- container -->
-            <?php include_once('includes/footer.php'); ?>
-
-        </div> <!-- End wrapper -->
-
-
+                </div>
+            </div>
+            <?php include_once('../helper/footer.php'); ?>
+        </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

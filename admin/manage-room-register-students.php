@@ -1,15 +1,13 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['rejectForm'])) {
-        $formID = intval($_GET['rejectForm']);
-        $sql = "UPDATE roomregisterform SET reply='1' where formid=:id;";
-        $query = Query::executeQuery($dbh, $sql, [':id', $formID]);
+        Query::executeQuery($dbh, "UPDATE roomregisterform SET reply='1' where formid=:id", [':id', intval($_GET['rejectForm'])]);
         echo "<script>alert('Form rejected');</script>";
         echo "<script>window.location.href = 'manage-room-register-students.php'</script>";
     }
@@ -52,8 +50,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $sql = "SELECT * from roomregisterform where reply is NULL";
-                                    $query = Query::executeQuery($dbh, $sql);
+                                    $query = Query::executeQuery($dbh, "SELECT * from roomregisterform where reply is NULL");
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     if ($query->rowCount() > 0) {
                                         foreach ($results as $row) { ?>
@@ -70,20 +67,17 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                             } ?>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
             </div>
-            <?php include_once('includes/footer.php'); ?>
+            <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
-
-
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>

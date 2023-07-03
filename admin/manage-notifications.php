@@ -1,23 +1,18 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
    header('location:logout.php');
 } else {
    if (isset($_GET['delid'])) {
       $id = $_GET['delid'];
-      $query = $dbh->prepare("SELECT * FROM notification WHERE id= :id");
-      $query->bindParam(':id', $id, PDO::PARAM_STR);
-      $query->execute();
+      $query = Query::executeQuery($dbh, "SELECT * FROM notification WHERE id= :id", [':id', $id]);
       if ($query->rowCount() == 0) {
          echo '<script>alert("Notification ID ' . $id . ' does not existed!")</script>';
       } else {
-         $sql = "DELETE FROM notification WHERE id= :id";
-         $query = $dbh->prepare($sql);
-         $query->bindParam(':id', $id, PDO::PARAM_STR);
-         $query->execute();
+         Query::executeQuery($dbh, "DELETE FROM notification WHERE id= :id", [':id', $id]);
          echo "<script>alert('Notification deleted');</script>";
          echo "<script>window.location.href = 'manage-notifications.php'</script>";
       }
@@ -68,10 +63,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </thead>
                         <tbody>
                            <?php
-                           $sql = "SELECT * from notification";
-                           $query = Query::executeQuery($dbh, $sql);
+                           $query = Query::executeQuery($dbh, "SELECT * from notification");
                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-                           $cnt = 1;
                            if ($query->rowCount() > 0) {
                               foreach ($results as $row) { ?>
                                  <tr>
@@ -82,19 +75,16 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                        <a href="edit-notification.php?did=<?php echo htmlentities($row->id); ?>" class="btn btn-primary">Edit </a> | <a href="manage-notifications.php?delid=<?php echo ($row->id); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-xs">Delete</i></a>
                                     </td>
                                  </tr>
-                           <?php $cnt = $cnt + 1;
-                              }
+                           <?php }
                            } ?>
                         </tbody>
                      </table>
                   </div>
                </div>
-            </div> <!-- end row -->
-         </div> <!-- container -->
-         <?php include_once('includes/footer.php'); ?>
+            </div>
+         </div> 
+         <?php include_once('../helper/footer.php'); ?>
       </div> <!-- End wrapper -->
-
-
       <!-- jQuery  -->
       <script src="assets/js/jquery.min.js"></script>
       <script src="assets/js/bootstrap.bundle.min.js"></script>

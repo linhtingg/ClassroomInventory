@@ -1,11 +1,10 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
     // Code for deleting request from list
     if (isset($_GET['delid'])) {
         $formid = intval($_GET['delid']);
@@ -26,15 +25,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
             echo "<script>window.location.href = 'view-equipments-form.php'</script>";
         }
     }
-
 ?>
     <!doctype html>
     <html lang="en">
 
     <head>
-
         <title>View list of equipments</title>
-
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -53,24 +49,16 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
         <!-- Modernizr js -->
         <script src="assets/js/modernizr.min.js"></script>
-
     </head>
 
-
     <body>
-
         <?php include_once('includes/header.php'); ?>
-
-        <!-- ============================================================== -->
-        <!-- Start right Content here -->
-        <!-- ============================================================== -->
         <div class="wrapper">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
                             <h4 class="m-t-0 header-title">List of Equipments</h4>
-
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
@@ -85,8 +73,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <th>Reply</th>
                                     </tr>
                                 </thead>
-
-
                                 <tbody>
                                     <?php
                                     $aid = $_SESSION['sscmsaid'];
@@ -95,10 +81,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     $query->bindParam(':aid', $aid, PDO::PARAM_STR);
                                     $query->execute();
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
-
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
-                                        foreach ($results as $row) {               ?>
+                                        foreach ($results as $row) { ?>
                                             <tr>
                                                 <td><?php echo htmlentities($cnt); ?></td>
                                                 <td><?php echo htmlentities($row->userID); ?></td>
@@ -108,37 +93,38 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <td><?php echo htmlentities($row->borrowDay); ?></td>
                                                 <td><?php echo htmlentities($row->borrowTime); ?></td>
                                                 <td><?php $approved = $row->approved;
-                                                    if ($approved === false) { echo "<span style='color:red'>Decline</span>";}
-                                                    elseif ($approved === true ) { echo "<span style='color: green'>Approve</span>";}
-                                                    else { echo "<span style='color:gray'>In process</span>";}
+                                                    if ($approved === false) {
+                                                        echo "<span style='color:red'>Decline</span>";
+                                                    } elseif ($approved === true) {
+                                                        echo "<span style='color: green'>Approve</span>";
+                                                    } else {
+                                                        echo "<span style='color:gray'>In process</span>";
+                                                    }
                                                     ?></td>
                                                 <td><?php $reply = $row->reply;
-                                                    if ($reply == 1) { echo "<span style='color:red'>Decline</span>";}
-                                                    elseif ($reply === null) { echo "<span style='color: gray'>In process</span>";}
-                                                    else { echo htmlentities($row->reply);}
+                                                    if ($reply == 1) {
+                                                        echo "<span style='color:red'>Decline</span>";
+                                                    } elseif ($reply === null) {
+                                                        echo "<span style='color: gray'>In process</span>";
+                                                    } else {
+                                                        echo htmlentities($row->reply);
+                                                    }
                                                     ?></td>
-                                                <td> <a href="view-equipments-form.php? delid= <?php echo ($row->formid);?>" onclick="return confirm('Do you really want to delete ?');" class="btn btn-danger"/>Delete</a>
+                                                <td> <a href="view-equipments-form.php? delid= <?php echo ($row->formid); ?>" onclick="return confirm('Do you really want to delete ?');" class="btn btn-danger" />Delete</a>
                                                 </td>
                                             </tr>
                                     <?php $cnt = $cnt + 1;
                                         }
                                     } ?>
-
                                 </tbody>
                             </table>
 
                         </div>
                     </div>
-                </div> <!-- end row -->
-
-
-
-            </div> <!-- container -->
-            <?php include_once('includes/footer.php'); ?>
-
-        </div> <!-- End wrapper -->
-
-
+                </div>
+            </div>
+        </div>
+        <?php include_once('../helper/footer.php'); ?>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

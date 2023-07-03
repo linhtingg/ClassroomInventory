@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -10,9 +10,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     <html lang="en">
 
     <head>
-
         <title>View list of equipments</title>
-
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -34,21 +32,14 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     </head>
 
-
     <body>
-
         <?php include_once('includes/header.php'); ?>
-
-        <!-- ============================================================== -->
-        <!-- Start right Content here -->
-        <!-- ============================================================== -->
         <div class="wrapper">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
                             <h4 class="m-t-0 header-title">List of Equipments</h4>
-
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
@@ -61,25 +52,22 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <th>Description</th>
                                     </tr>
                                 </thead>
-
-
                                 <tbody>
                                     <?php
-
                                     $sql = "SELECT * from equipment where id!=1";
                                     $query = $dbh->prepare($sql);
                                     $query->execute();
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
-
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
-                                        foreach ($results as $row) {               ?>
+                                        foreach ($results as $row) { ?>
                                             <tr>
                                                 <td><?php echo htmlentities($cnt); ?></td>
                                                 <td><?php echo htmlentities($row->id); ?></td>
                                                 <td><?php echo htmlentities($row->type); ?></td>
                                                 <td><?php echo htmlentities($row->totalUsedTime); ?></td>
-                                                <td><?php echo htmlentities($row->producedYear); ?></td>                                                <td><?php $usability = $row->usability;
+                                                <td><?php echo htmlentities($row->producedYear); ?></td>
+                                                <td><?php $usability = $row->usability;
                                                     if ($usability == 0) : echo "<span style='color:red'>Unavailable</span>";
                                                     else : echo "<span style='color:green'>Available</span>";
                                                     endif; ?></td>
@@ -88,22 +76,14 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <?php $cnt = $cnt + 1;
                                         }
                                     } ?>
-
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
-                </div> <!-- end row -->
-
-
-
-            </div> <!-- container -->
-            <?php include_once('includes/footer.php'); ?>
-
-        </div> <!-- End wrapper -->
-
-
+                </div>
+            </div>
+            <?php include_once('../helper/footer.php'); ?>
+        </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

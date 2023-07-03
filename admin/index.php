@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (isset($_POST['login'])) {
     $sql = "SELECT * FROM tbladmin WHERE email=:username AND password=:password";
@@ -37,7 +37,6 @@ if (isset($_POST['login'])) {
 </head>
 
 <body>
-
     <div class="account-pages"></div>
     <div class="clearfix"></div>
     <div class="wrapper-page">
@@ -79,9 +78,7 @@ if (isset($_POST['login'])) {
                             </div>
                         </div>
                     </form>
-
                 </div>
-
             </div>
         </div>
     </div>
