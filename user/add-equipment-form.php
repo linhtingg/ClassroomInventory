@@ -1,32 +1,24 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
+include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
     if (isset($_POST['submit'])) {
-        $aid = $_POST['userID'];
-
-        $purpose = $_POST['purpose'];
-        $equiptype = $_POST['equiptype'];
-        $num = $_POST['howmany'];
-        $borrow_time = $_POST['borrow_time'];
-        $borrow_day = $_POST['borrow_day'];
-
         $sql = "insert into `equipmentregisterform` (`userID`, `purpose`, `equipType`, `numberOfEach`, `borrowTime`, `borrowDay`) VALUES (:aid,:purpose,:equiptype,:num,:borrow_time,:borrow_day)";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-        $query->bindParam(':purpose', $purpose, PDO::PARAM_STR);
-        $query->bindParam(':equiptype', $equiptype, PDO::PARAM_STR);
-        $query->bindParam(':num', $num, PDO::PARAM_STR);
-        $query->bindParam(':borrow_time', $borrow_time, PDO::PARAM_STR);
-        $query->bindParam(':borrow_day', $borrow_day, PDO::PARAM_STR);
-        $query->execute();
-
-        $LastInsertId = $dbh->lastInsertId();
-        if ($LastInsertId > 0) {
+        $query = Query::executeQuery(
+            $sql,
+            [
+                [':aid', $_POST['userID']],
+                [':purpose', $_POST['purpose']],
+                [':equiptype', $_POST['equiptype']],
+                [':num', $_POST['howmany']],
+                [':borrow_time', $_POST['borrow_time']],
+                [':borrow_day', $_POST['borrow_day']]
+            ]
+        );
+        if ($query->rowCount() > 0) {
             echo '<script>alert("Form submitted successfully")</script>';
             echo "<script>window.location.href ='view-equipments-form.php'</script>";
         } else {
@@ -44,6 +36,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
     </head>
+
     <body>
         <?php include_once('includes/header.php'); ?>
         <div class="wrapper">
@@ -106,7 +99,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
             <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->

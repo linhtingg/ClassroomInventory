@@ -8,10 +8,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
     if (isset($_GET['did'])) {
         if (isset($_POST['submit'])) {
-            $rowCount = Query::executeQuery($dbh, "SELECT * FROM `equipment` WHERE id=:oldID", [[':oldID', $newID]])->rowCount();
+            $rowCount = Query::executeQuery("SELECT * FROM `equipment` WHERE id=:oldID", [[':oldID', $newID]])->rowCount();
             if ($rowCount == 0 || $newID == $_GET['did']) {
                 Query::executeQuery(
-                    $dbh,
                     "UPDATE equipment SET type=:equipmentType, id=:equipment, totalUsedTime=:totalUsedTime, producedYear=:producedYear, description=:description, lastUserUsed=:lastUserUsed, currentRoom=:currentRoom, avaiableTime=:availableTime WHERE id=:oldID",
                     [
                         [':equipmentType', $_POST['type']],
@@ -60,7 +59,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box">
                             <h4 class="m-t-0 header-title">Edit Equipment</h4>
                             <?php
-                            $results = Query::executeQuery($dbh, "SELECT * from equipment where id = :room", [[':room', $_GET['did']]])->fetchAll(PDO::FETCH_OBJ);
+                            $results = Query::executeQuery("SELECT * from equipment where id = :room", [[':room', $_GET['did']]])->fetchAll(PDO::FETCH_OBJ);
                             foreach ($results as $row) { ?>
                                 <form action="" method="post">
                                     <div class="form-group row">

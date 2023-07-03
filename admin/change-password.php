@@ -8,7 +8,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
     if (isset($_POST['change'])) {
         $query = Query::executeQuery(
-            $dbh,
             "SELECT * FROM tbladmin WHERE schoolID=:adminID and password=:oldPass",
             [
                 [':adminID', $_SESSION['sscmsaid']],
@@ -17,7 +16,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         );
         if ($query->rowCount() > 0) {
             Query::executeQuery(
-                $dbh,
                 "UPDATE tbladmin set password=:newPass where schoolID=:adminID",
                 [
                     [':newPass', $_POST['newPass']],

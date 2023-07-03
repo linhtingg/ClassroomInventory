@@ -8,7 +8,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
     if (isset($_POST['submit'])) {
         $query = Query::executeQuery(
-            $dbh,
             "INSERT INTO notification (notiContent, valid_til) VALUES (:content,:lastDay);",
             [
                 [':content', $_POST['content']],

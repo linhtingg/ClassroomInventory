@@ -9,7 +9,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     if (isset($_GET['did'])) {
         if (isset($_POST['submit'])) {
             Query::executeQuery(
-                $dbh,
                 "UPDATE notification SET notiContent = :content,valid_til=:lastDay WHERE id = :id",
                 [
                     [':content', $_POST['content']],
@@ -41,7 +40,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box">
                             <h4 class="m-t-0 header-title">Edit Notification</h4>
                             <?php
-                            $results = Query::executeQuery($dbh, "SELECT * from notification where id = :room", [[':room', $_GET['did']]])->fetchAll(PDO::FETCH_OBJ);
+                            $results = Query::executeQuery("SELECT * from notification where id = :room", [[':room', $_GET['did']]])->fetchAll(PDO::FETCH_OBJ);
                             foreach ($results as $row) { ?>
                                 <form action="" method="post">
                                     <div class="form-group row">

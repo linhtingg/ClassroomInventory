@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
+include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -15,16 +15,16 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $borrow_day = $_POST['borrow_day'];
 
         $sql = "insert into `roomregisterform` (`userID`, `purpose`, `numberOfRoom`, `numberOfPeople`, `borrowTime`, `borrowDay`) VALUES (:aid,:purpose,:n_room,:n_people,:borrow_time,:borrow_day)";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-        $query->bindParam(':purpose', $purpose, PDO::PARAM_STR);
-        $query->bindParam(':n_room', $n_room, PDO::PARAM_STR);
-        $query->bindParam(':n_people', $n_people, PDO::PARAM_STR);
-        $query->bindParam(':borrow_time', $borrow_time, PDO::PARAM_STR);
-        $query->bindParam(':borrow_day', $borrow_day, PDO::PARAM_STR);
-        $query->execute();
+        $query = Query::executeQuery($sql, [
+            [':aid', $aid],
+            [':purpose', $purpose],
+            [':n_room', $n_room],
+            [':n_people', $n_people],
+            [':borrow_time', $borrow_time],
+            [':borrow_day', $borrow_day]
+        ]);
 
-        $LastInsertId = $dbh->lastInsertId();
+        $LastInsertId = $query->rowCount();
         if ($LastInsertId > 0) {
             echo '<script>alert("Form submitted successfully")</script>';
             echo "<script>window.location.href ='view-rooms-form.php'</script>";

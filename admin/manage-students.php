@@ -7,7 +7,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['stdid'])) {
-        Query::executeQuery($dbh, $sql, [[':sid', $_GET['stdid']]]);
+        Query::executeQuery($sql, [[':sid', $_GET['stdid']]]);
         echo "<script>alert('Student deleted');</script>";
         echo "<script>window.location.href = 'manage-students.php'</script>";
     }
@@ -55,7 +55,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = Query::executeQuery($dbh, "SELECT * from tbluser");
+                                    $query = Query::executeQuery("SELECT * from tbluser");
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {

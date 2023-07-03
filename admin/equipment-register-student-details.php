@@ -8,7 +8,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
     if (isset($_POST['submit'])) {
         Query::executeQuery(
-            $dbh,
             "UPDATE equipmentregisterform SET reply = :equipmentID where formid=:id",
             [
                 [':equipmentID', $_POST['equipmentID']],
@@ -50,7 +49,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box">
                             <?php
                             $sql = "SELECT * FROM equipmentregisterform INNER JOIN tbluser ON equipmentregisterform.userID=tbluser.schoolID WHERE formid=:formID;";
-                            $query = Query::executeQuery($dbh, $sql, [[':formID', intval($_GET['formID'])]]);
+                            $query = Query::executeQuery($sql, [[':formID', intval($_GET['formID'])]]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             if ($query->rowCount() > 0) {
                                 foreach ($results as $row) { ?>
@@ -108,8 +107,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <p><select class="form-control" name="equipmentID" required>
                                     <option value="">Select</option>
                                     <?php
-                                    $sql = "SELECT * from equipment where lastUserUsed is NULL and id!='1'";
-                                    $query = Query::executeQuery($dbh, $sql);
+                                    $sql = "SELECT * from equipment where usability=1 and id!='1'";
+                                    $query = Query::executeQuery($sql);
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     foreach ($results as $row) { ?>
                                         <option value="<?php echo htmlentities($row->id); ?>"><?php echo htmlentities($row->id); ?></option>

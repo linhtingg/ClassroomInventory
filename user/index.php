@@ -7,7 +7,13 @@ if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $pass = $_POST['pass'];
     $sql = "SELECT * FROM tbluser WHERE email=:email and pass=:pass";
-    $query = Query::executeQuery($dbh, $sql, [':email', $email], [':pass', $pass]);
+    $query = Query::executeQuery(
+        $sql,
+        [
+            [':email', $email],
+            [':pass', $pass]
+        ]
+    );
     $results = $query->fetchAll(PDO::FETCH_OBJ);
     if ($query->rowCount() > 0) {
         foreach ($results as $result) {

@@ -8,11 +8,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
    if (isset($_GET['delid'])) {
       $id = $_GET['delid'];
-      $query = Query::executeQuery($dbh, "SELECT * FROM notification WHERE id= :id", [[':id', $id]]);
+      $query = Query::executeQuery("SELECT * FROM notification WHERE id= :id", [[':id', $id]]);
       if ($query->rowCount() == 0) {
          echo '<script>alert("Notification ID ' . $id . ' does not existed!")</script>';
       } else {
-         Query::executeQuery($dbh, "DELETE FROM notification WHERE id= :id", [[':id', $id]]);
+         Query::executeQuery("DELETE FROM notification WHERE id= :id", [[':id', $id]]);
          echo "<script>alert('Notification deleted');</script>";
          echo "<script>window.location.href = 'manage-notifications.php'</script>";
       }
@@ -63,7 +63,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </thead>
                         <tbody>
                            <?php
-                           $query = Query::executeQuery($dbh, "SELECT * from notification");
+                           $query = Query::executeQuery("SELECT * from notification");
                            $results = $query->fetchAll(PDO::FETCH_OBJ);
                            if ($query->rowCount() > 0) {
                               foreach ($results as $row) { ?>

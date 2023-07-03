@@ -56,7 +56,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $query = Query::executeQuery($dbh, "SELECT * from reportform");
+                                        $query = Query::executeQuery("SELECT * from reportform");
                                         $results = $query->fetchAll(PDO::FETCH_OBJ);
                                         if ($query->rowCount() > 0) {
                                             $cnt = 1;

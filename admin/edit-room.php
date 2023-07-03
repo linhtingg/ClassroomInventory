@@ -13,14 +13,13 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
             $roomname = $_POST['roomname'];
             // TODO: CHECK ROOM HAVE ANY REPORT FORMS
             // CHECK ROOM USING ANY EQUIPMENT
-            $query = Query::executeQuery($dbh, "SELECT * FROM `equipment` WHERE currentRoom = :oldRoomID", [[':oldRoomID', $oldRoomID]]);
+            $query = Query::executeQuery("SELECT * FROM `equipment` WHERE currentRoom = :oldRoomID", [[':oldRoomID', $oldRoomID]]);
             if ($query->rowCount() == 0) {
                 //  CHECK NEW ROOM ID EXISTS
-                $row = Query::executeQuery($dbh, "SELECT * FROM `room` WHERE id=:roomname", [[':roomname', $roomname]])->rowCount();
+                $row = Query::executeQuery("SELECT * FROM `room` WHERE id=:roomname", [[':roomname', $roomname]])->rowCount();
                 if ($row == 0 || $oldRoomID == $roomname) {
                     // IF NOT, UPDATE
                     Query::executeQuery(
-                        $dbh,
                         "UPDATE room SET id =:roomname, capacity=:capacity, usability=:usability, description=:description, avaiableTime=:availableTime WHERE id=:oldRoomID",
                         [
                             [':roomname', $roomname],
@@ -68,7 +67,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box">
                             <h4 class="m-t-0 header-title">Edit Room</h4>
                             <?php
-                            $results = Query::executeQuery($dbh, 'SELECT * from room where id = :room', [[':room', $_GET['did']]])->fetchAll(PDO::FETCH_OBJ);
+                            $results = Query::executeQuery('SELECT * from room where id = :room', [[':room', $_GET['did']]])->fetchAll(PDO::FETCH_OBJ);
                             foreach ($results as $row) { ?>
                                 <form action="" method="post">
                                     <div class="form-group row">

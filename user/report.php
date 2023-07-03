@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
+include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -9,14 +9,15 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $aid = $_POST['userID'];
         $roomID = $_POST['roomID'];
         $desribeCondition = $_POST['desribeCondition'];
+        $date = $_POST['reportDate'];
 
-        $sql = "INSERT INTO `reportform` ( `roomID`, `userReportID`, `desribeCondition`) VALUES ( :roomID, :aid, :desribeCondition)";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-        $query->bindParam(':roomID', $roomID, PDO::PARAM_STR);
-        $query->bindParam(':desribeCondition', $desribeCondition, PDO::PARAM_STR);
-        $query->execute();
-
+        $sql = "INSERT INTO `reportform` ( `reportDate`,`roomID`, `userReportID`, `desribeCondition`) VALUES (:date,:roomID, :aid, :desribeCondition)";
+        $query = Query::executeQuery($sql, [
+            [':aid', $aid],
+            [':roomID', $roomID],
+            [':desribeCondition', $desribeCondition],
+            [':date', $date]
+        ]);
         $LastInsertId = $query->rowCount();
         if ($LastInsertId > 0) {
             echo '<script>alert("Report successfully")</script>';
@@ -90,9 +91,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                             <datalist id="room_id">
                                                 <?php
                                                 $sql0 = "SELECT id FROM room where id != 1";
-                                                $query0 = $dbh->prepare($sql0);
-                                                $query0->execute();
-                                                $results = $query0->fetchAll(PDO::FETCH_OBJ);
+                                                $query = Query::executeQuery($sql0);
+                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                 foreach ($results as $result) {
                                                     echo "<option value= $result->id </option>";
                                                 }

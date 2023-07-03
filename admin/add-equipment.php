@@ -8,11 +8,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
     if (isset($_POST['submit'])) {
         $equipment = $_POST['equipment'];
-        $rowCount = Query::executeQuery($dbh, "SELECT * FROM `equipment` WHERE id = :newID", [[':newID', $equipment]])->rowCount();
+        $rowCount = Query::executeQuery("SELECT * FROM `equipment` WHERE id = :newID", [[':newID', $equipment]])->rowCount();
         if ($rowCount == 0) {
             $sql = "INSERT INTO equipment VALUES (:type, :id, :totalUsedTime,:producedYear , :description, :lastUserUsed, :currentRoom, :avaiableTimes, 1)";
             $query = Query::executeQuery(
-                $dbh,
                 $sql,
                 [
                     [':id', $equipment],

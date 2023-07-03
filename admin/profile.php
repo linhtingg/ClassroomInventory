@@ -8,7 +8,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
     if (isset($_POST['submit'])) {
         Query::executeQuery(
-            $dbh,
             "update tbladmin set fullName=:adminname,email=:email where schoolID=:adminID",
             [
                 [':adminname', $_POST['adminname']],
@@ -57,7 +56,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <div class="p-20">
                                         <form action="#" method="post">
                                             <?php
-                                            $query = Query::executeQuery($dbh, "SELECT * from tbladmin where schoolID = :adminID", [[':adminID', $_SESSION['sscmsaid']]]);
+                                            $query = Query::executeQuery("SELECT * from tbladmin where schoolID = :adminID", [[':adminID', $_SESSION['sscmsaid']]]);
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                                             if ($query->rowCount() > 0) {
                                                 foreach ($results as $row) { ?>

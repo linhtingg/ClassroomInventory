@@ -8,10 +8,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
     if (isset($_POST['submit'])) {
         $roomname = $_POST['roomname'];
-        $query = Query::executeQuery($dbh, "SELECT * FROM `room` WHERE id=:roomname", [[':roomname', $roomname]]);
+        $query = Query::executeQuery("SELECT * FROM `room` WHERE id=:roomname", [[':roomname', $roomname]]);
         if ($query->rowCount() == 0) {
             $query = Query::executeQuery(
-                $dbh,
                 "INSERT INTO room (id, capacity, usability, description, avaiableTime) VALUES (:roomname, :capacity, :usability, :description, :availableTime)",
                 [
                     [':roomname', $roomname],

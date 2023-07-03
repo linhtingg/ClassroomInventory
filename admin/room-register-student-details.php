@@ -9,7 +9,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     // Assign Room Code   
     if (isset($_POST['submit'])) {
         $query = Query::executeQuery(
-            $dbh,
             "UPDATE roomregisterform SET  reply = :roomID where formid=:id",
             [
                 ['roomID', $_POST['roomID']],
@@ -51,7 +50,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box">
                             <?php
                             $sql = "SELECT * FROM roomregisterform INNER JOIN tbluser ON roomregisterform.userID=tbluser.schoolID WHERE formid=:formID;";
-                            $query = Query::executeQuery($dbh, $sql, [[':formID', intval($_GET['stdid'])]]);
+                            $query = Query::executeQuery($sql, [[':formID', intval($_GET['stdid'])]]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             if ($query->rowCount() > 0) {
                                 foreach ($results as $row) { ?>
@@ -110,7 +109,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <option value="">Select</option>
                                     <?php
                                     $sql = "SELECT * from room where usability=1 and capacity > :capacity";
-                                    $query = Query::executeQuery($dbh, $sql, [[':capacity', $row->numberOfPeople]]);
+                                    $query = Query::executeQuery($sql, [[':capacity', $row->numberOfPeople]]);
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     foreach ($results as $row) { ?>
                                         <option value="<?php echo htmlentities($row->id); ?>"><?php echo htmlentities($row->id); ?></option>

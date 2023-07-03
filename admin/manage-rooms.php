@@ -1,19 +1,17 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
-include '../helper/NotificationHandler.php';
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['delid'])) {
         $roomID = $_GET['delid'];
-        $query = Query::executeQuery($dbh, "SELECT * FROM room WHERE id=:roomID", [[':roomID', $roomID]]);
+        $query = Query::executeQuery("SELECT * FROM room WHERE id=:roomID", [[':roomID', $roomID]]);
         if ($query->rowCount() == 0) {
             echo '<script>alert("Room ' . $roomID . ' does not existed!")</script>';
         } else {
-            Query::executeQuery($dbh, "DELETE FROM room WHERE id= :roomID", [[':roomID', $roomID]]);
+            Query::executeQuery("DELETE FROM room WHERE id= :roomID", [[':roomID', $roomID]]);
             echo "<script>alert('Data deleted');</script>";
             echo "<script>window.location.href = 'manage-rooms.php'</script>";
         }
@@ -71,18 +69,17 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $filter = "";
                                     $bindParams = [];
                                     $sql = "SELECT * from room where id!='1'";
                                     if (isset($_GET['room'])) {
-                                        $filter = $filter . " and id = :room";
+                                        $sql = $sql . " and id = :room";
                                         array_push($bindParams, [':room', $_GET['room']]);
                                     }
                                     if (isset($_GET['usability'])) {
-                                        $filter = $filter . " and usability = :usability";
+                                        $sql = $sql . " and usability = :usability";
                                         array_push($bindParams, [':usability', $_GET['usability']]);
                                     }
-                                    $query = Query::executeQuery($dbh, $sql . $filter, $bindParams);
+                                    $query = Query::executeQuery($sql, $bindParams);
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {

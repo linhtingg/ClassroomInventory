@@ -1,26 +1,19 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
+include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     // Code for deleting request from list
     if (isset($_GET['delid'])) {
         $formid = intval($_GET['delid']);
-
-        $query = $dbh->prepare("SELECT formid FROM equipmentregisterform WHERE formid=:formid and approved != 1");
-        $query->bindParam(':formid', $formid, PDO::PARAM_STR);
-        $query->execute();
+        $query = Query::executeQuery("SELECT formid FROM equipmentregisterform WHERE formid=:formid and approved != 1", [[':formid', $formid]]);
         $results = $query->fetchAll(PDO::FETCH_OBJ);
-
         if ($query->rowCount() > 0) {
             echo '<script>alert("Can not delete! The request has already been approve!")</script>';
         } else {
-            $sql = "delete from equipmentregisterform where formid=:formid";
-            $query = $dbh->prepare($sql);
-            $query->bindParam(':formid', $formid, PDO::PARAM_STR);
-            $query->execute();
+            Query::executeQuery("DELETE from equipmentregisterform where formid=:formid", [[':formid', $formid]]);
             echo "<script>alert('Request deleted');</script>";
             echo "<script>window.location.href = 'view-equipments-form.php'</script>";
         }
@@ -77,9 +70,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <?php
                                     $aid = $_SESSION['sscmsaid'];
                                     $sql = "SELECT * from `equipmentregisterform` where `userID` = :aid";
-                                    $query = $dbh->prepare($sql);
-                                    $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-                                    $query->execute();
+                                    $query = Query::executeQuery($sql, [[':aid', $aid]]);
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
@@ -110,7 +101,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                         echo htmlentities($row->reply);
                                                     }
                                                     ?></td>
-                                                <td> <a href="view-equipments-form.php? delid= <?php echo ($row->formid); ?>" onclick="return confirm('Do you really want to delete ?');" class="btn btn-danger" />Delete</a>
+                                                <td> <a href="view-equipments-form.php?delid= <?php echo ($row->formid); ?>" onclick="return confirm('Do you really want to delete ?');" class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>
                                     <?php $cnt = $cnt + 1;

@@ -35,9 +35,7 @@
                             <?php
                             $aid = $_SESSION['sscmsaid'];
                             $sql = "SELECT fullname from tbluser where schoolID=:aid";
-                            $query = $dbh->prepare($sql);
-                            $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-                            $query->execute();
+                            $query=Query::executeQuery($sql,[[':aid', $aid]]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             $cnt = 1;
                             if ($query->rowCount() > 0) {
