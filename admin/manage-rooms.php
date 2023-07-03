@@ -3,16 +3,17 @@ session_start();
 error_reporting(0);
 include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
+include '../helper/NotificationHandler.php';
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['delid'])) {
         $roomID = $_GET['delid'];
-        $query = Query::executeQuery($dbh, "SELECT * FROM room WHERE id=:roomID", [':roomID', $roomID]);
+        $query = Query::executeQuery($dbh, "SELECT * FROM room WHERE id=:roomID", [[':roomID', $roomID]]);
         if ($query->rowCount() == 0) {
             echo '<script>alert("Room ' . $roomID . ' does not existed!")</script>';
         } else {
-            Query::executeQuery($dbh, "DELETE FROM room WHERE id= :roomID", [':roomID', $roomID]);
+            Query::executeQuery($dbh, "DELETE FROM room WHERE id= :roomID", [[':roomID', $roomID]]);
             echo "<script>alert('Data deleted');</script>";
             echo "<script>window.location.href = 'manage-rooms.php'</script>";
         }
@@ -53,6 +54,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-12">
                         <div class="card-box">
                             <h4 class="m-t-0 header-title">Manage Rooms</h4>
+                            <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#filterName">Filter room name </button>
+                            <button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#filterUsability">Filter room's usability </button>
+                            <p></p>
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
@@ -67,7 +71,18 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = Query::executeQuery($dbh, "SELECT * from room where id!='1'");
+                                    $filter = "";
+                                    $bindParams = [];
+                                    $sql = "SELECT * from room where id!='1'";
+                                    if (isset($_GET['room'])) {
+                                        $filter = $filter . " and id = :room";
+                                        array_push($bindParams, [':room', $_GET['room']]);
+                                    }
+                                    if (isset($_GET['usability'])) {
+                                        $filter = $filter . " and usability = :usability";
+                                        array_push($bindParams, [':usability', $_GET['usability']]);
+                                    }
+                                    $query = Query::executeQuery($dbh, $sql . $filter, $bindParams);
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
@@ -77,8 +92,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <td><?php echo htmlentities($row->id); ?></td>
                                                 <td><?php echo htmlentities($row->capacity); ?></td>
                                                 <td><?php $roomUsability = $row->usability;
-                                                    if ($roomUsability == 0) echo "Not Avaiable";
-                                                    else echo "Avaiable"; ?></td>
+                                                    if ($roomUsability == 0) echo "Not Available";
+                                                    else echo "Available"; ?></td>
                                                 <td><?php echo htmlentities($row->description); ?></td>
                                                 <td><?php echo htmlentities($row->avaiableTime); ?></td>
                                                 <td>
@@ -95,7 +110,50 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 </div>
             </div>
             <?php include_once('../helper/footer.php'); ?>
-        </div> 
+        </div>
+        <form method="get">
+            <div id="filterName" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel">Filter Room</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="font-16">Room</h5>
+                            <p><textarea class="form-control" placeholder="Room ID" required="true" name="room" required></textarea></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Filter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form method="get">
+            <div id="filterUsability" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel">Filter Room</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="font-16">Usability</h5>
+                            <select class="form-control" name="usability" required>
+                                <option style="color: green;" value="1">Available</option>
+                                <option style="color: red;" value="0">Not Available</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Filter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

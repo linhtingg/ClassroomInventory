@@ -10,8 +10,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $query = Query::executeQuery(
             $dbh,
             "INSERT INTO notification (notiContent, valid_til) VALUES (:content,:lastDay);",
-            [':content', $_POST['content']],
-            [':lastDay', $_POST['date']]
+            [
+                [':content', $_POST['content']],
+                [':lastDay', $_POST['date']]
+            ]
         );
         if ($query->rowCount() > 0) {
             echo "<script>alert('Notification added successfully');</script>";
@@ -60,8 +62,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             </form>
                         </div>
                     </div>
-                </div> 
-            </div> 
+                </div>
+            </div>
             <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->

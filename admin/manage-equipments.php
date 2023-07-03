@@ -8,11 +8,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
    if (isset($_GET['delid'])) {
       $id = $_GET['delid'];
-      $query = Query::executeQuery($dbh, "SELECT * FROM equipment WHERE id= :id", [':id', $id]);
+      $query = Query::executeQuery($dbh, "SELECT * FROM equipment WHERE id= :id", [[':id', $id]]);
       if ($query->rowCount() == 0) {
          echo '<script>alert("Room ' . $id . ' does not existed!")</script>';
       } else {
-         Query::executeQuery($dbh, "DELETE FROM equipment WHERE id= :id", [':id', $id]);
+         Query::executeQuery($dbh, "DELETE FROM equipment WHERE id= :id", [[':id', $id]]);
          echo "<script>alert('Data deleted');</script>";
          echo "<script>window.location.href = 'manage-equipments.php'</script>";
       }
@@ -102,7 +102,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
             </div>
          </div>
          <?php include_once('../helper/footer.php'); ?>
-      </div> 
+      </div>
       <!-- jQuery  -->
       <script src="assets/js/jquery.min.js"></script>
       <script src="assets/js/bootstrap.bundle.min.js"></script>

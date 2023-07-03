@@ -8,20 +8,22 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
     if (isset($_POST['submit'])) {
         $equipment = $_POST['equipment'];
-        $rowCount = Query::executeQuery($dbh, "SELECT * FROM `equipment` WHERE id = :newID", [':newID', $equipment])->rowCount();
+        $rowCount = Query::executeQuery($dbh, "SELECT * FROM `equipment` WHERE id = :newID", [[':newID', $equipment]])->rowCount();
         if ($rowCount == 0) {
             $sql = "INSERT INTO equipment VALUES (:type, :id, :totalUsedTime,:producedYear , :description, :lastUserUsed, :currentRoom, :avaiableTimes, 1)";
             $query = Query::executeQuery(
                 $dbh,
                 $sql,
-                [':id', $equipment],
-                [':type', $_POST['type']],
-                [':totalUsedTime', $_POST['totalUsedTime']],
-                [':producedYear', $_POST['producedYear']],
-                [':description', $_POST['description']],
-                [':lastUserUsed', $_POST['lastUserUsed']],
-                [':currentRoom', $_POST['currentRoom']],
-                [':avaiableTimes', $$_POST['avaiableTimes']]
+                [
+                    [':id', $equipment],
+                    [':type', $_POST['type']],
+                    [':totalUsedTime', $_POST['totalUsedTime']],
+                    [':producedYear', $_POST['producedYear']],
+                    [':description', $_POST['description']],
+                    [':lastUserUsed', $_POST['lastUserUsed']],
+                    [':currentRoom', $_POST['currentRoom']],
+                    [':avaiableTimes', $_POST['avaiableTimes']]
+                ]
             );
             if ($query->rowCount() > 0) {
                 echo "<script>alert('Equipment added successfully');</script>";
@@ -122,8 +124,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             </form>
                         </div>
                     </div>
-                </div> 
-            </div> 
+                </div>
+            </div>
             <?php include_once('../helper/footer.php'); ?>
         </div>
 

@@ -5,7 +5,14 @@ include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (isset($_POST['login'])) {
     $sql = "SELECT * FROM tbladmin WHERE email=:username AND password=:password";
-    $query = Query::executeQuery($dbh, $sql, [':username', $_POST['username']], [':password',  $_POST['password']]);
+    $query = Query::executeQuery(
+        $dbh,
+        $sql,
+        [
+            [':username', $_POST['username']],
+            [':password',  $_POST['password']]
+        ]
+    );
     $results = $query->fetchAll(PDO::FETCH_OBJ);
     if ($query->rowCount() != 0) {
         foreach ($results as $result) {

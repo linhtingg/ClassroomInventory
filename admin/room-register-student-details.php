@@ -11,8 +11,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $query = Query::executeQuery(
             $dbh,
             "UPDATE roomregisterform SET  reply = :roomID where formid=:id",
-            ['roomID', $_POST['roomID']],
-            [':id', intval($_GET['stdid'])]
+            [
+                ['roomID', $_POST['roomID']],
+                [':id', intval($_GET['stdid'])]
+            ]
         );
         echo '<script>alert("Room has been assigned.")</script>';
         echo "<script>window.location.href ='manage-room-register-students.php'</script>";
@@ -49,7 +51,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box">
                             <?php
                             $sql = "SELECT * FROM roomregisterform INNER JOIN tbluser ON roomregisterform.userID=tbluser.schoolID WHERE formid=:formID;";
-                            $query = Query::executeQuery($dbh, $sql, [':formID', intval($_GET['stdid'])]);
+                            $query = Query::executeQuery($dbh, $sql, [[':formID', intval($_GET['stdid'])]]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             if ($query->rowCount() > 0) {
                                 foreach ($results as $row) { ?>
@@ -99,7 +101,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="myModalLabel">Assign Rom</h5>
+                            <h5 class="modal-title" id="myModalLabel">Assign Room</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                         </div>
                         <div class="modal-body">
@@ -108,7 +110,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <option value="">Select</option>
                                     <?php
                                     $sql = "SELECT * from room where usability=1 and capacity > :capacity";
-                                    $query = Query::executeQuery($dbh, $sql, [':capacity', $row->numberOfPeople]);
+                                    $query = Query::executeQuery($dbh, $sql, [[':capacity', $row->numberOfPeople]]);
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     foreach ($results as $row) { ?>
                                         <option value="<?php echo htmlentities($row->id); ?>"><?php echo htmlentities($row->id); ?></option>

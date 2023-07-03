@@ -7,7 +7,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['rejectForm'])) {
-        Query::executeQuery($dbh, "UPDATE roomregisterform SET reply='1' where formid=:id", [':id', intval($_GET['rejectForm'])]);
+        Query::executeQuery($dbh, "UPDATE roomregisterform SET reply='1' where formid=:id", [[':id', intval($_GET['rejectForm'])]]);
         echo "<script>alert('Form rejected');</script>";
         echo "<script>window.location.href = 'manage-room-register-students.php'</script>";
     }
