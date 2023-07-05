@@ -1,28 +1,30 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $sql = "insert into `equipmentregisterform` (`userID`, `purpose`, `equipType`, `numberOfEach`, `borrowTime`, `borrowDay`) VALUES (:aid,:purpose,:equiptype,:num,:borrow_time,:borrow_day)";
+        $sql = "INSERT into equipmentregisterform (`userID`, `purpose`, `equipType`, `numberOfEach`, `borrowTime`, `borrowDay`) VALUES (:aid,:p,:type,:num,:time,:day)";
         $query = Query::executeQuery(
             $sql,
             [
                 [':aid', $_POST['userID']],
-                [':purpose', $_POST['purpose']],
-                [':equiptype', $_POST['equiptype']],
+                [':p', $_POST['purpose']],
+                [':type', $_POST['equiptype']],
                 [':num', $_POST['howmany']],
-                [':borrow_time', $_POST['borrow_time']],
-                [':borrow_day', $_POST['borrow_day']]
+                [':time', $_POST['borrow_time']],
+                [':day', $_POST['borrow_day']]
             ]
         );
         if ($query->rowCount() > 0) {
-            echo '<script>alert("Form submitted successfully")</script>';
+            Notification::echoToScreen("Form submitted successfully");
             echo "<script>window.location.href ='view-equipments-form.php'</script>";
         } else {
-            echo '<script>alert("Something Went Wrong. Please try again")</script>';
+            Notification::echoToScreen("Something Went Wrong. Please try again");
         }
     }
 
@@ -100,7 +102,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

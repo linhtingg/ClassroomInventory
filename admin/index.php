@@ -1,12 +1,12 @@
 <?php
 session_start();
 error_reporting(0);
-// include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (isset($_POST['login'])) {
-    $sql = "SELECT * FROM tbladmin WHERE email=:username AND password=:password";
     $query = Query::executeQuery(
-        $sql,
+        "SELECT * FROM tbladmin WHERE email=:username AND password=:password",
         [
             [':username', $_POST['username']],
             [':password',  $_POST['password']]
@@ -20,7 +20,7 @@ if (isset($_POST['login'])) {
         $_SESSION['login'] = $_POST['username'];
         echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
     } else {
-        echo "<script>alert('Invalid Details');</script>";
+        Notification::echoToScreen("Invalid Details");
     }
 }
 

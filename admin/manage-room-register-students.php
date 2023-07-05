@@ -1,14 +1,15 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
-if (strlen($_SESSION['sscmsaid'] == 0)) {
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+ }
+ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['rejectForm'])) {
         Query::executeQuery("UPDATE roomregisterform SET reply='1' where formid=:id", [[':id', intval($_GET['rejectForm'])]]);
-        echo "<script>alert('Form rejected');</script>";
+        Notification::echoToScreen("Form rejected");
         echo "<script>window.location.href = 'manage-room-register-students.php'</script>";
     }
 ?>
@@ -71,7 +72,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

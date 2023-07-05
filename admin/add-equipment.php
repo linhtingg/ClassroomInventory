@@ -1,14 +1,15 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
         $equipment = $_POST['equipment'];
-        $rowCount = Query::executeQuery("SELECT * FROM `equipment` WHERE id = :newID", [[':newID', $equipment]])->rowCount();
+        $rowCount = EquipmentController::getEquipmentByID($equipment)->rowCount();
         if ($rowCount == 0) {
             $sql = "INSERT INTO equipment VALUES (:type, :id, :totalUsedTime,:producedYear , :description, :lastUserUsed, :currentRoom, :avaiableTimes, 1)";
             $query = Query::executeQuery(
@@ -25,13 +26,13 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 ]
             );
             if ($query->rowCount() > 0) {
-                echo "<script>alert('Equipment added successfully');</script>";
+                Notification::echoToScreen('Equipment added successfully');
                 echo "<script>window.location.href = 'manage-equipments.php'</script>";
             } else {
-                echo "<script>alert('Failed to add equipment');</script>";
+                Notification::echoToScreen('Failed to add equipment');
             }
         } else {
-            echo "<script>alert('Equipment " . $equipment . " existed! Cannot add equipment!');</script>";
+            Notification::echoToScreen("Equipment " . $equipment . " existed! Cannot add equipment!");
             echo "<script>window.location.href = 'manage-equipments.php'</script>";
         }
     }
@@ -125,7 +126,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
 
         <!-- jQuery  -->

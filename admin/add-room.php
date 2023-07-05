@@ -1,15 +1,15 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
         $roomname = $_POST['roomname'];
-        $query = Query::executeQuery("SELECT * FROM `room` WHERE id=:roomname", [[':roomname', $roomname]]);
-        if ($query->rowCount() == 0) {
+        if (RoomController::getRoomByID($roomname)->rowCount() == 0) {
             $query = Query::executeQuery(
                 "INSERT INTO room (id, capacity, usability, description, avaiableTime) VALUES (:roomname, :capacity, :usability, :description, :availableTime)",
                 [
@@ -21,12 +21,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 ]
             );
             if ($query->rowCount() > 0) {
-                echo "<script>alert('Room added successfully');</script>";
+                Notification::echoToScreen("Room added successfully");
             } else {
-                echo "<script>alert('Failed to add room');</script>";
+                Notification::echoToScreen("Failed to add room");
             }
         } else {
-            echo "<script>alert('Room " . $roomname . " existed! Cannot add room');</script>";
+            Notification::echoToScreen("Room " . $roomname . " existed! Cannot add room");
         }
         echo "<script>window.location.href = 'manage-rooms.php'</script>";
     }
@@ -101,7 +101,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
 
         <!-- jQuery  -->

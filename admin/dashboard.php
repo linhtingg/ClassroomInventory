@@ -1,8 +1,9 @@
 <?php
 session_start();
 error_reporting(0);
-// include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -41,7 +42,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Rooms</h6>
-                            <h2 class="m-b-20" data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from  room where capacity !=0")->rowCount()); ?></h2>
+                            <h2 class="m-b-20" data-plugin="counterup"><?php echo htmlentities(RoomController::getAllRooms()->rowCount()); ?></h2>
                             <a href="manage-rooms.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
                     </div>
@@ -59,7 +60,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Occupied Rooms</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from  room where capacity !=0 and usability=0",)->rowCount()); ?></span></h2>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from  room where capacity !=0 and usability=0")->rowCount()); ?></span></h2>
                             <a href="manage-rooms.php"><span class="badge badge-danger"> View Detail </span></a>
                         </div>
                     </div>
@@ -69,7 +70,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Equipments</h6>
-                            <h2 class="m-b-20" data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from equipment")->rowCount()); ?></h2>
+                            <h2 class="m-b-20" data-plugin="counterup"><?php echo htmlentities(EquipmentController::getAllEquipments()->rowCount()); ?></h2>
                             <a href="manage-equipments.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
                     </div>
@@ -78,7 +79,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Equipments Available</h6>
-                            <h2 class="m-b-20" data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from equipment where usability=1")->rowCount()); ?></h2>
+                            <h2 class="m-b-20" data-plugin="counterup"><?php echo htmlentities(EquipmentController::getAllAvailableEquipments()->rowCount()); ?></h2>
                             <a href="manage-equipments.php"><span class="badge badge-success"> View Detail </span></a>
                         </div>
                     </div>
@@ -87,7 +88,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Occupied Equipments</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from equipment where usability=0")->rowCount()); ?></span></h2>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from equipment where id !='1' and usability=0")->rowCount()); ?></span></h2>
                             <a href="manage-equipments.php"><span class="badge badge-danger"> View Detail </span></a>
                         </div>
                     </div>
@@ -123,7 +124,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

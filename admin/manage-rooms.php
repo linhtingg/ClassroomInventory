@@ -1,20 +1,32 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['delid'])) {
         $roomID = $_GET['delid'];
-        $query = Query::executeQuery("SELECT * FROM room WHERE id=:roomID", [[':roomID', $roomID]]);
+        $query = RoomController::getRoomByID($roomID);
         if ($query->rowCount() == 0) {
-            echo '<script>alert("Room ' . $roomID . ' does not existed!")</script>';
+            Notification::echoToScreen("Room " . $roomID . " does not existed!");
         } else {
-            Query::executeQuery("DELETE FROM room WHERE id= :roomID", [[':roomID', $roomID]]);
-            echo "<script>alert('Data deleted');</script>";
-            echo "<script>window.location.href = 'manage-rooms.php'</script>";
+            $query = Query::executeQuery("SELECT * from equipment where currentRoom  = :id", [[':id', $roomID]]);
+            if ($query->rowCount() == 0) {
+                $query = Query::executeQuery("SELECT * from roomregisterform where reply = :id", [[':id', $roomID]]);
+                if ($query->rowCount() == 0) {
+                    Query::executeQuery("DELETE FROM room WHERE id= :roomID", [[':roomID', $roomID]]);
+                    Notification::echoToScreen("Data deleted");
+                } else {
+                    Notification::echoToScreen("Cannot delete room!");
+                }
+            } else {
+                Notification::echoToScreen("Cannot delete room!");
+            }
         }
+        echo "<script>window.location.href = 'manage-rooms.php'</script>";
     }
 ?>
     <!doctype html>
@@ -70,7 +82,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <tbody>
                                     <?php
                                     $bindParams = [];
-                                    $sql = "SELECT * from room where id!='1'";
+                                    $sql = RoomController::$allRoomsQuery;
                                     if (isset($_GET['room'])) {
                                         $sql = $sql . " and id = :room";
                                         array_push($bindParams, [':room', $_GET['room']]);
@@ -106,7 +118,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <form method="get">
             <div id="filterName" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

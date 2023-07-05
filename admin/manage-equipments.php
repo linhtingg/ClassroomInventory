@@ -1,19 +1,20 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+   include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
    header('location:logout.php');
 } else {
    if (isset($_GET['delid'])) {
       $id = $_GET['delid'];
-      $query = Query::executeQuery("SELECT * FROM equipment WHERE id= :id", [[':id', $id]]);
+      $query = EquipmentController::getEquipmentByID($id);
       if ($query->rowCount() == 0) {
-         echo '<script>alert("Room ' . $id . ' does not existed!")</script>';
+         Notification::echoToScreen('Room ' . $id . ' does not existed!');
       } else {
          Query::executeQuery("DELETE FROM equipment WHERE id= :id", [[':id', $id]]);
-         echo "<script>alert('Data deleted');</script>";
+         Notification::echoToScreen("Data deleted");
          echo "<script>window.location.href = 'manage-equipments.php'</script>";
       }
    }
@@ -47,9 +48,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
    <body>
       <?php include_once('includes/header.php'); ?>
-      <!-- ============================================================== -->
-      <!-- Start right Content here -->
-      <!-- ============================================================== -->
       <div class="wrapper">
          <div class="container">
             <div class="row">
@@ -73,7 +71,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </thead>
                         <tbody>
                            <?php
-                           $query = Query::executeQuery("SELECT * from equipment where id!='1'");
+                           $query = EquipmentController::getAllEquipments();
                            $results = $query->fetchAll(PDO::FETCH_OBJ);
                            $cnt = 1;
                            if ($query->rowCount() > 0) {
@@ -101,7 +99,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                </div>
             </div>
          </div>
-         <?php include_once('../helper/footer.php'); ?>
       </div>
       <!-- jQuery  -->
       <script src="assets/js/jquery.min.js"></script>

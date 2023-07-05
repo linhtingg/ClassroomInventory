@@ -1,35 +1,28 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
         $aid = $_POST['userID'];
-
-        $purpose = $_POST['purpose'];
-        $n_room = $_POST['howmanyroom'];
-        $n_people = $_POST['howmanypeople'];
-        $borrow_time = $_POST['borrow_time'];
-        $borrow_day = $_POST['borrow_day'];
-
         $sql = "insert into `roomregisterform` (`userID`, `purpose`, `numberOfRoom`, `numberOfPeople`, `borrowTime`, `borrowDay`) VALUES (:aid,:purpose,:n_room,:n_people,:borrow_time,:borrow_day)";
         $query = Query::executeQuery($sql, [
             [':aid', $aid],
-            [':purpose', $purpose],
-            [':n_room', $n_room],
-            [':n_people', $n_people],
-            [':borrow_time', $borrow_time],
-            [':borrow_day', $borrow_day]
+            [':purpose', $_POST['purpose']],
+            [':n_room', $_POST['howmanyroom']],
+            [':n_people', $_POST['howmanypeople']],
+            [':borrow_time', $_POST['borrow_time']],
+            [':borrow_day', $_POST['borrow_day']]
         ]);
-
-        $LastInsertId = $query->rowCount();
-        if ($LastInsertId > 0) {
-            echo '<script>alert("Form submitted successfully")</script>';
+        if ($query->rowCount() > 0) {
+            Notification::echoToScreen("Form submitted successfully");
             echo "<script>window.location.href ='view-rooms-form.php'</script>";
         } else {
-            echo '<script>alert("Something Went Wrong. Please try again")</script>';
+            Notification::echoToScreen("Something Went Wrong. Please try again");
         }
     }
 
@@ -107,7 +100,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

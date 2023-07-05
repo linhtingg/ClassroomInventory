@@ -1,8 +1,9 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -14,7 +15,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 [':id', intval($_GET['formID'])]
             ]
         );
-        echo '<script>alert("Equipment has been assigned.")</script>';
+        Notification::echoToScreen("Equipment has been assigned.");
         echo "<script>window.location.href ='manage-equipment-register-students.php'</script>";
     }
 ?>
@@ -92,7 +93,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <form method="post">
             <div id="assignEquipment" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -107,9 +107,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <p><select class="form-control" name="equipmentID" required>
                                     <option value="">Select</option>
                                     <?php
-                                    $sql = "SELECT * from equipment where usability=1 and id!='1'";
-                                    $query = Query::executeQuery($sql);
-                                    $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                    $results = EquipmentController::getAllAvailableEquipments()->fetchAll(PDO::FETCH_OBJ);
                                     foreach ($results as $row) { ?>
                                         <option value="<?php echo htmlentities($row->id); ?>"><?php echo htmlentities($row->id); ?></option>
                                     <?php } ?>

@@ -1,8 +1,9 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -15,9 +16,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
             ]
         );
         if ($query->rowCount() > 0) {
-            echo "<script>alert('Notification added successfully');</script>";
+            Notification::echoToScreen("Notification added successfully");
         } else {
-            echo "<script>alert('Failed to add notification');</script>";
+            Notification::echoToScreen("Failed to add notification");
         }
         echo "<script>window.location.href = 'manage-notifications.php'</script>";
     }
@@ -63,7 +64,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

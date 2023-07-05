@@ -1,8 +1,9 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -11,31 +12,36 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         if (isset($_POST['submit'])) {
             // READ DATA
             $roomname = $_POST['roomname'];
-            // TODO: CHECK ROOM HAVE ANY REPORT FORMS
-            // CHECK ROOM USING ANY EQUIPMENT
-            $query = Query::executeQuery("SELECT * FROM `equipment` WHERE currentRoom = :oldRoomID", [[':oldRoomID', $oldRoomID]]);
+            // CHECK ROOM HAVE ANY REPORT FORMS
+            $query = Query::executeQuery("SELECT * FROM reportform WHERE roomID=:oldRoomID", [[':oldRoomID', $oldRoomID]]);
             if ($query->rowCount() == 0) {
-                //  CHECK NEW ROOM ID EXISTS
-                $row = Query::executeQuery("SELECT * FROM `room` WHERE id=:roomname", [[':roomname', $roomname]])->rowCount();
-                if ($row == 0 || $oldRoomID == $roomname) {
-                    // IF NOT, UPDATE
-                    Query::executeQuery(
-                        "UPDATE room SET id =:roomname, capacity=:capacity, usability=:usability, description=:description, avaiableTime=:availableTime WHERE id=:oldRoomID",
-                        [
-                            [':roomname', $roomname],
-                            [':capacity', $_POST['capacity']],
-                            [':usability', $_POST['usability']],
-                            [':description', $_POST['description']],
-                            [':availableTime', $_POST['times']],
-                            [':oldRoomID', $oldRoomID]
-                        ]
-                    );
-                    echo "<script>alert('Room updated successfully!');</script>";
+                // CHECK ROOM USING ANY EQUIPMENT
+                $query = Query::executeQuery("SELECT * FROM `equipment` WHERE currentRoom = :oldRoomID", [[':oldRoomID', $oldRoomID]]);
+                if ($query->rowCount() == 0) {
+                    //  CHECK NEW ROOM ID EXISTS
+                    $rowCount = RoomController::getRoomByID($roomname)->rowCount();
+                    if ($rowCount == 0 || $oldRoomID == $roomname) {
+                        // IF NOT, UPDATE
+                        Query::executeQuery(
+                            "UPDATE room SET id =:newID, capacity=:capacity, usability=:u, description=:d, avaiableTime=:aTime WHERE id=:oldRoomID",
+                            [
+                                [':newID', $roomname],
+                                [':capacity', $_POST['capacity']],
+                                [':u', $_POST['usability']],
+                                [':d', $_POST['description']],
+                                [':aTime', $_POST['times']],
+                                [':oldRoomID', $oldRoomID]
+                            ]
+                        );
+                        Notification::echoToScreen("Room updated successfully!");
+                    } else {
+                        Notification::echoToScreen("Room " . $roomname . " existed! Cannot update room!");
+                    }
                 } else {
-                    echo "<script>alert('Room " . $roomname . " existed! Cannot update room!');</script>";
+                    Notification::echoToScreen("Cannot update room!");
                 }
             } else {
-                echo "<script>alert('Cannot update room!');</script>";
+                Notification::echoToScreen("Cannot update room!");
             }
             echo "<script>window.location.href = 'manage-rooms.php'</script>";
         }
@@ -67,7 +73,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box">
                             <h4 class="m-t-0 header-title">Edit Room</h4>
                             <?php
-                            $results = Query::executeQuery('SELECT * from room where id = :room', [[':room', $_GET['did']]])->fetchAll(PDO::FETCH_OBJ);
+                            $results = RoomController::getRoomByID($_GET['did'])->fetchAll(PDO::FETCH_OBJ);
                             foreach ($results as $row) { ?>
                                 <form action="" method="post">
                                     <div class="form-group row">
@@ -122,7 +128,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

@@ -1,30 +1,28 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $aid = $_POST['userID'];
-        $roomID = $_POST['roomID'];
-        $desribeCondition = $_POST['desribeCondition'];
-        $date = $_POST['reportDate'];
-
-        $sql = "INSERT INTO `reportform` ( `reportDate`,`roomID`, `userReportID`, `desribeCondition`) VALUES (:date,:roomID, :aid, :desribeCondition)";
-        $query = Query::executeQuery($sql, [
-            [':aid', $aid],
-            [':roomID', $roomID],
-            [':desribeCondition', $desribeCondition],
-            [':date', $date]
-        ]);
-        $LastInsertId = $query->rowCount();
-        if ($LastInsertId > 0) {
-            echo '<script>alert("Report successfully")</script>';
-            echo "<script>window.location.href ='dashboard.php'</script>";
+        $query = Query::executeQuery(
+            "INSERT INTO `reportform` ( `reportDate`,`roomID`, `userReportID`, `desribeCondition`) VALUES (:date,:roomID, :aid, :desribeCondition)",
+            [
+                [':aid', $_POST['userID']],
+                [':roomID', $_POST['roomID']],
+                [':desribeCondition', $_POST['desribeCondition']],
+                [':date', $_POST['reportDate']]
+            ]
+        );
+        if ($query->rowCount() > 0) {
+            Notification::echoToScreen("Report successfully");
         } else {
-            echo '<script>alert("Something Went Wrong. Please try again")</script>';
+            Notification::echoToScreen("Something Went Wrong. Please try again");
         }
+        echo "<script>window.location.href ='dashboard.php'</script>";
     }
 ?>
     <!doctype html>
@@ -90,9 +88,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                             <input type="text" class="form-control" list="room_id" required="true" name="roomID" placeholder="In which room did the problem occur?">
                                             <datalist id="room_id">
                                                 <?php
-                                                $sql0 = "SELECT id FROM room where id != 1";
-                                                $query = Query::executeQuery($sql0);
-                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                                $results = RoomController::getAllRooms()->fetchAll(PDO::FETCH_OBJ);
                                                 foreach ($results as $result) {
                                                     echo "<option value= $result->id </option>";
                                                 }
@@ -114,7 +110,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     </div>
                                 </form>
                             </div>
-                            <?php include_once('../helper/footer.php'); ?>
                         </div>
                     </div>
                 </div>
