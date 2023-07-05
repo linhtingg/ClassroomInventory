@@ -1,32 +1,33 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['did'])) {
         if (isset($_POST['submit'])) {
-            $rowCount = Query::executeQuery("SELECT * FROM `equipment` WHERE id=:oldID", [[':oldID', $newID]])->rowCount();
-            if ($rowCount == 0 || $newID == $_GET['did']) {
+            $rowCount = EquipmentController::getEquipmentByID($_POST['equipmentID'])->rowCount();
+            if ($rowCount == 0 || $_POST['equipmentID'] == $_GET['did']) {
                 Query::executeQuery(
-                    "UPDATE equipment SET type=:equipmentType, id=:equipment, totalUsedTime=:totalUsedTime, producedYear=:producedYear, description=:description, lastUserUsed=:lastUserUsed, currentRoom=:currentRoom, avaiableTime=:availableTime WHERE id=:oldID",
+                    "UPDATE equipment SET type=:eType, id=:id, totalUsedTime=:tTime, producedYear=:y, description=:d, lastUserUsed=:user, currentRoom=:room, avaiableTime=:aTime WHERE id=:oldID",
                     [
-                        [':equipmentType', $_POST['type']],
-                        [':equipment', $_POST['equipmentID']],
-                        [':totalUsedTime', $_POST['totalUsedTime']],
-                        [':producedYear', $_POST['producedYear']],
-                        [':description', $_POST['description']],
-                        [':lastUserUsed', $_POST['lastUserUsed']],
-                        [':currentRoom', $_POST['currentRoom']],
-                        [':availableTime', $_POST['availableTime']],
+                        [':eType', $_POST['type']],
+                        [':id', $_POST['equipmentID']],
+                        [':tTime', $_POST['totalUsedTime']],
+                        [':y', $_POST['producedYear']],
+                        [':d', $_POST['description']],
+                        [':user', $_POST['lastUserUsed']],
+                        [':room', $_POST['currentRoom']],
+                        [':aTime', $_POST['availableTime']],
                         [':oldID', $_GET['did']]
                     ]
                 );
-                echo "<script>alert('Equipment updated successfully!');</script>";
+                Notification::echoToScreen("Equipment updated successfully!");
             } else {
-                echo "<script>alert('Equipment " . $newID . " existed! Cannot update equipment!');</script>";
+                Notification::echoToScreen("Equipment " . $_POST['equipmentID'] . " existed! Cannot update equipment!");
             }
             echo "<script>window.location.href = 'manage-equipments.php'</script>";
         }
@@ -59,7 +60,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box">
                             <h4 class="m-t-0 header-title">Edit Equipment</h4>
                             <?php
-                            $results = Query::executeQuery("SELECT * from equipment where id = :room", [[':room', $_GET['did']]])->fetchAll(PDO::FETCH_OBJ);
+                            $results = EquipmentController::getEquipmentByID($_GET['did'])->fetchAll(PDO::FETCH_OBJ);
                             foreach ($results as $row) { ?>
                                 <form action="" method="post">
                                     <div class="form-group row">
@@ -131,10 +132,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div> <!-- End wrapper -->
-
-
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>

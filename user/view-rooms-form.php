@@ -1,27 +1,22 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     // Code for deleting request from list
     if (isset($_GET['delid'])) {
         $formid = intval($_GET['delid']);
-
-        $query = $dbh->prepare("SELECT formid FROM roomregisterform WHERE formid=:formid and approved != 1");
-        $query->bindParam(':formid', $formid, PDO::PARAM_STR);
-        $query->execute();
+        $query = Query::executeQuery("SELECT formid FROM roomregisterform WHERE formid=:formid and approved is not null", [[':formid', $formid]]);
         $results = $query->fetchAll(PDO::FETCH_OBJ);
-
         if ($query->rowCount() > 0) {
-            echo '<script>alert("Can not delete! The request has already been approve!")</script>';
+            Notification::echoToScreen("Can not delete! The request has already been approve!");
         } else {
-            $sql = "delete from roomregisterform where formid=:formid";
-            $query = $dbh->prepare($sql);
-            $query->bindParam(':formid', $formid, PDO::PARAM_STR);
-            $query->execute();
-            echo "<script>alert('Request deleted');</script>";
+            Query::executeQuery("DELETE from roomregisterform where formid=:formid", [[':formid', $formid]]);
+            Notification::echoToScreen("Request deleted");
             echo "<script>window.location.href = 'view-rooms-form.php'</script>";
         }
     }
@@ -72,6 +67,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <th>Borrow Time</th>
                                         <th>Approved</th>
                                         <th>Reply</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -92,12 +88,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <td><?php echo htmlentities($row->borrowDay); ?></td>
                                                 <td><?php echo htmlentities($row->borrowTime); ?></td>
                                                 <td><?php $approved = $row->approved;
-                                                    if ($approved === false) {
-                                                        echo "<span style='color:red'>Decline</span>";
-                                                    } elseif ($approved === true) {
-                                                        echo "<span style='color: green'>Approve</span>";
-                                                    } else {
+                                                    if ($row->reply == null) {
                                                         echo "<span style='color:gray'>In process</span>";
+                                                    } elseif ($approved == 1) {
+                                                        echo "<span style='color:green'>Approve</span>";
+                                                    } else {
+                                                        echo "<span style='color:red'>Decline</span>";
                                                     }
                                                     ?></td>
                                                 <td><?php $reply = $row->reply;
@@ -109,7 +105,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                         echo htmlentities($row->reply);
                                                     }
                                                     ?></td>
-                                                <td> <a href="view-rooms-form.php? delid= <?php echo ($row->formid); ?>" onclick="return confirm('Do you really want to delete ?');" class="btn btn-danger" />Delete</a>
+                                                <td> <a href="view-rooms-form.php?delid=<?php echo ($row->formid); ?>" onclick="return confirm('Do you really want to delete ?');" class="btn btn-danger" />Delete</a>
                                                 </td>
                                             </tr>
                                     <?php $cnt = $cnt + 1;
@@ -121,7 +117,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

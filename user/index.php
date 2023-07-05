@@ -1,17 +1,15 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (isset($_POST['login'])) {
-    $email = $_POST['email'];
-    $pass = $_POST['pass'];
-    $sql = "SELECT * FROM tbluser WHERE email=:email and pass=:pass";
     $query = Query::executeQuery(
-        $sql,
+        "SELECT * FROM tbluser WHERE email=:email and pass=:pass",
         [
-            [':email', $email],
-            [':pass', $pass]
+            [':email', $_POST['email']],
+            [':pass', $_POST['pass']]
         ]
     );
     $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -23,7 +21,7 @@ if (isset($_POST['login'])) {
         $_SESSION['login'] = $_POST['email'];
         echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
     } else {
-        echo "<script>alert('Invalid Details');</script>";
+        Notification::echoToScreen("Invalid Details");
     }
 }
 ?>

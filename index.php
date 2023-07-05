@@ -1,5 +1,6 @@
 <?php
 include('./helper/QueryHandler.php');
+include('./helper/FunctionController.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +56,7 @@ include('./helper/QueryHandler.php');
                     </thead>
                     <tbody>
                         <?php
-                        $query = Query::executeQuery("SELECT * from room where id!='1'");
+                        $query = RoomController::getAllRooms();
                         $results = $query->fetchAll(PDO::FETCH_OBJ);
                         $cnt = 1;
                         if ($query->rowCount() > 0) {

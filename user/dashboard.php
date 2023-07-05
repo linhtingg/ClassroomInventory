@@ -1,7 +1,9 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -38,8 +40,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql0 = "SELECT * from  room where capacity !=0";
-                            $query = Query::executeQuery($sql0);
+                            $query = RoomController::getAllRooms();
                             $totalroom = $query->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
@@ -80,28 +81,18 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
-                            <?php
-                            $sql11 = "SELECT * from  equipment where id!='1'";
-                            $query11 = Query::executeQuery($sql11);
-                            $totalregstd = $query11->rowCount();
-                            ?>
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Registered Equipments</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totalregstd); ?></span></h2>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(EquipmentController::getAllEquipments()->rowCount()); ?></span></h2>
                             <a href="view-equipments.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
                     </div>
 
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
-                            <?php
-                            $sql11 = "SELECT * from  equipment where usability=1";
-                            $query11 = Query::executeQuery($sql11);
-                            $totalregstd = $query11->rowCount();
-                            ?>
                             <i class="fa fa-roomtop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Available Equipments</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totalregstd); ?></span></h2>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(EquipmentController::getAllAvailableEquipments()->rowCount()); ?></span></h2>
                             <a href="view-equipments.php"><span class="badge badge-success"> View Detail </span></a>
                         </div>
                     </div>
@@ -122,7 +113,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div> <!-- End wrapper -->
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

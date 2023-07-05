@@ -1,8 +1,9 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+   include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
    header('location:logout.php');
 } else {
@@ -10,10 +11,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
       $id = $_GET['delid'];
       $query = Query::executeQuery("SELECT * FROM notification WHERE id= :id", [[':id', $id]]);
       if ($query->rowCount() == 0) {
-         echo '<script>alert("Notification ID ' . $id . ' does not existed!")</script>';
+         Notification::echoToScreen("Notification ID " . $id . " does not existed!");
       } else {
          Query::executeQuery("DELETE FROM notification WHERE id= :id", [[':id', $id]]);
-         echo "<script>alert('Notification deleted');</script>";
+         Notification::echoToScreen("Notification deleted");
          echo "<script>window.location.href = 'manage-notifications.php'</script>";
       }
    }
@@ -83,7 +84,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                </div>
             </div>
          </div>
-         <?php include_once('../helper/footer.php'); ?>
       </div> <!-- End wrapper -->
       <!-- jQuery  -->
       <script src="assets/js/jquery.min.js"></script>

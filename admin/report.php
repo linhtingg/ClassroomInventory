@@ -1,7 +1,6 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
 include('../helper/QueryHandler.php');
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');

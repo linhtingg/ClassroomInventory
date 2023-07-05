@@ -1,8 +1,9 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -15,7 +16,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 [':id', intval($_GET['stdid'])]
             ]
         );
-        echo '<script>alert("Room has been assigned.")</script>';
+        Notification::echoToScreen("Room has been assigned");
         echo "<script>window.location.href ='manage-room-register-students.php'</script>";
     }
 ?>
@@ -93,7 +94,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <form method="post">
             <div id="assignRoom" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

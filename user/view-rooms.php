@@ -1,7 +1,9 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -52,8 +54,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $sql = "SELECT * from room where id != 1";
-                                    $query=Query::executeQuery($sql);
+                                    $query = RoomController::getAllRooms();
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
@@ -78,7 +79,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

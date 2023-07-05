@@ -1,8 +1,9 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
@@ -15,7 +16,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 [':adminID', $_SESSION['sscmsaid']]
             ]
         );
-        echo '<script>alert("Your profile has been updated")</script>';
+        Notification::echoToScreen("Your profile has been updated!");
         echo "<script>window.location.href ='profile.php'</script>";
     }
 ?>
@@ -90,7 +91,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

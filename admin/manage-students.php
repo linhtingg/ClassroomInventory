@@ -1,14 +1,15 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/dbconnection.php');
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['stdid'])) {
         Query::executeQuery($sql, [[':sid', $_GET['stdid']]]);
-        echo "<script>alert('Student deleted');</script>";
+        Notification::echoToScreen("Student deleted");
         echo "<script>window.location.href = 'manage-students.php'</script>";
     }
 ?>
@@ -79,7 +80,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     </div>
                 </div>
             </div>
-            <?php include_once('../helper/footer.php'); ?>
         </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>

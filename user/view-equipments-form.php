@@ -1,20 +1,22 @@
 <?php
 session_start();
 error_reporting(0);
-include('../helper/QueryHandler.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     // Code for deleting request from list
     if (isset($_GET['delid'])) {
         $formid = intval($_GET['delid']);
-        $query = Query::executeQuery("SELECT formid FROM equipmentregisterform WHERE formid=:formid and approved != 1", [[':formid', $formid]]);
+        $query = Query::executeQuery("SELECT formid FROM equipmentregisterform WHERE formid=:formid and approved is not null", [[':formid', $formid]]);
         $results = $query->fetchAll(PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
-            echo '<script>alert("Can not delete! The request has already been approve!")</script>';
+            Notification::echoToScreen("Can not delete! The request has already been approve!");
         } else {
             Query::executeQuery("DELETE from equipmentregisterform where formid=:formid", [[':formid', $formid]]);
-            echo "<script>alert('Request deleted');</script>";
+            Notification::echoToScreen('Request deleted');
             echo "<script>window.location.href = 'view-equipments-form.php'</script>";
         }
     }
@@ -64,6 +66,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <th>Borrow Time</th>
                                         <th>Approved</th>
                                         <th>Reply</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -115,7 +118,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 </div>
             </div>
         </div>
-        <?php include_once('../helper/footer.php'); ?>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
