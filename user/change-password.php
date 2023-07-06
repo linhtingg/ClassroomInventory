@@ -1,6 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
+<<<<<<< Updated upstream
 include('includes/dbconnection.php');
 if (strlen($_SESSION['sscmsaid']==0)) {
   header('location:logout.php');
@@ -38,6 +39,40 @@ echo '<script>alert("Your current password is wrong")</script>';
     <head>
        
         <title>Student Study Center Mananagement System | Change Password</title>
+=======
+include('../helper/dbconnection.php');
+include('../helper/QueryHandler.php');
+if (strlen($_SESSION['sscmsaid'] == 0)) {
+    header('location:logout.php');
+} else {
+    if (isset($_POST['change'])) {
+        $query = Query::executeQuery(
+            "SELECT * FROM tbluser WHERE schoolID=:userID and pass=:oldPass",
+            [
+                [':userID', $_SESSION['sscmsaid']],
+                [':oldPass', $_POST['currentpassword']]
+            ]
+        );
+        if ($query->rowCount() > 0) {
+            Query::executeQuery(
+                "UPDATE tbluser set pass=:newPass where schoolID=:userID",
+                [
+                    [':newPass', $_POST['newPass']],
+                    [':userID', $_SESSION['sscmsaid']]
+                ]
+            );
+            echo '<script>alert("Your password successully changed")</script>';
+        } else {
+            echo '<script>alert("Your current password is wrong")</script>';
+        }
+    }
+?>
+    <!doctype html>
+    <html lang="en">
+
+    <head>
+        <title>Change Password</title>
+>>>>>>> Stashed changes
 
         <!-- Switchery css -->
         <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
@@ -49,6 +84,7 @@ echo '<script>alert("Your current password is wrong")</script>';
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 
         <!-- Modernizr js -->
+<<<<<<< Updated upstream
       <script type="text/javascript">
 function checkpass()
 {
@@ -62,6 +98,18 @@ return true;
 }   
 
 </script> 
+=======
+        <script type="text/javascript">
+            function checkpass() {
+                if (document.changepassword.newPass.value != document.changepassword.confirmpassword.value) {
+                    alert('New Password and Confirm Password field does not match');
+                    document.changepassword.confirmpassword.focus();
+                    return false;
+                }
+                return true;
+            }
+        </script>
+>>>>>>> Stashed changes
     </head>
 
 
@@ -70,19 +118,28 @@ return true;
 <?php include_once('includes/header.php');?>
         <div class="wrapper">
             <div class="container">
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="page-title-box">
+<<<<<<< Updated upstream
                            
+=======
+>>>>>>> Stashed changes
                             <h4 class="page-title">Change Password</h4>
                         </div>
                     </div>
                 </div>
                 <!-- end row -->
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
@@ -93,19 +150,24 @@ return true;
                                     <h4 class="header-title m-t-0">Change Password</h4>
                                     
                                     <div class="p-20">
-                                        <form action="#" method="post" name="changepassword" method="post" onsubmit="return checkpass();">
+                                        <form action="#" method="post" name="changepassword" onsubmit="return checkpass();">
                                             <div class="form-group">
                                                 <label for="userName">Current Password<span class="text-danger">*</span></label>
                                                 <input type="password" name="currentpassword" id="currentpassword" class="form-control" required="true">
                                             </div>
                                             <div class="form-group">
                                                 <label for="emailAddress">New Password<span class="text-danger">*</span></label>
+<<<<<<< Updated upstream
                                                <input type="password" name="newpassword"  class="form-control" required="true">
+=======
+                                                <input type="password" name="newPass" class="form-control" required="true">
+>>>>>>> Stashed changes
                                             </div>
                                             <div class="form-group">
                                                 <label for="pass1">Confirm Password<span class="text-danger">*</span></label>
                                                <input type="password" name="confirmpassword" id="confirmpassword" value=""  class="form-control" required="true">
                                             </div>
+<<<<<<< Updated upstream
                                          
                                             <div class="form-group text-left m-b-0">
                                                 <button class="btn btn-primary waves-effect waves-light" type="submit" name="change">
@@ -114,6 +176,9 @@ return true;
                                                 
                                             </div>
 
+=======
+                                            <button class="btn btn-primary waves-effect waves-light" type="submit" name="change">Submit</button>
+>>>>>>> Stashed changes
                                         </form>
                                     </div>
 

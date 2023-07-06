@@ -34,10 +34,15 @@
                             <!-- item-->
                             <?php
                             $aid = $_SESSION['sscmsaid'];
+<<<<<<< Updated upstream
                             $sql = "SELECT fullname from tbluser where schoolID=:aid";
                             $query = $dbh->prepare($sql);
                             $query->bindParam(':aid', $aid, PDO::PARAM_STR);
                             $query->execute();
+=======
+                            $sql = "SELECT fullName from tbluser where schoolID=:aid";
+                            $query=Query::executeQuery($sql,[[':aid', $aid]]);
+>>>>>>> Stashed changes
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             $cnt = 1;
                             if ($query->rowCount() > 0) {
@@ -56,7 +61,7 @@
 
                                     <!-- item-->
                                     <a href="change-password.php" class="dropdown-item notify-item">
-                                        <i class="zmdi zmdi-settings"></i> <span>Settings</span>
+                                        <i class="zmdi zmdi-settings"></i> <span>Change Password</span>
                                     </a>
 
                                     <a href="logout.php" class="dropdown-item notify-item">
