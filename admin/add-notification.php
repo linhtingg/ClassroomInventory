@@ -8,11 +8,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $query = Query::executeQuery(
-            "INSERT INTO notification (notiContent, valid_til) VALUES (:content,:lastDay);",
+        $query = Query::execute(
+            "INSERT INTO notification (notiContent, valid_til) VALUES (?,?);",
             [
-                [':content', $_POST['content']],
-                [':lastDay', $_POST['date']]
+                $_POST['content'],
+                $_POST['date']
             ]
         );
         if ($query->rowCount() > 0) {
@@ -28,7 +28,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
         <title>CIMS | Add Notification</title>
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
     </head>
@@ -70,20 +69,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
-        <script src="../plugins/switchery/switchery.min.js"></script>
-
-        <!-- Validation js (Parsleyjs) -->
-        <script src="../plugins/parsleyjs/parsley.min.js"></script>
 
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
-        <script>
-            $(document).ready(function() {
-                $('form').parsley();
-            });
-        </script>
     </body>
 
     </html>

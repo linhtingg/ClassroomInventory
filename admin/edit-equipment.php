@@ -11,18 +11,18 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         if (isset($_POST['submit'])) {
             $rowCount = EquipmentController::getEquipmentByID($_POST['equipmentID'])->rowCount();
             if ($rowCount == 0 || $_POST['equipmentID'] == $_GET['did']) {
-                Query::executeQuery(
-                    "UPDATE equipment SET type=:eType, id=:id, totalUsedTime=:tTime, producedYear=:y, description=:d, lastUserUsed=:user, currentRoom=:room, avaiableTime=:aTime WHERE id=:oldID",
+                Query::execute(
+                    "UPDATE equipment SET type=?, id=?, totalUsedTime=?, producedYear=?, description=?, lastUserUsed=?, currentRoom=?, avaiableTime=? WHERE id=?",
                     [
-                        [':eType', $_POST['type']],
-                        [':id', $_POST['equipmentID']],
-                        [':tTime', $_POST['totalUsedTime']],
-                        [':y', $_POST['producedYear']],
-                        [':d', $_POST['description']],
-                        [':user', $_POST['lastUserUsed']],
-                        [':room', $_POST['currentRoom']],
-                        [':aTime', $_POST['availableTime']],
-                        [':oldID', $_GET['did']]
+                        $_POST['type'],
+                        $_POST['equipmentID'],
+                        $_POST['totalUsedTime'],
+                        $_POST['producedYear'],
+                        $_POST['description'],
+                        $_POST['lastUserUsed'],
+                        $_POST['currentRoom'],
+                        $_POST['availableTime'],
+                        $_GET['did']
                     ]
                 );
                 Notification::echoToScreen("Equipment updated successfully!");

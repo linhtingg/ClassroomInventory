@@ -8,19 +8,19 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['change'])) {
-        $query = Query::executeQuery(
-            "SELECT * FROM tbladmin WHERE schoolID=:adminID and password=:oldPass",
+        $query = Query::execute(
+            "SELECT * FROM tbladmin WHERE schoolID=? and password=?",
             [
-                [':adminID', $_SESSION['sscmsaid']],
-                [':oldPass', $_POST['currentpassword']]
+                $_SESSION['sscmsaid'],
+                $_POST['currentpassword']
             ]
         );
         if ($query->rowCount() > 0) {
-            Query::executeQuery(
-                "UPDATE tbladmin set password=:newPass where schoolID=:adminID",
+            Query::execute(
+                "UPDATE tbladmin set password=? where schoolID=?",
                 [
-                    [':newPass', $_POST['newPass']],
-                    [':adminID', $_SESSION['sscmsaid']]
+                    $_POST['newPass'],
+                    $_SESSION['sscmsaid']
                 ]
             );
             Notification::echoToScreen("Your password successully changed");
@@ -34,9 +34,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
         <title>Change Password</title>
-
-        <!-- Switchery css -->
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
 
         <!-- Bootstrap CSS -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -105,21 +102,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
-        <script src="../plugins/switchery/switchery.min.js"></script>
-
-        <!-- Validation js (Parsleyjs) -->
-        <script src="../plugins/parsleyjs/parsley.min.js"></script>
-
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
-        <script>
-            $(document).ready(function() {
-                $('form').parsley();
-            });
-        </script>
-
     </body>
 
     </html><?php }  ?>

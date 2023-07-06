@@ -8,7 +8,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['stdid'])) {
-        Query::executeQuery($sql, [[':sid', $_GET['stdid']]]);
+        Query::execute("DELETE from tbluser where schoolID=?", [$_GET['stdid']]);
         Notification::echoToScreen("Student deleted");
         echo "<script>window.location.href = 'manage-students.php'</script>";
     }
@@ -18,15 +18,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
         <title>CIMS | Manage Students</title>
-        <!-- DataTables -->
-        <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <!-- Responsive datatable examples -->
-        <link href="../plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <!-- Multi Item Selection examples -->
-        <link href="../plugins/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <!-- Switchery css -->
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <!-- Bootstrap CSS -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- App CSS -->
@@ -56,7 +47,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = Query::executeQuery("SELECT * from tbluser");
+                                    $query = Query::execute("SELECT * from tbluser");
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     $cnt = 1;
                                     if ($query->rowCount() > 0) {
@@ -89,39 +80,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
-        <script>
-            $(document).ready(function() {
-
-                // Default Datatable
-                $('#datatable').DataTable();
-
-                //Buttons examples
-                var table = $('#datatable-buttons').DataTable({
-                    lengthChange: false,
-                    buttons: ['copy', 'excel', 'pdf']
-                });
-
-                // Key Tables
-
-                $('#key-table').DataTable({
-                    keys: true
-                });
-
-                // Responsive Datatable
-                $('#responsive-datatable').DataTable();
-
-                // Multi Selection Datatable
-                $('#selection-datatable').DataTable({
-                    select: {
-                        style: 'multi'
-                    }
-                });
-
-                table.buttons().container()
-                    .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
-            });
-        </script>
     </body>
 
     </html><?php }  ?>

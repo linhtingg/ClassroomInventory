@@ -8,3 +8,4 @@
   - Import file sql ```class_inventory.sql``` 
   - Truy câp http://localhost/class để xem kết quả
 4. Tự thêm dữ liệu vào các bảng để test tính năng
+5. Khi chạy file SQL, tắt nút "Enable Foreign Key Check"

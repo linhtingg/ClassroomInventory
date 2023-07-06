@@ -8,11 +8,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $sql = "update tbluser set phonenumber=:mobilenumber,email=:email where schoolID=:aid";
-        Query::executeQuery($sql,[
-            [':email', $_POST['email']],
-            [':mobilenumber', $_POST['mobilenumber']],
-            [':aid', $_SESSION['sscmsaid']]
+        $sql = "update tbluser set phonenumber=?,email=? where schoolID=?";
+        Query::execute($sql, [
+            $_POST['mobilenumber'],
+            $_POST['email'],
+            $_SESSION['sscmsaid']
         ]);
         Notification::echoToScreen("Your profile has been updated");
         echo "<script>window.location.href ='profile.php'</script>";
@@ -23,10 +23,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
         <title>CIMS | Profile</title>
-
-        <!-- Switchery css -->
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
-
         <!-- Bootstrap CSS -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
@@ -55,8 +51,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <div class="p-20">
                                         <form action="#" method="post">
                                             <?php
-                                            $sql = "SELECT * from tbluser where schoolID = :id";
-                                            $query = Query::executeQuery($sql, [[':id', $_SESSION['sscmsaid']]]);
+                                            $sql = "SELECT * from tbluser where schoolID=?";
+                                            $query = Query::execute($sql, [$_SESSION['sscmsaid']]);
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                                             if ($query->rowCount() > 0) {
                                                 foreach ($results as $row) { ?>
@@ -97,21 +93,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
-        <script src="../plugins/switchery/switchery.min.js"></script>
-
-        <!-- Validation js (Parsleyjs) -->
-        <script src="../plugins/parsleyjs/parsley.min.js"></script>
-
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
-        <script>
-            $(document).ready(function() {
-                $('form').parsley();
-            });
-        </script>
-
     </body>
 
     </html><?php }  ?>

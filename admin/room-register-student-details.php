@@ -9,11 +9,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
     // Assign Room Code   
     if (isset($_POST['submit'])) {
-        $query = Query::executeQuery(
-            "UPDATE roomregisterform SET  reply = :roomID where formid=:id",
+        $query = Query::execute(
+            "UPDATE roomregisterform SET  reply = ? where formid=?",
             [
-                ['roomID', $_POST['roomID']],
-                [':id', intval($_GET['stdid'])]
+                $_POST['roomID'],
+                intval($_GET['stdid'])
             ]
         );
         Notification::echoToScreen("Room has been assigned");
@@ -25,15 +25,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
         <title>CIMS | Room Registered Form Details</title>
-        <!-- DataTables -->
-        <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <!-- Responsive datatable examples -->
-        <link href="../plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <!-- Multi Item Selection examples -->
-        <link href="../plugins/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <!-- Switchery css -->
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <!-- Bootstrap CSS -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- App CSS -->
@@ -50,8 +41,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-12">
                         <div class="card-box">
                             <?php
-                            $sql = "SELECT * FROM roomregisterform INNER JOIN tbluser ON roomregisterform.userID=tbluser.schoolID WHERE formid=:formID;";
-                            $query = Query::executeQuery($sql, [[':formID', intval($_GET['stdid'])]]);
+                            $sql = "SELECT * FROM roomregisterform INNER JOIN tbluser ON roomregisterform.userID=tbluser.schoolID WHERE formid=?;";
+                            $query = Query::execute($sql, [intval($_GET['stdid'])]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             if ($query->rowCount() > 0) {
                                 foreach ($results as $row) { ?>
@@ -108,8 +99,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <p><select class="form-control" name="roomID" required>
                                     <option value="">Select</option>
                                     <?php
-                                    $sql = "SELECT * from room where usability=1 and capacity > :capacity";
-                                    $query = Query::executeQuery($sql, [[':capacity', $row->numberOfPeople]]);
+                                    $sql = "SELECT * from room where usability=1 and capacity>?";
+                                    $query = Query::execute($sql, [$row->numberOfPeople]);
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     foreach ($results as $row) { ?>
                                         <option value="<?php echo htmlentities($row->id); ?>"><?php echo htmlentities($row->id); ?></option>

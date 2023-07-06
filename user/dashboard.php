@@ -11,10 +11,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     <!doctype html>
     <html lang="en">
     <title> Dashboard</title>
-    <!--Morris Chart CSS -->
-    <link rel="stylesheet" href="../plugins/morris/morris.css">
-    <!-- Switchery css -->
-    <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- App CSS -->
@@ -27,7 +23,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <?php include_once('includes/header.php'); ?>
         <div class="wrapper">
             <div class="container">
-
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
@@ -54,7 +49,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $sql1 = "SELECT * from  room where usability = 1";
-                            $query1 = Query::executeQuery($sql1);
+                            $query1 = Query::execute($sql1);
                             $totalroomsavail = $query1->rowCount();
                             ?>
                             <i class="fa fa-roomtop float-right"></i>
@@ -67,8 +62,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <?php
-                            $sql11 = "SELECT * from  `roomregisterform` where `userID` = :aid ";
-                            $query11 = Query::executeQuery($sql11, [[':aid', $_SESSION['sscmsaid']]]);
+                            $sql11 = "SELECT * from  `roomregisterform` where `userID` = ?";
+                            $query11 = Query::execute($sql11, [$_SESSION['sscmsaid']]);
                             $totalregstd = $query11->rowCount();
                             ?>
                             <i class="fa fa-users float-right"></i>
@@ -101,8 +96,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <?php
                             $aid = $_SESSION['sscmsaid'];
-                            $sql11 = "SELECT * from  `equipmentregisterform` where `userID` = :aid ";
-                            $query11 = Query::executeQuery($sql11, [[':aid', $aid]]);
+                            $sql11 = "SELECT * from  `equipmentregisterform` where `userID` = ?";
+                            $query11 = Query::execute($sql11, [$aid]);
                             $totalregstd = $query11->rowCount();
                             ?>
                             <i class="fa fa-users float-right"></i>
@@ -119,21 +114,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
-        <script src="../plugins/switchery/switchery.min.js"></script>
-
-        <!--Morris Chart-->
-        <script src="../plugins/morris/morris.min.js"></script>
-        <script src="../plugins/raphael/raphael.min.js"></script>
-
-        <!-- Counter Up  -->
-        <script src="../plugins/waypoints/lib/jquery.waypoints.min.js"></script>
-        <script src="../plugins/counterup/jquery.counterup.js"></script>
-
-        <!-- Page specific js -->
-        <script src="assets/pages/jquery.dashboard.js"></script>
-
         <!-- App js -->
-        <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
     </body>
 

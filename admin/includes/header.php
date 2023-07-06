@@ -29,9 +29,7 @@
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
                             <!-- item-->
                             <?php
-                            $aid = $_SESSION['sscmsaid'];
-                            $sql = "SELECT * from tbladmin where schoolID =:aid";
-                            $query = Query::executeQuery($sql, [[':aid', $aid]]);
+                            $query = Query::execute("SELECT * from tbladmin where schoolID =?", [$_SESSION['sscmsaid']]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             if ($query->rowCount() > 0) {
                                 foreach ($results as $row) { ?>
