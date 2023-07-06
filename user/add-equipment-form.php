@@ -8,16 +8,16 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $sql = "INSERT into equipmentregisterform (`userID`, `purpose`, `equipType`, `numberOfEach`, `borrowTime`, `borrowDay`) VALUES (:aid,:p,:type,:num,:time,:day)";
-        $query = Query::executeQuery(
+        $sql = "INSERT into equipmentregisterform (`userID`, `purpose`, `equipType`, `numberOfEach`, `borrowTime`, `borrowDay`) VALUES (?,?,?,?,?,?)";
+        $query = Query::execute(
             $sql,
             [
-                [':aid', $_POST['userID']],
-                [':p', $_POST['purpose']],
-                [':type', $_POST['equiptype']],
-                [':num', $_POST['howmany']],
-                [':time', $_POST['borrow_time']],
-                [':day', $_POST['borrow_day']]
+                $_POST['userID'],
+                $_POST['purpose'],
+                $_POST['equiptype'],
+                $_POST['howmany'],
+                $_POST['borrow_time'],
+                $_POST['borrow_day']
             ]
         );
         if ($query->rowCount() > 0) {
@@ -34,7 +34,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
         <title>Write equipment request</title>
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
     </head>
@@ -108,21 +107,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
-        <script src="../plugins/switchery/switchery.min.js"></script>
-
-        <!-- Validation js (Parsleyjs) -->
-        <script src="../plugins/parsleyjs/parsley.min.js"></script>
-
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
-        <script>
-            $(document).ready(function() {
-                $('form').parsley();
-            });
-        </script>
-
     </body>
 
     </html><?php }  ?>

@@ -8,13 +8,13 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $query = Query::executeQuery(
-            "INSERT INTO `reportform` ( `reportDate`,`roomID`, `userReportID`, `desribeCondition`) VALUES (:date,:roomID, :aid, :desribeCondition)",
+        $query = Query::execute(
+            "INSERT INTO reportform ( `reportDate`,`roomID`, `userReportID`, `desribeCondition`) VALUES (?,?,?,?)",
             [
-                [':aid', $_POST['userID']],
-                [':roomID', $_POST['roomID']],
-                [':desribeCondition', $_POST['desribeCondition']],
-                [':date', $_POST['reportDate']]
+                $_POST['reportDate'],
+                $_POST['roomID'],
+                $_POST['userID'],
+                $_POST['desribeCondition'],
             ]
         );
         if ($query->rowCount() > 0) {
@@ -30,18 +30,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
         <title>Report a problem </title>
-
-        <!-- DataTables -->
-        <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <!-- Responsive datatable examples -->
-        <link href="../plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <!-- Multi Item Selection examples -->
-        <link href="../plugins/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-
-        <!-- Switchery css -->
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
-
         <!-- Bootstrap CSS -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
@@ -125,40 +113,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
-        <script>
-            $(document).ready(function() {
-
-                // Default Datatable
-                $('#datatable').DataTable();
-
-                //Buttons examples
-                var table = $('#datatable-buttons').DataTable({
-                    lengthChange: false,
-                    buttons: ['copy', 'excel', 'pdf']
-                });
-
-                // Key Tables
-
-                $('#key-table').DataTable({
-                    keys: true
-                });
-
-                // Responsive Datatable
-                $('#responsive-datatable').DataTable();
-
-                // Multi Selection Datatable
-                $('#selection-datatable').DataTable({
-                    select: {
-                        style: 'multi'
-                    }
-                });
-
-                table.buttons().container()
-                    .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
-            });
-        </script>
-
     </body>
 
     </html><?php }  ?>

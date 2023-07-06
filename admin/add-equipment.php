@@ -11,18 +11,18 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $equipment = $_POST['equipment'];
         $rowCount = EquipmentController::getEquipmentByID($equipment)->rowCount();
         if ($rowCount == 0) {
-            $sql = "INSERT INTO equipment VALUES (:type, :id, :totalUsedTime,:producedYear , :description, :lastUserUsed, :currentRoom, :avaiableTimes, 1)";
-            $query = Query::executeQuery(
+            $sql = "INSERT INTO equipment VALUES (?,?,?,?,?,?,?,?,1)";
+            $query = Query::execute(
                 $sql,
                 [
-                    [':id', $equipment],
-                    [':type', $_POST['type']],
-                    [':totalUsedTime', $_POST['totalUsedTime']],
-                    [':producedYear', $_POST['producedYear']],
-                    [':description', $_POST['description']],
-                    [':lastUserUsed', $_POST['lastUserUsed']],
-                    [':currentRoom', $_POST['currentRoom']],
-                    [':avaiableTimes', $_POST['avaiableTimes']]
+                    $_POST['type'],
+                    $equipment,
+                    $_POST['totalUsedTime'],
+                    $_POST['producedYear'],
+                    $_POST['description'],
+                    $_POST['lastUserUsed'],
+                    $_POST['currentRoom'],
+                    $_POST['avaiableTimes']
                 ]
             );
             if ($query->rowCount() > 0) {
@@ -43,7 +43,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
         <title>CIMS | Add Equipment</title>
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
     </head>
@@ -133,20 +132,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
-        <script src="../plugins/switchery/switchery.min.js"></script>
-
-        <!-- Validation js (Parsleyjs) -->
-        <script src="../plugins/parsleyjs/parsley.min.js"></script>
 
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
-        <script>
-            $(document).ready(function() {
-                $('form').parsley();
-            });
-        </script>
     </body>
 
     </html>

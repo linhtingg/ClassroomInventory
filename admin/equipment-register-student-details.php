@@ -8,11 +8,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        Query::executeQuery(
-            "UPDATE equipmentregisterform SET reply = :equipmentID where formid=:id",
+        Query::execute(
+            "UPDATE equipmentregisterform SET reply = ? where formid=?",
             [
-                [':equipmentID', $_POST['equipmentID']],
-                [':id', intval($_GET['formID'])]
+                $_POST['equipmentID'],
+                intval($_GET['formID']),
             ]
         );
         Notification::echoToScreen("Equipment has been assigned.");
@@ -24,15 +24,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
         <title>Equipment Registered Form Details</title>
-        <!-- DataTables -->
-        <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <!-- Responsive datatable examples -->
-        <link href="../plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <!-- Multi Item Selection examples -->
-        <link href="../plugins/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <!-- Switchery css -->
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <!-- Bootstrap CSS -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- App CSS -->
@@ -49,8 +40,8 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-12">
                         <div class="card-box">
                             <?php
-                            $sql = "SELECT * FROM equipmentregisterform INNER JOIN tbluser ON equipmentregisterform.userID=tbluser.schoolID WHERE formid=:formID;";
-                            $query = Query::executeQuery($sql, [[':formID', intval($_GET['formID'])]]);
+                            $sql = "SELECT * FROM equipmentregisterform INNER JOIN tbluser ON equipmentregisterform.userID=tbluser.schoolID WHERE formid=?;";
+                            $query = Query::execute($sql, [intval($_GET['formID'])]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             if ($query->rowCount() > 0) {
                                 foreach ($results as $row) { ?>

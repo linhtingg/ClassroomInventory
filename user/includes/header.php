@@ -34,8 +34,8 @@
                             <!-- item-->
                             <?php
                             $aid = $_SESSION['sscmsaid'];
-                            $sql = "SELECT fullname from tbluser where schoolID=:aid";
-                            $query=Query::executeQuery($sql,[[':aid', $aid]]);
+                            $sql = "SELECT fullname from tbluser where schoolID=?";
+                            $query = Query::execute($sql, [$aid]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             $cnt = 1;
                             if ($query->rowCount() > 0) {
@@ -112,7 +112,7 @@
 
                     <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report malfunctions </a></li>
                     <li> <a href="noti-list.php"><i class="zmdi zmdi-collection-text"></i> Notification </a></li>
-                    
+
                     <!---Students---->
                     <li class="has-submenu">
                         <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> View your requests </span> </a>

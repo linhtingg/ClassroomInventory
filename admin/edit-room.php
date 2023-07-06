@@ -13,24 +13,24 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
             // READ DATA
             $roomname = $_POST['roomname'];
             // CHECK ROOM HAVE ANY REPORT FORMS
-            $query = Query::executeQuery("SELECT * FROM reportform WHERE roomID=:oldRoomID", [[':oldRoomID', $oldRoomID]]);
+            $query = Query::execute("SELECT * FROM reportform WHERE roomID=?", [$oldRoomID]);
             if ($query->rowCount() == 0) {
                 // CHECK ROOM USING ANY EQUIPMENT
-                $query = Query::executeQuery("SELECT * FROM `equipment` WHERE currentRoom = :oldRoomID", [[':oldRoomID', $oldRoomID]]);
+                $query = Query::execute("SELECT * FROM equipment WHERE currentRoom = ?", [$oldRoomID]);
                 if ($query->rowCount() == 0) {
                     //  CHECK NEW ROOM ID EXISTS
                     $rowCount = RoomController::getRoomByID($roomname)->rowCount();
                     if ($rowCount == 0 || $oldRoomID == $roomname) {
                         // IF NOT, UPDATE
-                        Query::executeQuery(
-                            "UPDATE room SET id =:newID, capacity=:capacity, usability=:u, description=:d, avaiableTime=:aTime WHERE id=:oldRoomID",
+                        Query::execute(
+                            "UPDATE room SET id =?, capacity=?, usability=?, description=?, avaiableTime=? WHERE id=?",
                             [
-                                [':newID', $roomname],
-                                [':capacity', $_POST['capacity']],
-                                [':u', $_POST['usability']],
-                                [':d', $_POST['description']],
-                                [':aTime', $_POST['times']],
-                                [':oldRoomID', $oldRoomID]
+                                $roomname,
+                                $_POST['capacity'],
+                                $_POST['usability'],
+                                $_POST['description'],
+                                $_POST['times'],
+                                $oldRoomID
                             ]
                         );
                         Notification::echoToScreen("Room updated successfully!");

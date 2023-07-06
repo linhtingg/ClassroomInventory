@@ -8,12 +8,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        Query::executeQuery(
-            "update tbladmin set fullName=:adminname,email=:email where schoolID=:adminID",
+        Query::execute(
+            "update tbladmin set fullName=?,email=? where schoolID=?",
             [
-                [':adminname', $_POST['adminname']],
-                [':email', $_POST['email']],
-                [':adminID', $_SESSION['sscmsaid']]
+                $_POST['adminname'],
+                $_POST['email'],
+                $_SESSION['sscmsaid']
             ]
         );
         Notification::echoToScreen("Your profile has been updated!");
@@ -25,13 +25,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
         <title>CIMS | Profile</title>
-        <!-- Switchery css -->
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <!-- Bootstrap CSS -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- App CSS -->
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-        <!-- Modernizr js -->
 
     </head>
 
@@ -57,7 +54,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <div class="p-20">
                                         <form action="#" method="post">
                                             <?php
-                                            $query = Query::executeQuery("SELECT * from tbladmin where schoolID = :adminID", [[':adminID', $_SESSION['sscmsaid']]]);
+                                            $query = Query::execute("SELECT * from tbladmin where schoolID=?", [$_SESSION['sscmsaid']]);
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                                             if ($query->rowCount() > 0) {
                                                 foreach ($results as $row) { ?>
@@ -83,9 +80,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                             </div>
                                         </form>
                                     </div>
-
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -97,21 +92,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
-        <script src="../plugins/switchery/switchery.min.js"></script>
-
-        <!-- Validation js (Parsleyjs) -->
-        <script src="../plugins/parsleyjs/parsley.min.js"></script>
 
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
-        <script>
-            $(document).ready(function() {
-                $('form').parsley();
-            });
-        </script>
-
     </body>
 
     </html><?php }  ?>

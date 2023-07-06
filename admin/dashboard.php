@@ -12,10 +12,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     <html lang="en">
     <!-- App title -->
     <title> Dashboard</title>
-    <!--Morris Chart CSS -->
-    <link rel="stylesheet" href="../plugins/morris/morris.css">
-    <!-- Switchery css -->
-    <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- App CSS -->
@@ -51,7 +47,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Rooms Available</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from  room where capacity !=0 and usability=1")->rowCount()); ?></span></h2>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::execute("SELECT * from  room where capacity !=0 and usability=1")->rowCount()); ?></span></h2>
                             <a href="manage-rooms.php"><span class="badge badge-success"> View Detail </span></a>
                         </div>
                     </div>
@@ -60,7 +56,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Occupied Rooms</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from  room where capacity !=0 and usability=0")->rowCount()); ?></span></h2>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::execute("SELECT * from  room where capacity !=0 and usability=0")->rowCount()); ?></span></h2>
                             <a href="manage-rooms.php"><span class="badge badge-danger"> View Detail </span></a>
                         </div>
                     </div>
@@ -88,7 +84,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Occupied Equipments</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from equipment where id !='1' and usability=0")->rowCount()); ?></span></h2>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::execute("SELECT * from equipment where id !='1' and usability=0")->rowCount()); ?></span></h2>
                             <a href="manage-equipments.php"><span class="badge badge-danger"> View Detail </span></a>
                         </div>
                     </div>
@@ -98,7 +94,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Room Requests</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from roomregisterform where reply is null")->rowCount()); ?></span></h2>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::execute("SELECT * from roomregisterform where reply is null")->rowCount()); ?></span></h2>
                             <a href="manage-room-register-students.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
                     </div>
@@ -108,7 +104,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Total Equipment Requests</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from equipmentregisterform where reply is null")->rowCount()); ?></span></h2>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::execute("SELECT * from equipmentregisterform where reply is null")->rowCount()); ?></span></h2>
                             <a href="manage-equipment-register-students.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
                     </div>
@@ -118,7 +114,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         <div class="card-box tilebox-one">
                             <i class="fa fa-desktop float-right"></i>
                             <h6 class="text-muted text-uppercase m-b-20">Recieved Reports</h6>
-                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::executeQuery("SELECT * from reportform")->rowCount()); ?></span></h2>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(Query::execute("SELECT * from reportform")->rowCount()); ?></span></h2>
                             <a href="report.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
                     </div>
@@ -130,21 +126,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
-        <script src="../plugins/switchery/switchery.min.js"></script>
-
-        <!-- Validation js (Parsleyjs) -->
-        <script src="../plugins/parsleyjs/parsley.min.js"></script>
 
         <!-- App js -->
-        <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
-        <script>
-            $(document).ready(function() {
-                $('form').parsley();
-            });
-        </script>
-
     </body>
 
     </html><?php } ?>

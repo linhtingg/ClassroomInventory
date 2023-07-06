@@ -10,14 +10,14 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     if (isset($_POST['submit'])) {
         $roomname = $_POST['roomname'];
         if (RoomController::getRoomByID($roomname)->rowCount() == 0) {
-            $query = Query::executeQuery(
-                "INSERT INTO room (id, capacity, usability, description, avaiableTime) VALUES (:roomname, :capacity, :usability, :description, :availableTime)",
+            $query = Query::execute(
+                "INSERT INTO room (id, capacity, usability, description, avaiableTime) VALUES (?,?,?,?,?)",
                 [
-                    [':roomname', $roomname],
-                    [':capacity', $_POST['capacity']],
-                    [':usability', $_POST['usability']],
-                    [':description', $_POST['description']],
-                    [':availableTime', $_POST['availableTimes']]
+                    $roomname,
+                    $_POST['capacity'],
+                    $_POST['usability'],
+                    $_POST['description'],
+                    $_POST['availableTimes']
                 ]
             );
             if ($query->rowCount() > 0) {
@@ -36,7 +36,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 
     <head>
         <title>CIMS | Add Room</title>
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
     </head>
@@ -108,20 +107,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
-        <script src="../plugins/switchery/switchery.min.js"></script>
-
-        <!-- Validation js (Parsleyjs) -->
-        <script src="../plugins/parsleyjs/parsley.min.js"></script>
 
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
-        <script>
-            $(document).ready(function() {
-                $('form').parsley();
-            });
-        </script>
     </body>
 
     </html>

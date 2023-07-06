@@ -9,15 +9,15 @@ class Query
    /**
     * Execute SQL query and return the query.
     * @param string $sql SQL query
-    * @param array $bindParams An array of `arg`. Each `arg` have 2 element: Parameter identifier and PHP variable.
+    * @param array $bindParams An array of PHP variables.
     * @return PDOStatement
     */
-   public static function executeQuery(string $sql, array $bindParams = [])
+   public static function execute(string $sql, array $params = [])
    {
       $query = Query::getConnection()->prepare($sql);
-      if ($bindParams != []) {
-         foreach ($bindParams as $arg) {
-            $query->bindParam($arg[0], $arg[1], PDO::PARAM_STR);
+      if ($params != []) {
+         for ($i = 0; $i < count($params); $i++) {
+            $query->bindParam($i + 1, $params[$i]);
          }
       }
       $query->execute();

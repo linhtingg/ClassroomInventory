@@ -5,11 +5,11 @@ foreach (glob("../helper/*.php") as $file) {
     include $file;
 }
 if (isset($_POST['login'])) {
-    $query = Query::executeQuery(
-        "SELECT * FROM tbladmin WHERE email=:username AND password=:password",
+    $query = Query::execute(
+        "SELECT * FROM tbladmin WHERE email=? AND password=?",
         [
-            [':username', $_POST['username']],
-            [':password',  $_POST['password']]
+            $_POST['username'],
+            $_POST['password']
         ]
     );
     $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -94,7 +94,6 @@ if (isset($_POST['login'])) {
     <script src="assets/js/detect.js"></script>
     <script src="assets/js/waves.js"></script>
     <script src="assets/js/jquery.nicescroll.js"></script>
-    <script src="../plugins/switchery/switchery.min.js"></script>
 
     <!-- App js -->
     <script src="assets/js/jquery.core.js"></script>

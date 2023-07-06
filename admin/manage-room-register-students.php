@@ -3,12 +3,12 @@ session_start();
 error_reporting(0);
 foreach (glob("../helper/*.php") as $file) {
     include $file;
- }
- if (strlen($_SESSION['sscmsaid'] == 0)) {
+}
+if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_GET['rejectForm'])) {
-        Query::executeQuery("UPDATE roomregisterform SET reply='1' where formid=:id", [[':id', intval($_GET['rejectForm'])]]);
+        Query::execute("UPDATE roomregisterform SET reply='1' where formid=?", [intval($_GET['rejectForm'])]);
         Notification::echoToScreen("Form rejected");
         echo "<script>window.location.href = 'manage-room-register-students.php'</script>";
     }
@@ -18,11 +18,6 @@ foreach (glob("../helper/*.php") as $file) {
 
     <head>
         <title>CIMS | Manage Rooms Registered Student Details</title>
-        <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <link href="../plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <link href="../plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <link href="../plugins/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
         <script src="assets/js/modernizr.min.js"></script>
@@ -51,7 +46,7 @@ foreach (glob("../helper/*.php") as $file) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = Query::executeQuery("SELECT * from roomregisterform where reply is NULL");
+                                    $query = Query::execute("SELECT * from roomregisterform where reply is NULL");
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
                                     if ($query->rowCount() > 0) {
                                         foreach ($results as $row) { ?>
@@ -81,40 +76,6 @@ foreach (glob("../helper/*.php") as $file) {
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
-        <script>
-            $(document).ready(function() {
-
-                // Default Datatable
-                $('#datatable').DataTable();
-
-                //Buttons examples
-                var table = $('#datatable-buttons').DataTable({
-                    lengthChange: false,
-                    buttons: ['copy', 'excel', 'pdf']
-                });
-
-                // Key Tables
-
-                $('#key-table').DataTable({
-                    keys: true
-                });
-
-                // Responsive Datatable
-                $('#responsive-datatable').DataTable();
-
-                // Multi Selection Datatable
-                $('#selection-datatable').DataTable({
-                    select: {
-                        style: 'multi'
-                    }
-                });
-
-                table.buttons().container()
-                    .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
-            });
-        </script>
-
     </body>
 
     </html><?php }  ?>
