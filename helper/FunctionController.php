@@ -1,9 +1,14 @@
 <?php
 class RoomController
 {
-   public static $allRoomsQuery = 'SELECT * from room where capacity !=0';
-   public static $findRoomByID = "SELECT * FROM `room` WHERE id=?";
+   private static $allRoomsQuery = 'SELECT * from room where capacity !=0';
+   private static $findRoomByID = "SELECT * FROM `room` WHERE id=?";
 
+   public static function getAllRoomsQuery()
+   {
+      return RoomController::$allRoomsQuery;
+   }
+   
    /**
     * Return all rooms in database.
     */
@@ -22,9 +27,9 @@ class RoomController
 }
 class EquipmentController
 {
-   public static $allEquipmentsQuery = "SELECT * from equipment where id!='1'";
-   public static $allAvailableEquipmentsQuery = "SELECT * from equipment where id!='1' and usability=1";
-   public static $findEquipmentByID = "SELECT * FROM `equipment` WHERE id = ?";
+   private static $allEquipmentsQuery = "SELECT * from equipment where id!='1'";
+   private static $allAvailableEquipmentsQuery = "SELECT * from equipment where id!='1' and usability=1";
+   private static $findEquipmentByID = "SELECT * FROM `equipment` WHERE id = ?";
 
    /**
     * Return all equipments in database.

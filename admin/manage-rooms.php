@@ -73,7 +73,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <tbody>
                                     <?php
                                     $bindParams = [];
-                                    $sql = RoomController::$allRoomsQuery;
+                                    $sql = RoomController::getAllRoomsQuery();
                                     if (isset($_GET['room'])) {
                                         $sql = $sql . " and id = ?";
                                         array_push($bindParams,  $_GET['room']);
