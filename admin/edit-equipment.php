@@ -102,13 +102,36 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <div class="form-group row">
                                         <label class="col-2 col-form-label">Last User Used</label>
                                         <div class="col-10">
-                                            <input type="text" class="form-control" name="lastUserUsed" value="<?php echo htmlentities($row->lastUserUsed); ?>" required="true">
+                                            <p><select id="userText" class="form-control" name="lastUserUsed" required>
+                                                    <option value="">Select</option>
+                                                    <?php
+                                                    $sql = "SELECT * from tbluser";
+                                                    $query = Query::execute($sql);
+                                                    $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                                    foreach ($results as $row) { ?>
+                                                        <option value="<?php echo htmlentities($row->schoolID); ?>"><?php echo htmlentities($row->schoolID); ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </p>
+                                            <input type="checkbox" id="userCheckbox" name="myCheckbox" value="checkboxValue">
+                                            <label for="myCheckbox">NULL</label>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-2 col-form-label">Current Room</label>
                                         <div class="col-10">
-                                            <input type="text" class="form-control" name="currentRoom" value="<?php echo htmlentities($row->currentRoom); ?>" required="true">
+                                            <p><select id="roomText" class=" form-control" name="currentRoom" required>
+                                                    <option value="">Select</option>
+                                                    <?php
+                                                    $query = RoomController::getAllRooms();
+                                                    $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                                    foreach ($results as $row) { ?>
+                                                        <option value="<?php echo htmlentities($row->id); ?>"><?php echo htmlentities($row->id); ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </p>
+                                            <input type="checkbox" id="roomCheckbox" name="myCheckbox" value="checkboxValue">
+                                            <label for="myCheckbox">NULL</label>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -142,6 +165,23 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
+        <script>
+            const userCheckbox = document.getElementById('userCheckbox');
+            const userTextbox = document.getElementById('userText');
+
+            userCheckbox.addEventListener('change', function() {
+                userTextbox.disabled = this.checked;
+                if (this.checked) userTextbox.value = '';
+            });
+
+            const roomCheckbox = document.getElementById('roomCheckbox');
+            const roomTextbox = document.getElementById('roomText');
+
+            roomCheckbox.addEventListener('change', function() {
+                roomTextbox.disabled = this.checked;
+                if (this.checked) roomTextbox.value = '';
+            });
+        </script>
 
     </body>
 

@@ -120,7 +120,18 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </div>
                         <div class="modal-body">
                             <h5 class="font-16">Room</h5>
-                            <p><textarea class="form-control" placeholder="Room ID" required="true" name="room" required></textarea></p>
+                            <p><select class="form-control" name="room" required>
+                                    <option value="">Select</option>
+                                    <?php
+                                    $query = RoomController::getAllRooms();
+                                    $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                    foreach ($results as $row) { ?>
+                                        <option value="<?php echo htmlentities($row->id); ?>"><?php echo htmlentities($row->id); ?></option>
+                                    <?php } ?>
+                                </select>
+                            </p>
+
+                            <!-- <p><textarea class="form-control" placeholder="Room ID" required="true" name="room" required></textarea></p> -->
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-light waves-effect" data-dismiss="modal">Close</button>
