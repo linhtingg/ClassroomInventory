@@ -11,13 +11,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $roomname = $_POST['roomname'];
         if (RoomController::getRoomByID($roomname)->rowCount() == 0) {
             $query = Query::execute(
-                "INSERT INTO room (id, capacity, usability, description, avaiableTime) VALUES (?,?,?,?,?)",
+                "INSERT INTO room (id, capacity, usability, description) VALUES (?,?,?,?)",
                 [
                     $roomname,
                     $_POST['capacity'],
                     $_POST['usability'],
                     $_POST['description'],
-                    $_POST['availableTimes']
                 ]
             );
             if ($query->rowCount() > 0) {
@@ -27,6 +26,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
             }
         } else {
             Notification::echoToScreen("Room " . $roomname . " existed! Cannot add room");
+            echo "<script>window.location.href = 'add-room.php'</script>";
         }
         echo "<script>window.location.href = 'manage-rooms.php'</script>";
     }
@@ -78,16 +78,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <label class="col-2 col-form-label">Description</label>
                                     <div class="col-10">
                                         <textarea class="form-control" name="description" placeholder="Enter Room Description" required></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-2 col-form-label">Available Time</label>
-                                    <div class="col-10">
-                                        <select class="form-control" name="availableTimes" multiple required>
-                                            <option value="Morning">Morning</option>
-                                            <option value="Afternoon">Afternoon</option>
-                                            <option value="Evening">Evening</option>
-                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">

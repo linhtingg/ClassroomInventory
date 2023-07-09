@@ -85,20 +85,20 @@
                     </li>
                     <!---Equipments---->
                     <li class="has-submenu">
-                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Equipments </span> </a>
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span>Equipments</span> </a>
                         <ul class="submenu megamenus">
                             <li>
                                 <ul>
                                     <li><a href="add-equipment.php">Add </a></li>
                                     <li><a href="manage-equipments.php">Manage </a></li>
-                                    <li><a href="manage-equipment-register-students.php">Browse Equipment Requests </a></li>
+                                    <li><a href="manage-equipment-register-students.php">Browse Equipment Requests</a></li>
                                 </ul>
                             </li>
 
                         </ul>
                     </li>
 
-                    <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report forms </a></li>
+                    <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i>View Reports</a></li>
                     <!-- Students -->
                     <li class="has-submenu">
                         <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Students </span> </a>
