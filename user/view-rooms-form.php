@@ -9,10 +9,14 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     // Code for deleting request from list
     if (isset($_GET['delid'])) {
         $formid = intval($_GET['delid']);
+<<<<<<< Updated upstream
 
         $query = $dbh->prepare("SELECT formid FROM roomregisterform WHERE formid=:formid and approved != 1");
         $query->bindParam(':formid', $formid, PDO::PARAM_STR);
         $query->execute();
+=======
+        $query = Query::execute("SELECT formid FROM roomregisterform WHERE formid=? and approved =1", [$formid]);
+>>>>>>> Stashed changes
         $results = $query->fetchAll(PDO::FETCH_OBJ);
 
         if ($query->rowCount() > 0) {
@@ -108,9 +112,19 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <td><?php echo htmlentities($row->borrowDay); ?></td>
                                                 <td><?php echo htmlentities($row->borrowTime); ?></td>
                                                 <td><?php $approved = $row->approved;
+<<<<<<< Updated upstream
                                                     if ($approved === false) { echo "<span style='color:red'>Decline</span>";}
                                                     elseif ($approved === true ) { echo "<span style='color: green'>Approve</span>";}
                                                     else { echo "<span style='color:gray'>In process</span>";}
+=======
+                                                    if ($approved == null) {
+                                                        echo "<span style='color:gray'>In process</span>";
+                                                    } elseif ($approved == 1) {
+                                                        echo "<span style='color:green'>Approve</span>";
+                                                    } else {
+                                                        echo "<span style='color:red'>Decline</span>";
+                                                    }
+>>>>>>> Stashed changes
                                                     ?></td>
                                                 <td><?php $reply = $row->reply;
                                                     if ($reply == 1) { echo "<span style='color:red'>Decline</span>";}

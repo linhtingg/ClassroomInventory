@@ -117,8 +117,13 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             $totalregstd = $query11->rowCount();
                             ?>
                             <i class="fa fa-desktop float-right"></i>
+<<<<<<< Updated upstream
                             <h6 class="text-muted text-uppercase m-b-20">Total Registered Equipments</h6>
                             <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities($totalregstd); ?></span></h2>
+=======
+                            <h6 class="text-muted text-uppercase m-b-20">Total Equipments</h6>
+                            <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(EquipmentController::getAllEquipments()->rowCount()); ?></span></h2>
+>>>>>>> Stashed changes
                             <a href="view-equipments.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
                     </div>
