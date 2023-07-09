@@ -1,4 +1,6 @@
-<?php include('admin/includes/dbconnection.php');
+<?php
+include('./helper/QueryHandler.php');
+include('./helper/FunctionController.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,8 +35,6 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                             <li class="nav-item active" style="font-size:30px;">CLASSROOM INVENTORY MANAGEMENT SYSTEM</li>
-
-
                         </ul>
                     </div>
                 </div>
@@ -44,46 +44,38 @@
                 <p>This is a web-based application developed using PHP and MySQL. </p>
                 <p>
                 <h5> Classroom Status</h5>
-                <hr />
                 <table class="table">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Room </th>
                             <th>Capacity</th>
-                            <th>Tình trạng phòng</th>
-                            <th>Avaiable</th>
+                            <th>Description</th>
+                            <th>Usable?</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-
-                        $sql = "SELECT * from room where id!='1'";
-                        $query = $dbh->prepare($sql);
-                        $query->execute();
+                        $query = RoomController::getAllRooms();
                         $results = $query->fetchAll(PDO::FETCH_OBJ);
-
                         $cnt = 1;
                         if ($query->rowCount() > 0) {
-                            foreach ($results as $row) {       ?>
+                            foreach ($results as $row) { ?>
                                 <tr>
                                     <td><?php echo htmlentities($cnt); ?></td>
                                     <td><?php echo htmlentities($row->id); ?></td>
                                     <td><?php echo htmlentities($row->capacity); ?></td>
                                     <td><?php echo htmlentities($row->description); ?></td>
                                     <td><?php $room_usability = $row->usability;
-                                        if ($room_usability == 0) : echo "<span style='color:red'>Not Available</span>";
-                                        else : echo "<span style='color:green'>Available</span>";
+                                        if ($room_usability == 0) : echo "<span style='color:red'>Unusable</span>";
+                                        else : echo "<span style='color:green'>Usable</span>";
                                         endif; ?></td>
-
                                 </tr>
                         <?php $cnt++;
                             }
                         } ?>
-
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>

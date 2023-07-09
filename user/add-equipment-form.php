@@ -1,36 +1,30 @@
 <?php
 session_start();
 error_reporting(0);
-include('includes/dbconnection.php');
+foreach (glob("../helper/*.php") as $file) {
+    include $file;
+}
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-
     if (isset($_POST['submit'])) {
-        $aid = $_POST['userID'];
-
-        $purpose = $_POST['purpose'];
-        $equiptype = $_POST['equiptype'];
-        $num = $_POST['howmany'];
-        $borrow_time = $_POST['borrow_time'];
-        $borrow_day = $_POST['borrow_day'];
-
-        $sql = "insert into `equipmentregisterform` (`userID`, `purpose`, `equipType`, `numberOfEach`, `borrowTime`, `borrowDay`) VALUES (:aid,:purpose,:equiptype,:num,:borrow_time,:borrow_day)";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-        $query->bindParam(':purpose', $purpose, PDO::PARAM_STR);
-        $query->bindParam(':equiptype', $equiptype, PDO::PARAM_STR);
-        $query->bindParam(':num', $num, PDO::PARAM_STR);
-        $query->bindParam(':borrow_time', $borrow_time, PDO::PARAM_STR);
-        $query->bindParam(':borrow_day', $borrow_day, PDO::PARAM_STR);
-        $query->execute();
-
-        $LastInsertId = $dbh->lastInsertId();
-        if ($LastInsertId > 0) {
-            echo '<script>alert("Form submitted successfully")</script>';
+        $sql = "INSERT into equipmentregisterform (`userID`, `purpose`, `equipType`, `numberOfEach`, `borrowTime`, `borrowDay`) VALUES (?,?,?,?,?,?)";
+        $query = Query::execute(
+            $sql,
+            [
+                $_POST['userID'],
+                $_POST['purpose'],
+                $_POST['equiptype'],
+                $_POST['howmany'],
+                $_POST['borrow_time'],
+                $_POST['borrow_day']
+            ]
+        );
+        if ($query->rowCount() > 0) {
+            Notification::echoToScreen("Form submitted successfully");
             echo "<script>window.location.href ='view-equipments-form.php'</script>";
         } else {
-            echo '<script>alert("Something Went Wrong. Please try again")</script>';
+            Notification::echoToScreen("Something Went Wrong. Please try again");
         }
     }
 
@@ -39,15 +33,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     <html lang="en">
 
     <head>
-
         <title>Write equipment request</title>
-        <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 
-<<<<<<< Updated upstream
-
-=======
         <!-- Check date js -->
         <script type="text/javascript">
             function checkdate() {
@@ -61,17 +50,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 return true;
             }
         </script>
->>>>>>> Stashed changes
     </head>
 
-
     <body>
-
         <?php include_once('includes/header.php'); ?>
         <div class="wrapper">
             <div class="container">
-
-                <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="page-title-box">
@@ -79,24 +63,14 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         </div>
                     </div>
                 </div>
-                <!-- end row -->
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-
                             <div class="row">
                                 <div class="col-lg-6">
-
                                     <h4 class="header-title m-t-0">Equipment register form</h4>
-
                                     <div class="p-20">
-<<<<<<< Updated upstream
-                                        <form action="#" method="post">
-
-=======
                                         <form action="#" method="post" name = "EquipmentForm" onsubmit="return checkdate();">
->>>>>>> Stashed changes
                                             <div class="form-group">
                                                 <label for="userID">User ID <small>(Auto Generated)</small><span class="text-danger">*</span></label>
                                                 <input readonly type="text" class="form-control" required="true" name="userID" value="<?php echo $_SESSION['sscmsaid']; ?>">
@@ -130,53 +104,26 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <label for="userID">Borrow day <span class="text-danger">*</span></label>
                                                 <input type="date" class="form-control" required="true" name="borrow_day">
                                             </div>
-
                                             <div class="form-group text-left m-b-0">
                                                 <button class="btn btn-primary waves-effect waves-light" type="submit" name="submit">Submit</button>
-
                                             </div>
-
                                         </form>
                                     </div>
-
                                 </div>
-
                             </div>
-                            <!-- end row -->
-
-
                         </div>
-                    </div><!-- end col-->
-
+                    </div>
                 </div>
-                <!-- end row -->
-
-            </div> <!-- container -->
-
-            <?php include_once('includes/footer.php'); ?>
-
-        </div> <!-- End wrapper -->
-
+            </div>
+        </div>
         <!-- jQuery  -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/waves.js"></script>
         <script src="assets/js/jquery.nicescroll.js"></script>
-        <script src="../plugins/switchery/switchery.min.js"></script>
-
-        <!-- Validation js (Parsleyjs) -->
-        <script src="../plugins/parsleyjs/parsley.min.js"></script>
-
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
-
-        <script>
-            $(document).ready(function() {
-                $('form').parsley();
-            });
-        </script>
-
     </body>
 
     </html><?php }  ?>

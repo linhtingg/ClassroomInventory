@@ -34,15 +34,8 @@
                             <!-- item-->
                             <?php
                             $aid = $_SESSION['sscmsaid'];
-<<<<<<< Updated upstream
-                            $sql = "SELECT fullname from tbluser where schoolID=:aid";
-                            $query = $dbh->prepare($sql);
-                            $query->bindParam(':aid', $aid, PDO::PARAM_STR);
-                            $query->execute();
-=======
-                            $sql = "SELECT fullName from tbluser where schoolID=:aid";
-                            $query=Query::executeQuery($sql,[[':aid', $aid]]);
->>>>>>> Stashed changes
+                            $sql = "SELECT fullname from tbluser where schoolID=?";
+                            $query = Query::execute($sql, [$aid]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             $cnt = 1;
                             if ($query->rowCount() > 0) {
@@ -61,7 +54,7 @@
 
                                     <!-- item-->
                                     <a href="change-password.php" class="dropdown-item notify-item">
-                                        <i class="zmdi zmdi-settings"></i> <span>Change Password</span>
+                                        <i class="zmdi zmdi-settings"></i> <span>Settings</span>
                                     </a>
 
                                     <a href="logout.php" class="dropdown-item notify-item">
@@ -119,7 +112,7 @@
 
                     <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report malfunctions </a></li>
                     <li> <a href="noti-list.php"><i class="zmdi zmdi-collection-text"></i> Notification </a></li>
-                    
+
                     <!---Students---->
                     <li class="has-submenu">
                         <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> View your requests </span> </a>

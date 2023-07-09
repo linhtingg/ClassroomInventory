@@ -7,22 +7,19 @@ foreach (glob("../helper/*.php") as $file) {
 if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
-    if (isset($_GET['stdid'])) {
-        Query::execute("DELETE from tbluser where schoolID=?", [$_GET['stdid']]);
-        Notification::echoToScreen("Student deleted");
-        echo "<script>window.location.href = 'manage-students.php'</script>";
+    if (isset($_GET['rejectForm'])) {
+        Query::execute("UPDATE roomregisterform SET reply='1' where formid=?", [intval($_GET['rejectForm'])]);
+        Notification::echoToScreen("Form rejected");
+        echo "<script>window.location.href = 'manage-room-register-students.php'</script>";
     }
 ?>
     <!doctype html>
     <html lang="en">
 
     <head>
-        <title>CIMS | Manage Students</title>
-        <!-- Bootstrap CSS -->
+        <title>CIMS | Manage Rooms Registered Student Details</title>
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <!-- App CSS -->
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-        <!-- Modernizr js -->
         <script src="assets/js/modernizr.min.js"></script>
     </head>
 
@@ -33,38 +30,37 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-                            <h4 class="m-t-0 header-title">Manage Student Details</h4>
+                            <h4 class="m-t-0 header-title">Manage Room Borrow Requests</h4>
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Email</th>
-                                        <th>Name</th>
-                                        <th>Phone Number</th>
-                                        <th>School ID</th>
+                                        <th>User ID</th>
+                                        <th>Purpose</th>
+                                        <th>Number Of Room</th>
+                                        <th>Number Of People</th>
+                                        <th>Borrow Time</th>
+                                        <th>Borrow Day</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query = Query::execute("SELECT * from tbluser");
+                                    $query = Query::execute("SELECT * from roomregisterform where reply is NULL");
                                     $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                    $cnt = 1;
                                     if ($query->rowCount() > 0) {
                                         foreach ($results as $row) { ?>
                                             <tr>
-                                                <td><?php echo htmlentities($cnt); ?></td>
-                                                <td><?php echo htmlentities($row->email); ?></td>
-                                                <td><?php echo htmlentities($row->fullName); ?></td>
-                                                <td><?php echo htmlentities($row->phonenumber); ?></td>
-                                                <td><?php echo htmlentities($row->schoolID); ?></td>
-                                                <td>
-                                                    <a href="manage-students.php?stdid=<?php echo ($row->schoolID); ?>" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger">Delete</a>
-                                                </td>
-                                            </tr>
-                                    <?php $cnt = $cnt + 1;
-                                        }
-                                    } ?>
+                                                <td><?php echo htmlentities($row->formid); ?></td>
+                                                <td><?php echo htmlentities($row->userID); ?></td>
+                                                <td><?php echo htmlentities($row->purpose); ?></td>
+                                                <td><?php echo htmlentities($row->numberOfRoom); ?></td>
+                                                <td><?php echo htmlentities($row->numberOfPeople); ?></td>
+                                                <td><?php echo htmlentities($row->borrowTime); ?></td>
+                                                <td><?php echo htmlentities($row->borrowDay); ?></td>
+                                                <td><a href="room-register-student-details.php?stdid=<?php echo htmlentities($row->formid); ?>" class="btn btn-primary">Approve / Decline</a></td>
+                                            </tr><?php }
+                                            } ?>
                                 </tbody>
                             </table>
                         </div>
