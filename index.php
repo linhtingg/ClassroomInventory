@@ -17,7 +17,7 @@ include('./helper/FunctionController.php');
     <div class="d-flex" id="wrapper">
         <!-- Sidebar-->
         <div class="border-end bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading border-bottom bg-light" style="font-size:30px;">SSCMS</div>
+            <div class="sidebar-heading border-bottom bg-light" style="font-size:30px;">CIMS</div>
             <div class="list-group list-group-flush">
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="index.php">Home</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="admin/">Admin Login</a>
