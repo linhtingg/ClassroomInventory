@@ -11,7 +11,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $equipment = $_POST['equipment'];
         $rowCount = EquipmentController::getEquipmentByID($equipment)->rowCount();
         if ($rowCount == 0) {
-            $sql = "INSERT INTO equipment VALUES (?,?,?,?,?,?,?,?,1)";
+            $sql = "INSERT INTO equipment VALUES (?,?,?,?,?,?,?,1)";
             $query = Query::execute(
                 $sql,
                 [
@@ -22,7 +22,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     $_POST['description'],
                     $_POST['lastUserUsed'],
                     $_POST['currentRoom'],
-                    $_POST['avaiableTimes']
                 ]
             );
             if ($query->rowCount() > 0) {
@@ -126,16 +125,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         </p>
                                         <input type="checkbox" id="roomCheckbox" name="myCheckbox" value="checkboxValue">
                                         <label for="myCheckbox">NULL</label>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-2 col-form-label">Avaiable Time</label>
-                                    <div class="col-10">
-                                        <select class="form-control" name="avaiableTimes" multiple required>
-                                            <option value="Morning">Morning</option>
-                                            <option value="Afternoon">Afternoon</option>
-                                            <option value="Evening">Evening</option>
-                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
