@@ -12,7 +12,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
             $rowCount = EquipmentController::getEquipmentByID($_POST['equipmentID'])->rowCount();
             if ($rowCount == 0 || $_POST['equipmentID'] == $_GET['did']) {
                 Query::execute(
-                    "UPDATE equipment SET type=?, id=?, totalUsedTime=?, producedYear=?, description=?, lastUserUsed=?, currentRoom=?, avaiableTime=? WHERE id=?",
+                    "UPDATE equipment SET type=?, id=?, totalUsedTime=?, producedYear=?, description=?, lastUserUsed=?, currentRoom=? WHERE id=?",
                     [
                         $_POST['type'],
                         $_POST['equipmentID'],
@@ -21,7 +21,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                         $_POST['description'],
                         $_POST['lastUserUsed'],
                         $_POST['currentRoom'],
-                        $_POST['availableTime'],
                         $_GET['did']
                     ]
                 );
@@ -132,16 +131,6 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                             </p>
                                             <input type="checkbox" id="roomCheckbox" name="myCheckbox" value="checkboxValue">
                                             <label for="myCheckbox">NULL</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-2 col-form-label">Available Time</label>
-                                        <div class="col-10">
-                                            <select class="form-control" name="availableTime" required>
-                                                <option>Morning</option>
-                                                <option>Afternoon</option>
-                                                <option>Evening</option>
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group row">
