@@ -9,19 +9,27 @@ class Query
    /**
     * Execute SQL query and return the query.
     * @param string $sql SQL query
-    * @param array $bindParams An array of PHP variables.
-    * @return PDOStatement
+    * @param array $params An array of PHP variables.
+    * @return PDOStatement|null
+    * @throws ValueError | PDOException
     */
    public static function execute(string $sql, array $params = [])
    {
-      $query = Query::getConnection()->prepare($sql);
-      if ($params != []) {
-         for ($i = 0; $i < count($params); $i++) {
-            $query->bindParam($i + 1, $params[$i]);
+      try {
+         $query = Query::getConnection()->prepare($sql);
+         if ($params != []) {
+            for ($i = 0; $i < count($params); $i++) {
+               $query->bindParam($i + 1, $params[$i]);
+            }
          }
+         $query->execute();
+         return $query;
+      } catch (Throwable $exception) {
+         $trace = str_replace(["\\", "'", "\n"], [" \\\\ ", "\'", "\\n"], $exception->getTraceAsString());
+         $message = str_replace("'", "\'", $exception->getMessage());
+         Notification::echoToScreen("Trace:\\n" . $trace . "\\n" . $message);
+         throw $exception;
       }
-      $query->execute();
-      return $query;
    }
    /**
     * Return PDO connection between PHP and MySQL server.

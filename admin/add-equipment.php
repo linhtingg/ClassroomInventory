@@ -11,15 +11,16 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $equipment = $_POST['equipment'];
         $rowCount = EquipmentController::getEquipmentByID($equipment)->rowCount();
         if ($rowCount == 0) {
-            $sql = "INSERT INTO `equipment` (`type`, `id`, `totalUsedTime`, `producedYear`, `description`, `currentRoom`) VALUES (?,?,?,?,?,?)";
+            $sql = "INSERT INTO equipment VALUES (?,?,?,?,?,?,?,1)";
             $query = Query::execute(
                 $sql,
                 [
-                    $_POST['equipType'],
+                    $_POST['type'],
                     $equipment,
                     $_POST['totalUsedTime'],
                     $_POST['producedYear'],
                     $_POST['description'],
+                    $_POST['lastUserUsed'],
                     $_POST['currentRoom'],
                 ]
             );
@@ -28,11 +29,10 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 echo "<script>window.location.href = 'manage-equipments.php'</script>";
             } else {
                 Notification::echoToScreen('Failed to add equipment');
-                echo "<script>window.location.href = 'add-equipment.php'</script>";
             }
         } else {
             Notification::echoToScreen("Equipment " . $equipment . " existed! Cannot add equipment!");
-            echo "<script>window.location.href = 'add-equipment.php'</script>";
+            echo "<script>window.location.href = 'manage-equipments.php'</script>";
         }
     }
 ?>
@@ -56,29 +56,28 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                             <h4 class="m-t-0 header-title">Add Equipment</h4>
                             <form method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
-                                    <label class="col-2 col-form-label">Equipment ID</label>
+                                    <label class="col-2 col-form-label">Equipment</label>
                                     <div class="col-10">
-                                        <input type="text" class="form-control" name="equipment" placeholder="Enter Equipment ID" required>
+                                        <input type="text" class="form-control" name="equipment" placeholder="Enter Equipment Name" required>
+                                        <span id="equipment-availability-status"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-2 col-form-label">Equipment Type</label>
+                                    <label class="col-2 col-form-label">Type</label>
                                     <div class="col-10">
-                                        <input type="text" class="form-control" list="equipType" required name="equipType" placeholder="Equipment type" >
-                                            <datalist id="equipType">
-                                                <?php
-                                                $results = EquipmentController::getAllTypeEquipments()->fetchAll(PDO::FETCH_OBJ);
-                                                foreach ($results as $result) {
-                                                    echo "<option value= '$result->type'> </option>";
-                                                }
-                                                ?>
-                                        </datalist>
+                                        <select class="form-control" name="type" required>
+                                            <option>Microphone</option>
+                                            <option>Oscilloscope</option>
+                                            <option>Biến áp</option>
+                                            <option>Bảng mạch</option>
+                                            <option>Đầu chuyển đổi</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-2 col-form-label">Total Used Time</label>
                                     <div class="col-10">
-                                        <input type="text" class="form-control" name="totalUsedTime" placeholder="Enter Total Used Time">
+                                        <input type="text" class="form-control" name="totalUsedTime" placeholder="Enter Total Used Time" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -90,21 +89,42 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <div class="form-group row">
                                     <label class="col-2 col-form-label">Description</label>
                                     <div class="col-10">
-                                        <textarea class="form-control" name="description" placeholder="Enter Equipment Description"></textarea>
+                                        <textarea class="form-control" name="description" placeholder="Enter Equipment Description" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-2 col-form-label">Last User Used</label>
+                                    <div class="col-10">
+                                        <p><select id="userText" class="form-control" name="lastUserUsed" required>
+                                                <option value="">Select</option>
+                                                <?php
+                                                $sql = "SELECT * from tbluser";
+                                                $query = Query::execute($sql);
+                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                                foreach ($results as $row) { ?>
+                                                    <option value="<?php echo htmlentities($row->schoolID); ?>"><?php echo htmlentities($row->schoolID); ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </p>
+                                        <input type="checkbox" id="userCheckbox" name="myCheckbox" value="checkboxValue">
+                                        <label for="myCheckbox">NULL</label>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-2 col-form-label">Current Room</label>
                                     <div class="col-10">
-                                        <input type="text" class="form-control" list="currentRoom" name="currentRoom" placeholder="Enter Current Room">
-                                        <datalist id="currentRoom">
-                                            <?php
-                                            $results = RoomController::getAllRooms()->fetchAll(PDO::FETCH_OBJ);
-                                            foreach ($results as $result) {
-                                                echo "<option value= '$result->id'> </option>";
-                                            }
-                                            ?>
-                                        </datalist>
+                                        <p><select id="roomText" class=" form-control" name="currentRoom" required>
+                                                <option value="">Select</option>
+                                                <?php
+                                                $query = RoomController::getAllRooms();
+                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                                foreach ($results as $row) { ?>
+                                                    <option value="<?php echo htmlentities($row->id); ?>"><?php echo htmlentities($row->id); ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </p>
+                                        <input type="checkbox" id="roomCheckbox" name="myCheckbox" value="checkboxValue">
+                                        <label for="myCheckbox">NULL</label>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -128,6 +148,23 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <!-- App js -->
         <script src="assets/js/jquery.core.js"></script>
         <script src="assets/js/jquery.app.js"></script>
+        <script>
+            const userCheckbox = document.getElementById('userCheckbox');
+            const userTextbox = document.getElementById('userText');
+
+            userCheckbox.addEventListener('change', function() {
+                userTextbox.disabled = this.checked;
+                if (this.checked) userTextbox.value = '';
+            });
+
+            const roomCheckbox = document.getElementById('roomCheckbox');
+            const roomTextbox = document.getElementById('roomText');
+
+            roomCheckbox.addEventListener('change', function() {
+                roomTextbox.disabled = this.checked;
+                if (this.checked) roomTextbox.value = '';
+            });
+        </script>
     </body>
 
     </html>
