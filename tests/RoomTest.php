@@ -4,6 +4,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 include_once '/xampp/htdocs/class/helper/FunctionController.php';
 include_once '/xampp/htdocs/class/helper/QueryHandler.php';
+include_once '/xampp/htdocs/class/helper/NotificationHandler.php';
 class RoomTest extends \PHPUnit\Framework\TestCase
 {
    protected function setUp(): void
@@ -38,7 +39,7 @@ class RoomTest extends \PHPUnit\Framework\TestCase
    {
       for ($i = 0; $i < count($rooms); $i++) {
          $room = $rooms[$i];
-         Query::execute("INSERT INTO room VALUES ('" . $room . "',150,1,'Phòng trống','Morning,Afternoon,Evening');");
+         Query::execute("INSERT INTO room VALUES ('" . $room . "',150,1,'Phòng trống');");
       }
       $this->assertEquals($expected, RoomController::getAllRooms()->rowCount());
    }
@@ -69,7 +70,7 @@ class RoomTest extends \PHPUnit\Framework\TestCase
    {
       for ($i = 0; $i < count($rooms); $i++) {
          $room = $rooms[$i];
-         Query::execute("INSERT INTO room VALUES ('" . $room . "',150,1,'Phòng trống','Morning,Afternoon,Evening');");
+         Query::execute("INSERT INTO room VALUES ('" . $room . "',150,1,'Phòng trống');");
       }
       $this->assertEquals($expectedResult, RoomController::getRoomByID($needFindRoom)->rowCount() != 0);
    }
