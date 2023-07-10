@@ -71,15 +71,14 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <div class="form-group row">
                                         <label class="col-2 col-form-label">Type</label>
                                         <div class="col-10">
-                                            <input type="text" class="form-control" list="type" required="true" name="type" value="<?php echo htmlentities($row->type); ?>"">
-                                            <datalist id="type">
-                                            <?php
-                                            $results = EquipmentController::getAllTypeEquipments()->fetchAll(PDO::FETCH_OBJ);
-                                            foreach ($results as $result) {
-                                                echo "<option value= $result->type </option>";
-                                            }
-                                            ?>
-                                            </datalist>
+                                            <select class="form-control" name="type" required>
+                                                <?php
+                                                $results = EquipmentController::getAllTypeEquipments()->fetchAll(PDO::FETCH_OBJ);
+                                                foreach ($results as $result) {
+                                                    echo "<option>" . $result->type . " </option>";
+                                                }
+                                                ?>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group row">

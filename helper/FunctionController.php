@@ -67,8 +67,8 @@ class EquipmentController
 
 class UserController
 {
-   private static $allUserIDQuery = "SELECT SchoolID from tbluser ";
-   private static $getUserIDQuery = "SELECT * from tbluser where SchoolID= ?";
+   private static $allUserIDQuery = "SELECT schoolID from tbluser ";
+   private static $getUserIDQuery = "SELECT * from tbluser where schoolID= ?";
    
    /**
     * Return all IDs of users in database.

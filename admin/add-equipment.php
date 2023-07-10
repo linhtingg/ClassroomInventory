@@ -66,11 +66,12 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     <label class="col-2 col-form-label">Type</label>
                                     <div class="col-10">
                                         <select class="form-control" name="type" required>
-                                            <option>Microphone</option>
-                                            <option>Oscilloscope</option>
-                                            <option>Biến áp</option>
-                                            <option>Bảng mạch</option>
-                                            <option>Đầu chuyển đổi</option>
+                                            <?php
+                                            $results = EquipmentController::getAllTypeEquipments()->fetchAll(PDO::FETCH_OBJ);
+                                            foreach ($results as $result) {
+                                                echo "<option>" . $result->type . " </option>";
+                                            }
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
@@ -98,9 +99,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <p><select id="userText" class="form-control" name="lastUserUsed" required>
                                                 <option value="">Select</option>
                                                 <?php
-                                                $sql = "SELECT * from tbluser";
-                                                $query = Query::execute($sql);
-                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                                $results = UserController::getAllUID()->fetchAll(PDO::FETCH_OBJ);
                                                 foreach ($results as $row) { ?>
                                                     <option value="<?php echo htmlentities($row->schoolID); ?>"><?php echo htmlentities($row->schoolID); ?></option>
                                                 <?php } ?>
@@ -116,8 +115,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <p><select id="roomText" class=" form-control" name="currentRoom" required>
                                                 <option value="">Select</option>
                                                 <?php
-                                                $query = RoomController::getAllRooms();
-                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                                $results = RoomController::getAllRooms()->fetchAll(PDO::FETCH_OBJ);
                                                 foreach ($results as $row) { ?>
                                                     <option value="<?php echo htmlentities($row->id); ?>"><?php echo htmlentities($row->id); ?></option>
                                                 <?php } ?>
