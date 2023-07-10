@@ -41,6 +41,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         <th>Total Used Time (hour)</th>
                                         <th>Produced Year</th>
                                         <th>Usability</th>
+                                        <th>Current Room</th>
                                         <th>Description</th>
                                     </tr>
                                 </thead>
@@ -61,6 +62,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                     if ($usability == 0) : echo "<span style='color:red'>Unavailable</span>";
                                                     else : echo "<span style='color:green'>Available</span>";
                                                     endif; ?></td>
+                                                <td><?php echo htmlentities($row->currentRoom); ?></td>
                                                 <td><?php echo htmlentities($row->description); ?></td>
                                             </tr>
                                     <?php $cnt = $cnt + 1;

@@ -34,6 +34,20 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         <title>Write room request</title>
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+
+        <!-- Check date js -->
+        <script type="text/javascript">
+            function checkdate() {
+                var curDate = new Date();
+                var borDate = document.RoomForm.borrow_day.value;
+                if( (new Date(borDate).getTime() <= new Date(curDate).getTime())){
+                    alert('You must enter a date from '+curDate+' forward.');
+                    document.RoomForm.borrow_day.focus();
+                    return false;
+                }
+                return true;
+            }
+        </script>
     </head>
 
     <body>
@@ -54,7 +68,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <div class="col-lg-6">
                                     <h4 class="header-title m-t-0">Room register form</h4>
                                     <div class="p-20">
-                                        <form action="#" method="post">
+                                        <form action="#" method="post" name ="RoomForm" onsubmit="return checkdate();">
                                             <div class="form-group">
                                                 <label for="userID">User ID <small>(Auto Generated)</small><span class="text-danger">*</span></label>
                                                 <input readonly type="text" class="form-control" required="true" name="userID" value="<?php echo $_SESSION['sscmsaid']; ?>">
@@ -77,12 +91,11 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                             </div>
                                             <div class="form-group">
                                                 <label for="borrow_time">Borrow time <span class="text-danger">*</span></label>
-                                                <input class="form-control" list="borrow_times" required="true" name="borrow_time">
-                                                <datalist id="borrow_times">
-                                                    <option value="Morning">
-                                                    <option value="Afternoon">
-                                                    <option value="Evening">
-                                                </datalist>
+                                                <select class="form-control" name="borrow_time" id="borrow_times" required="true">
+                                                    <option value="Morning">Morning</option>
+                                                    <option value="Afternoon">Afternoon</option>
+                                                    <option value="Evening">Evening</option>
+                                                </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="userID">Borrow day <span class="text-danger">*</span></label>

@@ -69,15 +69,17 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-2 col-form-label">Equipment Type</label>
+                                        <label class="col-2 col-form-label">Type</label>
                                         <div class="col-10">
-                                            <select class="form-control" name="type" required>
-                                                <option>Microphone</option>
-                                                <option>Oscilloscope</option>
-                                                <option>Biến áp</option>
-                                                <option>Bảng mạch</option>
-                                                <option>Đầu chuyển đổi</option>
-                                            </select>
+                                            <input type="text" class="form-control" list="type" required="true" name="type" value="<?php echo htmlentities($row->type); ?>"">
+                                            <datalist id="type">
+                                            <?php
+                                            $results = EquipmentController::getAllTypeEquipments()->fetchAll(PDO::FETCH_OBJ);
+                                            foreach ($results as $result) {
+                                                echo "<option value= $result->type </option>";
+                                            }
+                                            ?>
+                                            </datalist>
                                         </div>
                                     </div>
                                     <div class="form-group row">
