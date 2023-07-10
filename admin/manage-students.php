@@ -9,7 +9,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
     if (isset($_GET['stdid'])) {
         Query::execute("DELETE from tbluser where schoolID=?", [$_GET['stdid']]);
-        Notification::echoToScreen("Student deleted");
+        Notification::echoToScreen("User deleted");
         echo "<script>window.location.href = 'manage-students.php'</script>";
     }
 ?>
@@ -17,7 +17,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     <html lang="en">
 
     <head>
-        <title>CIMS | Manage Students</title>
+        <title>CIMS | Manage Users</title>
         <!-- Bootstrap CSS -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- App CSS -->
@@ -33,7 +33,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                 <div class="row">
                     <div class="col-12">
                         <div class="card-box">
-                            <h4 class="m-t-0 header-title">Manage Student Details</h4>
+                            <h4 class="m-t-0 header-title">Manage User Details</h4>
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>

@@ -68,12 +68,21 @@ class EquipmentController
 class UserController
 {
    private static $allUserIDQuery = "SELECT SchoolID from tbluser ";
+   private static $getUserIDQuery = "SELECT * from tbluser where SchoolID= ?";
    
    /**
-    * Return all ID of userin database.
+    * Return all IDs of users in database.
     */
     public static function getAllUID(): PDOStatement
     {
        return Query::execute(UserController::$allUserIDQuery);
+    }
+
+    /**
+    * Find specific ID of user in database.
+    */
+    public static function getUserID(string $userID) : PDOStatement
+    {
+       return Query::execute(UserController::$getUserIDQuery,[$userID]);
     }
 }

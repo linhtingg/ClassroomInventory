@@ -11,7 +11,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
         $equipment = $_POST['equipment'];
         $rowCount = EquipmentController::getEquipmentByID($equipment)->rowCount();
         if ($rowCount == 0) {
-            $sql = "INSERT INTO `equipment` (`type`, `id`, `totalUsedTime`, `producedYear`, `description`, `lastUserUsed`, `currentRoom`) VALUES (?,?,?,?,?,?,?)";
+            $sql = "INSERT INTO `equipment` (`type`, `id`, `totalUsedTime`, `producedYear`, `description`, `currentRoom`) VALUES (?,?,?,?,?,?)";
             $query = Query::execute(
                 $sql,
                 [
@@ -20,8 +20,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     $_POST['totalUsedTime'],
                     $_POST['producedYear'],
                     $_POST['description'],
-                    $_POST['lastUserUsed'],
-                    $_POST['currentRoom']
+                    $_POST['currentRoom'],
                 ]
             );
             if ($query->rowCount() > 0) {
@@ -65,14 +64,14 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <div class="form-group row">
                                     <label class="col-2 col-form-label">Equipment Type</label>
                                     <div class="col-10">
-                                        <input type="text" class="form-control" list="equipType" required="true" name="equipType"">
+                                        <input type="text" class="form-control" list="equipType" required name="equipType" placeholder="Equipment type" >
                                             <datalist id="equipType">
-                                        <?php
-                                        $results = EquipmentController::getAllTypeEquipments()->fetchAll(PDO::FETCH_OBJ);
-                                        foreach ($results as $result) {
-                                            echo "<option value= $result->type </option>";
-                                        }
-                                        ?>
+                                                <?php
+                                                $results = EquipmentController::getAllTypeEquipments()->fetchAll(PDO::FETCH_OBJ);
+                                                foreach ($results as $result) {
+                                                    echo "<option value= '$result->type'> </option>";
+                                                }
+                                                ?>
                                         </datalist>
                                     </div>
                                 </div>
@@ -95,28 +94,14 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-2 col-form-label">Last User Used</label>
-                                    <div class="col-10">
-                                        <input type="text" class="form-control" list="lastUserUsed" name="lastUserUsed"">
-                                            <datalist id="lastUserUsed">
-                                        <?php
-                                        $results = UserController::getAllUID()->fetchAll(PDO::FETCH_OBJ);
-                                        foreach ($results as $result) {
-                                            echo "<option value= $result->SchoolID </option>";
-                                        }
-                                        ?>
-                                        </datalist>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
                                     <label class="col-2 col-form-label">Current Room</label>
                                     <div class="col-10">
-                                        <input type="text" class="form-control" list="room_id" name="currentRoom" placeholder="Enter Current Room">
-                                        <datalist id="room_id">
+                                        <input type="text" class="form-control" list="currentRoom" name="currentRoom" placeholder="Enter Current Room">
+                                        <datalist id="currentRoom">
                                             <?php
                                             $results = RoomController::getAllRooms()->fetchAll(PDO::FETCH_OBJ);
                                             foreach ($results as $result) {
-                                                echo "<option value= $result->id </option>";
+                                                echo "<option value= '$result->id'> </option>";
                                             }
                                             ?>
                                         </datalist>
