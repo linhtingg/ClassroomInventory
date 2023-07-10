@@ -8,28 +8,23 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     header('location:logout.php');
 } else {
     if (isset($_POST['submit'])) {
-        $equipment = $_POST['equipment'];
+        $equipment = $_POST['equipmentID'];
         $rowCount = EquipmentController::getEquipmentByID($equipment)->rowCount();
-        if ($rowCount == 0) {
-            $sql = "INSERT INTO equipment VALUES (id, occupiedTime, occupiedDay, equipmentID)";
+        if ($rowCount != 0) {
+            $sql = "INSERT INTO equipschedule VALUES (NULL,?,?,?)";
             $query = Query::execute(
                 $sql,
                 [
                     $_POST['occupiedTime'],
-                    $_POST['occupiedDay'],
+                    $_POST['occupiedDate'],
                     $_POST['equipmentID'],
                 ]
             );
-            if ($query->rowCount() > 0) {
-                Notification::echoToScreen('Equipment added successfully');
-                echo "<script>window.location.href = 'manage-equipments.php'</script>";
-            } else {
-                Notification::echoToScreen('Failed to add equipment');
-            }
+            Notification::echoToScreen('Added successfully');
         } else {
             Notification::echoToScreen("Equipment " . $equipment . " existed! Cannot add equipment!");
-            echo "<script>window.location.href = 'manage-equipments.php'</script>";
         }
+        echo "<script>window.location.href = 'manage-equips-schedule.php'</script>";
     }
 ?>
 
@@ -64,7 +59,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <div class="form-group row">
                                     <label class="col-2 col-form-label">Occupied Day</label>
                                     <div class="col-10">
-                                    <input class="form-control" type="date" id="occupiedDate" name="occupiedDate" required>
+                                        <input class="form-control" type="date" id="occupiedDate" name="occupiedDate" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">

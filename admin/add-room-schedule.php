@@ -9,26 +9,20 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
 } else {
     if (isset($_POST['submit'])) {
         $roomname = $_POST['roomname'];
-        if (RoomController::getRoomByID($roomname)->rowCount() == 0) {
+        if (RoomController::getRoomByID($roomname)->rowCount() != 0) {
             $query = Query::execute(
-                "INSERT INTO room (id, occupiedTime, occupiedDay, roomID, avaiableTime) VALUES (?,?,?,?,?)",
+                "INSERT INTO roomschedule VALUES (NULL, ?, ?, ?)",
                 [
-                    $roomname,
                     $_POST['occupiedTime'],
-                    $_POST['occupiedDay'],
-                    $_POST['roomID'],
-                    $_POST['availableTimes']
+                    $_POST['occupiedDate'],
+                    $_POST['roomname']
                 ]
             );
-            if ($query->rowCount() > 0) {
-                Notification::echoToScreen("Room added successfully");
-            } else {
-                Notification::echoToScreen("Failed to add room");
-            }
+            Notification::echoToScreen("Added successfully");
         } else {
-            Notification::echoToScreen("Room " . $roomname . " existed! Cannot add room");
+            Notification::echoToScreen("Room " . $roomname . " does not existed! Cannot add room");
         }
-        echo "<script>window.location.href = 'manage-rooms.php'</script>";
+        echo "<script>window.location.href = 'manage-rooms-schedule.php'</script>";
     }
 ?>
     <!doctype html>
@@ -62,7 +56,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                 <div class="form-group row">
                                     <label class="col-2 col-form-label">Occupied Day</label>
                                     <div class="col-10">
-                                    <input class="form-control" type="date" id="occupiedDate" name="occupiedDate" required>
+                                        <input class="form-control" type="date" id="occupiedDate" name="occupiedDate" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
