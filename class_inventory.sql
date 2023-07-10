@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2023 at 07:12 PM
+-- Generation Time: Jul 10, 2023 at 03:28 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -35,7 +35,7 @@ CREATE TABLE `equipment` (
   `description` varchar(200) DEFAULT NULL,
   `lastUserUsed` varchar(8) DEFAULT NULL,
   `currentRoom` varchar(7) DEFAULT NULL,
-  `usability` tinyint(1) NOT NULL
+  `usability` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -44,15 +44,19 @@ CREATE TABLE `equipment` (
 
 INSERT INTO `equipment` (`type`, `id`, `totalUsedTime`, `producedYear`, `description`, `lastUserUsed`, `currentRoom`, `usability`) VALUES
 ('Dây nối', 'CON_001', 98, 2017, ' ', '20203425', 'D9_401', 0),
+('Dây nối', 'CON_002', 90, 2020, ' ', '20204568', 'D6_205', 0),
 ('Microphone', 'MIC_001', 200, 2017, 'Hơi rè', '20205093', 'D9_501', 1),
 ('Chuột máy tính', 'MSE_001', 40, 2018, NULL, NULL, 'D9_501', 1),
 ('Chuột máy tính', 'MSE_002', 9, 2023, ' ', '20205093', 'D9_505', 0),
+('Chuột máy tính', 'MSE_003', 10, 2023, '', '20201234', 'D5_309', 0),
+('Chuột máy tính', 'MSE_004', 40, 2022, '', NULL, 'D6_205', NULL),
 ('Oscilloscope', 'OSC_001', 23, 2018, 'Chả có gì', '20205093', 'D9_401', 1),
 ('Oscilloscope', 'OSC_002', 27, 2018, 'Hoạt động bình thường', '20215689', 'D9_501', 1),
 ('Oscilloscope', 'OSC_003', 0, 2023, '', '20205093', 'D9_505', 0),
-('Bàn', 'TBL_001', 9, 2017, ' ', '20205093', 'D9_401', 0),
-('Bàn', 'TBL_002', 98, 2022, 'Gãy chân', '20215689', 'D9_501', 0),
-('Bàn', 'TBL_003', 98, 2022, '', '20201234', 'D9_401', 0);
+('Bút con trỏ laser', 'PTR_001', 0, 2023, '', NULL, 'D9_401', NULL),
+('Bàn học', 'TBL_001', 9, 2017, ' ', '20205093', 'D9_401', 0),
+('Bàn học', 'TBL_002', 98, 2022, 'Gãy chân', '20215689', 'D9_501', 0),
+('Bàn học', 'TBL_003', 98, 2022, 'Hộc bàn bị mọt', '20201234', 'D9_401', 0);
 
 -- --------------------------------------------------------
 
@@ -164,6 +168,7 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`id`, `capacity`, `usability`, `description`) VALUES
+('D35_205', 50, 1, 'Phòng máy'),
 ('D5_205', 50, 1, 'bình thường bình thường'),
 ('D5_306', 150, 1, 'Bình thường'),
 ('D5_309', 50, 0, 'Rơi tường'),
@@ -255,9 +260,9 @@ CREATE TABLE `tbluser` (
   `email` varchar(200) DEFAULT NULL,
   `pass` varchar(200) DEFAULT NULL,
   `isType` set('Lecturer','Student') DEFAULT NULL,
-  `fullName` varchar(200) DEFAULT NULL,
+  `fullName` varchar(200) NOT NULL,
   `schoolID` varchar(8) NOT NULL,
-  `phonenumber` varchar(20) NOT NULL
+  `phonenumber` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -266,9 +271,12 @@ CREATE TABLE `tbluser` (
 
 INSERT INTO `tbluser` (`email`, `pass`, `isType`, `fullName`, `schoolID`, `phonenumber`) VALUES
 ('anh.hm201234@sis.hust.edu.vn', '123456', 'Student', 'Hoàng Minh Anh', '20201234', '0987654321'),
+('hien.vm201879@sis.hust.edu.vn', '20201879', 'Student', 'Vũ Minh Hiền', '20201879', NULL),
 ('tien.ttq203425@sis.hust.edu.vn', '20203425', 'Student', 'Trần Thị Quỳnh Tiên', '20203425', '2345109833'),
 ('dat.nt204568@sis.hust.edu.vn', '20204568', 'Student', 'Nguyễn Tiến Đạt', '20204568', '23451098766'),
+('hoan.nv204709L@sis.hust.edu.vn', '20204709L', 'Lecturer', 'Nguyễn Văn Hoàn', '20204709', NULL),
 ('linh.hmt205093@sis.hust.edu.vn', '123456', 'Student', 'Hoàng Mai Thùy Linh', '20205093', '032456789'),
+('nhung.pt209876@sis.hust.edu.vn', '20209876', 'Student', 'Phạm Thi Nhung', '20209876', NULL),
 ('vu.ph215689@sis.hust.edu.vn', '1234', 'Student', 'Phan Nguyên Vũ', '20215689', '08756765456');
 
 --
