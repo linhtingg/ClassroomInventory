@@ -29,30 +29,28 @@
                         <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
                             <!-- item-->
                             <?php
-                            $aid = $_SESSION['sscmsaid'];
-                            $sql = "SELECT * from tbladmin where schoolID =:aid";
-                            $query = Query::executeQuery($dbh, $sql, [':aid', $aid]);
+                            $query = Query::execute("SELECT * from tbladmin where schoolID =?", [$_SESSION['sscmsaid']]);
                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                             if ($query->rowCount() > 0) {
                                 foreach ($results as $row) { ?>
                                     <div class="dropdown-item noti-title">
                                         <h5 class="text-overflow"><small>Welcome !<?php echo htmlentities($row->fullName); ?></small> </h5>
-                                <?php }
-                            } ?>
                                     </div>
-                                    <!-- item-->
-                                    <a href="profile.php" class="dropdown-item notify-item">
-                                        <i class="zmdi zmdi-account-circle"></i> <span>Profile</span>
-                                    </a>
+                            <?php }
+                            } ?>
+                            <!-- item-->
+                            <a href="profile.php" class="dropdown-item notify-item">
+                                <i class="zmdi zmdi-account-circle"></i> <span>Profile</span>
+                            </a>
 
-                                    <!-- item-->
-                                    <a href="change-password.php" class="dropdown-item notify-item">
-                                        <i class="zmdi zmdi-settings"></i> <span>Settings</span>
-                                    </a>
+                            <!-- item-->
+                            <a href="change-password.php" class="dropdown-item notify-item">
+                                <i class="zmdi zmdi-settings"></i> <span>Settings</span>
+                            </a>
 
-                                    <a href="logout.php" class="dropdown-item notify-item">
-                                        <i class="zmdi zmdi-power"></i> <span>Logout</span>
-                                    </a>
+                            <a href="logout.php" class="dropdown-item notify-item">
+                                <i class="zmdi zmdi-power"></i> <span>Logout</span>
+                            </a>
                         </div>
                     </li>
                 </ul>
@@ -79,8 +77,7 @@
                                 <ul>
                                     <li><a href="add-room.php">Add </a></li>
                                     <li><a href="manage-rooms.php">Manage </a></li>
-                                    <li><a href="manage-equipment-register-students.php">Assigned / Unassigned Classrooms </a></li>
-
+                                    <li><a href="manage-room-register-students.php">Browse Classroom Requests </a></li>
                                 </ul>
                             </li>
 
@@ -94,26 +91,65 @@
                                 <ul>
                                     <li><a href="add-equipment.php">Add </a></li>
                                     <li><a href="manage-equipments.php">Manage </a></li>
-                                    <li><a href="manage-equipment-register-students.php">Assigned / Unassigned Equipments </a></li>
+                                    <li><a href="manage-equipment-register-students.php">Browse Equipment Requests </a></li>
                                 </ul>
                             </li>
 
                         </ul>
                     </li>
-                    <!---Students---->
+                    <!---Room Schedule---->
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Room Schedule </span> </a>
+                        <ul class="submenu megamenus">
+                            <li>
+                                <ul>
+                                    <li><a href="add-room-schedule.php">Add </a></li>
+                                    <li><a href="manage-rooms-schedule.php">Manage </a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <!---Equip Schedule---->
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Equip Schedule </span> </a>
+                        <ul class="submenu megamenus">
+                            <li>
+                                <ul>
+                                    <li><a href="add-equip-schedule.php">Add </a></li>
+                                    <li><a href="manage-equips-schedule.php">Manage </a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <!---Reportform---->
+                    <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report forms </a></li>
+                    <!-- Students -->
                     <li class="has-submenu">
                         <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Students </span> </a>
                         <ul class="submenu megamenu">
                             <li>
                                 <ul>
-                                    <li><a href="add-student.php">Add </a></li>
                                     <li><a href="manage-students.php">Manage </a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!---Noti---->
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Notification </span> </a>
+                        <ul class="submenu">
+                            <li>
+                                <ul>
+                                    <li><a href="add-notification.php">Add Notification </a></li>
+                                    <li><a href="manage-notifications.php">Manage Notification </a></li>
                                 </ul>
                             </li>
 
                         </ul>
                     </li>
-                    <li> <a href="report.php"><i class="zmdi zmdi-collection-text"></i> Report forms </a></li>
                 </ul>
                 <!-- End navigation menu  -->
             </div>
