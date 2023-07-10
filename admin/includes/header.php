@@ -112,6 +112,21 @@
                         </ul>
                     </li>
 
+                    <!---Room Schedule---->
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span>Schedule </span> </a>
+                        <ul class="submenu megamenus">
+                            <li>
+                                <ul>
+                                    <li><a href="add-room-schedule.php">Add Room Schedule </a></li>
+                                    <li><a href="manage-rooms-schedule.php">Manage Room Schedule </a></li>
+                                    <li><a href="add-equip-schedule.php">Add Equipment Schedule</a></li>
+                                    <li><a href="manage-equips-schedule.php">Manage Equipment Schedule</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
                     <!---Noti---->
                     <li class="has-submenu">
                         <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Notification </span> </a>
