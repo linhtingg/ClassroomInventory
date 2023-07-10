@@ -10,7 +10,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
     // Code for deleting request from list
     if (isset($_GET['delid'])) {
         $formid = intval($_GET['delid']);
-        $query = Query::execute("SELECT formid FROM equipmentregisterform WHERE formid=? and approved is not null", [$formid]);
+        $query = Query::execute("SELECT formid FROM equipmentregisterform WHERE formid=? and approved = 1 ", [$formid]);
         $results = $query->fetchAll(PDO::FETCH_OBJ);
         if ($query->rowCount() > 0) {
             Notification::echoToScreen("Can not delete! The request has already been approve!");
@@ -77,9 +77,9 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                                                 <td><?php echo htmlentities($row->borrowDay); ?></td>
                                                 <td><?php echo htmlentities($row->borrowTime); ?></td>
                                                 <td><?php $approved = $row->approved;
-                                                    if ($approved === false) {
+                                                    if ($approved == '0') {
                                                         echo "<span style='color:red'>Decline</span>";
-                                                    } elseif ($approved === true) {
+                                                    } elseif ($approved == '1') {
                                                         echo "<span style='color: green'>Approve</span>";
                                                     } else {
                                                         echo "<span style='color:gray'>In process</span>";

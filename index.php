@@ -50,8 +50,8 @@ include('./helper/FunctionController.php');
                             <th>#</th>
                             <th>Room </th>
                             <th>Capacity</th>
-                            <th>Tình trạng phòng</th>
-                            <th>Avaiable</th>
+                            <th>Description</th>
+                            <th>Usable?</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,8 +67,8 @@ include('./helper/FunctionController.php');
                                     <td><?php echo htmlentities($row->capacity); ?></td>
                                     <td><?php echo htmlentities($row->description); ?></td>
                                     <td><?php $room_usability = $row->usability;
-                                        if ($room_usability == 0) : echo "<span style='color:red'>Not Available</span>";
-                                        else : echo "<span style='color:green'>Available</span>";
+                                        if ($room_usability == 0) : echo "<span style='color:red'>Unusable</span>";
+                                        else : echo "<span style='color:green'>Usable</span>";
                                         endif; ?></td>
                                 </tr>
                         <?php $cnt++;

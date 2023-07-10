@@ -77,7 +77,7 @@ if (strlen($_SESSION['sscmsaid'] == 0)) {
                     <div class="col-md-6 col-xl-4">
                         <div class="card-box tilebox-one">
                             <i class="fa fa-desktop float-right"></i>
-                            <h6 class="text-muted text-uppercase m-b-20">Total Registered Equipments</h6>
+                            <h6 class="text-muted text-uppercase m-b-20">Total Equipments</h6>
                             <h2 class="m-b-20"><span data-plugin="counterup"><?php echo htmlentities(EquipmentController::getAllEquipments()->rowCount()); ?></span></h2>
                             <a href="view-equipments.php"><span class="badge badge-primary"> View Detail </span></a>
                         </div>
