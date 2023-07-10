@@ -50,7 +50,7 @@ class EquipmentTest extends \PHPUnit\Framework\TestCase
    {
       for ($i = 0; $i < count($equipments); $i++) {
          $equipment = $equipments[$i];
-         Query::execute("INSERT INTO equipment VALUES (" . "'TEST','"  . $equipment . "', 0, 2023, 'OK', NULL, NULL, NULL, 1);");
+         Query::execute("INSERT INTO equipment VALUES (" . "'TEST','"  . $equipment . "', 0, 2023, 'OK', NULL, NULL, 1);");
       }
       $this->assertEquals($expected, EquipmentController::getAllEquipments()->rowCount());
    }
@@ -85,7 +85,7 @@ class EquipmentTest extends \PHPUnit\Framework\TestCase
    {
       for ($i = 0; $i < count($equipments); $i++) {
          $equipmentInfo = $equipments[$i];
-         Query::execute("INSERT INTO equipment VALUES (" . "'TEST','"  . $equipmentInfo[0] . "', 0, 2023, 'OK', NULL, NULL, NULL, " . $equipmentInfo[1] . ");");
+         Query::execute("INSERT INTO equipment VALUES (" . "'TEST','"  . $equipmentInfo[0] . "', 0, 2023, 'OK', NULL, NULL, " . $equipmentInfo[1] . ");");
       }
       $this->assertEquals($expected, EquipmentController::getAllAvailableEquipments()->rowCount());
    }
@@ -130,7 +130,7 @@ class EquipmentTest extends \PHPUnit\Framework\TestCase
    {
       for ($i = 0; $i < count($equipments); $i++) {
          $equipment = $equipments[$i];
-         Query::execute("INSERT INTO equipment VALUES (" . "'TEST','"  . $equipment . "', 0, 2023, 'OK', NULL, NULL, NULL, 1);");
+         Query::execute("INSERT INTO equipment VALUES (" . "'TEST','"  . $equipment . "', 0, 2023, 'OK', NULL, NULL, 1);");
       }
       $this->assertEquals($expected, EquipmentController::getEquipmentByID($needFind)->rowCount() != 0);
    }
