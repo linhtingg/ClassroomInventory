@@ -122,6 +122,19 @@
                                     <li><a href="manage-notifications.php">Manage Notification </a></li>
                                 </ul>
                             </li>
+                        </ul>
+                    </li>
+
+                    <!---Noti---->
+                    <li class="has-submenu">
+                        <a href="#"><i class="zmdi zmdi-collection-text"></i> <span> Notification </span> </a>
+                        <ul class="submenu">
+                            <li>
+                                <ul>
+                                    <li><a href="add-notification.php">Add Notification </a></li>
+                                    <li><a href="manage-notifications.php">Manage Notification </a></li>
+                                </ul>
+                            </li>
 
                         </ul>
                     </li>
