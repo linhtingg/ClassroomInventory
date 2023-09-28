@@ -1,10 +1,10 @@
 <?php
 class Query
 {
-   private static $DB_HOST = 'us-east-1.rds.amazonaws.com';
+   private static $DB_HOST = 'ckshdphy86qnz0bj.cbetxkdyhwsb.us-east-1.rds.amazonaws.com';
    private static $DB_USER = 'a8nhk50ikm8wvmdq';
    private static $DB_PASS = 'imuwf47fsappj30x';
-   private static $DB_NAME = 'class2';
+   private static $DB_NAME = 'ceks1f80motdfnhl';
    private static $dbh = null;
    /**
     * Execute SQL query and return the query.
